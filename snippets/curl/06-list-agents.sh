@@ -15,7 +15,7 @@ if [[ "${1:-}" == "--raw" ]]; then
   exit 0
 fi
 
-echo "${RAW}" | python3 -c '
+echo "${RAW}" | python3 - <<'PYEOF'
 import json, sys
 d = json.load(sys.stdin)
 if "error" in d:
@@ -33,4 +33,4 @@ print(f"{'AGENT_ID':22s} {'STATE':9s} {'TYPE':18s} DISPLAY NAME")
 for a in d.get("agents", []):
     kind = next((v for k, v in kinds.items() if k in a), "?")
     print(f"{a['name'].split('/')[-1]:22s} {a.get('state','?'):9s} {kind:18s} {a.get('displayName','')}")
-'
+PYEOF
