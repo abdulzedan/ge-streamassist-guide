@@ -1,0 +1,172 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "**Dollar-cost averaging** is an investment strategy where you regularly invest a fixed amount of"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:19:25.755104027Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/7460754264515114558",
+            "queryId": "12292448675473983262"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " money at set intervals, regardless of whether the asset's price is high or low, to reduce the impact of market"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:19:25.908771868Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/7460754264515114558",
+            "queryId": "12292448675473983262"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " volatility over time. \ud83d\udcca\n\n---\n\n"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:19:26.020334379Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/7460754264515114558",
+            "queryId": "12292448675473983262"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "inlineData": {
+                                "mimeType": "application/json+suggestions",
+                                "data": "eyJyZWNvbW1lbmRlZFF1ZXN0aW9uc1Jlc3BvbnNlIjp7InF1ZXN0aW9ucyI6WyJXaGF0IGFyZSB0aGUgcHJvcyBhbmQgY29ucyBvZiB0aGlzIHN0cmF0ZWd5PyIsIkhvdyBkb2VzIGl0IGNvbXBhcmUgdG8gbHVtcC1zdW0gaW52ZXN0aW5nPyIsIkNhbiB5b3UgZ2l2ZSBtZSBhbiBleGFtcGxlIG9mIGhvdyBpdCB3b3Jrcz8iXX19"
+                            }
+                        }
+                    },
+                    "createTime": "2026-08-20T23:19:26.219128730Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/7460754264515114558",
+            "queryId": "12292448675473983262"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "name": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/7460754264515114558/assistAnswers/12292448675473981946",
+            "state": "SUCCEEDED",
+            "replies": [
+                {
+                    "groundedContent": {},
+                    "replyId": "8584630744286206851",
+                    "createTime": "2026-08-20T23:19:26.020334379Z"
+                },
+                {
+                    "groundedContent": {},
+                    "replyId": "8584630744286206851",
+                    "createTime": "2026-08-20T23:19:26.219128730Z"
+                }
+            ],
+            "diagnosticInfo": {
+                "plannerSteps": [
+                    {
+                        "queryStep": {
+                            "parts": [
+                                {
+                                    "text": "In one sentence, what is dollar-cost averaging?"
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:19:23.507951312Z"
+                    },
+                    {
+                        "planStep": {
+                            "planStepId": "8584630744286206851",
+                            "role": "MODEL",
+                            "parts": [
+                                {
+                                    "text": "**Dollar-cost averaging** is an investment strategy where you regularly invest a fixed amount of"
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:19:25.755104027Z"
+                    },
+                    {
+                        "createTime": "2026-08-20T23:19:25.908771868Z",
+                        "planStep": {
+                            "parts": [
+                                {
+                                    "text": " money at set intervals, regardless of whether the asset's price is high or low, to reduce the impact of market"
+                                }
+                            ],
+                            "planStepId": "8584630744286206851",
+                            "role": "MODEL"
+                        }
+                    },
+                    {
+                        "planStep": {
+                            "planStepId": "8584630744286206851",
+                            "parts": [
+                                {
+                                    "text": " volatility over time. \ud83d\udcca\n\n---\n\n"
+                                }
+                            ],
+                            "role": "MODEL"
+                        },
+                        "createTime": "2026-08-20T23:19:26.020334379Z"
+                    },
+                    {
+                        "planStep": {
+                            "role": "MODEL",
+                            "parts": [
+                                {}
+                            ],
+                            "planStepId": "8584630744286206851"
+                        },
+                        "createTime": "2026-08-20T23:19:26.219128730Z"
+                    }
+                ]
+            }
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/7460754264515114558",
+            "queryId": "12292448675473983262"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    }
+]
