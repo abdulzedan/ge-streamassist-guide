@@ -1,0 +1,17 @@
+# Local environment configuration (contains project-specific IDs)
+.env
+
+# OS artifacts
+.DS_Store
+
+# Editor artifacts
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Local scratch output from running snippets
+/tmp-outputs/
