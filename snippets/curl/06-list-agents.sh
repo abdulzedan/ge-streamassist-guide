@@ -15,9 +15,9 @@ if [[ "${1:-}" == "--raw" ]]; then
   exit 0
 fi
 
-echo "${RAW}" | python3 - <<'PYEOF'
-import json, sys
-d = json.load(sys.stdin)
+RAW="${RAW}" python3 <<'PYEOF'
+import json, os, sys
+d = json.loads(os.environ["RAW"])
 if "error" in d:
     print("ERROR:", d["error"]["message"]); sys.exit(1)
 kinds = {
