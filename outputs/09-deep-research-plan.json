@@ -1,0 +1,389 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "Of course. Here is a research plan for your approval."
+                        }
+                    }
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986",
+            "queryId": "794669445146974531"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "## **Research Plan: Current Trends in Agentic AI Adoption in Retail Banking**\n\n### **1. Defining Agentic AI in the Context of Retail Banking**\nI will start by defining what \"agentic AI\" is and how it applies to the retail banking industry. This will involve explaining the key characteristics of agentic AI, such as autonomy, proactivity, and the ability to use various tools to achieve goals.\n\n### **2. Identifying Current and Emerging Use Cases**\nI will then research and identify specific use cases of agentic AI in retail banking. This will go beyond general AI applications and focus on agents that can perform tasks autonomously on behalf of the bank or the customer. I will look for examples in areas such as:\n*   Personalized financial advice and planning\n*   Automated fraud detection and resolution\n*   Streamlining complex back-office processes\n*   Proactive customer service and support\n\n### **3. Analyzing the Benefits and Challenges of Adoption**\nNext, I will analyze the potential benefits and challenges of adopting agentic AI in retail banking. The benefits I will investigate include increased efficiency, improved customer experience, and the creation of new revenue streams. The challenges will include regulatory compliance, data privacy and security concerns, and the potential for job displacement.\n\n### **4. Assessing the Future Outlook and Key Trends**\nFinally, I will assess the future outlook for agentic AI in retail banking. This will involve identifying key trends that are likely to shape the adoption of this technology in the coming years. I will look for information on the latest research and development, as well as predictions from industry experts.\n\nPlease let me know if you have any feedback or if you would like me to proceed with this plan."
+                        },
+                        "contentMetadata": {
+                            "contentKind": "RESEARCH_PLAN"
+                        }
+                    }
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986",
+            "queryId": "794669445146974531"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "name": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986/assistAnswers/794669445146975181",
+            "state": "SUCCEEDED",
+            "replies": [
+                {
+                    "groundedContent": {},
+                    "createTime": "2026-08-20T23:39:41.789271437Z"
+                },
+                {
+                    "groundedContent": {
+                        "contentMetadata": {
+                            "contentKind": "RESEARCH_PLAN"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:41.789318877Z"
+                }
+            ],
+            "diagnosticInfo": {
+                "plannerSteps": [
+                    {
+                        "queryStep": {
+                            "parts": [
+                                {
+                                    "text": "Run a deep research report on current trends in agentic AI adoption in retail banking. Keep scope tight."
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:39:06.705641679Z"
+                    },
+                    {
+                        "planStep": {
+                            "role": "MODEL",
+                            "parts": [
+                                {
+                                    "functionCall": {
+                                        "functionName": "Deep_Research",
+                                        "functionId": "13088015602891467985",
+                                        "args": {
+                                            "question": "Run a deep research report on current trends in agentic AI adoption in retail banking. Keep scope tight."
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:39:06.705666599Z"
+                    },
+                    {
+                        "toolPartialResponseStep": {
+                            "functionCallPartialResponse": {
+                                "responseId": "13088015602891467985",
+                                "functionId": "13088015602891467985",
+                                "text": "Of course. Here is a research plan for your approval."
+                            }
+                        },
+                        "createTime": "2026-08-20T23:39:41.644790550Z"
+                    },
+                    {
+                        "toolPartialResponseStep": {
+                            "functionCallPartialResponse": {
+                                "responseId": "13088015602891467985",
+                                "text": "## **Research Plan: Current Trends in Agentic AI Adoption in Retail Banking**\n\n### **1. Defining Agentic AI in the Context of Retail Banking**\nI will start by defining what \"agentic AI\" is and how it applies to the retail banking industry. This will involve explaining the key characteristics of agentic AI, such as autonomy, proactivity, and the ability to use various tools to achieve goals.\n\n### **2. Identifying Current and Emerging Use Cases**\nI will then research and identify specific use cases of agentic AI in retail banking. This will go beyond general AI applications and focus on agents that can perform tasks autonomously on behalf of the bank or the customer. I will look for examples in areas such as:\n*   Personalized financial advice and planning\n*   Automated fraud detection and resolution\n*   Streamlining complex back-office processes\n*   Proactive customer service and support\n\n### **3. Analyzing the Benefits and Challenges of Adoption**\nNext, I will analyze the potential benefits and challenges of adopting agentic AI in retail banking. The benefits I will investigate include increased efficiency, improved customer experience, and the creation of new revenue streams. The challenges will include regulatory compliance, data privacy and security concerns, and the potential for job displacement.\n\n### **4. Assessing the Future Outlook and Key Trends**\nFinally, I will assess the future outlook for agentic AI in retail banking. This will involve identifying key trends that are likely to shape the adoption of this technology in the coming years. I will look for information on the latest research and development, as well as predictions from industry experts.\n\nPlease let me know if you have any feedback or if you would like me to proceed with this plan.",
+                                "functionId": "13088015602891467985"
+                            }
+                        },
+                        "createTime": "2026-08-20T23:39:41.644803140Z"
+                    },
+                    {
+                        "toolStep": {
+                            "parts": [
+                                {
+                                    "functionResult": {
+                                        "functionId": "13088015602891467985",
+                                        "content": {
+                                            "response": {
+                                                "output": [
+                                                    {
+                                                        "custom_metadata": {
+                                                            "agent_type": "ra_agent"
+                                                        },
+                                                        "id": "3cdde42b-ae1e-4f22-a327-2249568c6003",
+                                                        "timestamp": 1787269100,
+                                                        "actions": {
+                                                            "state_delta": {
+                                                                "required_internal_data_source": "",
+                                                                "required_query": "",
+                                                                "query": "Run a deep research report on current trends in agentic AI adoption in retail banking. Keep scope tight.",
+                                                                "required_report_formatting": "",
+                                                                "file_list": [],
+                                                                "language": "en",
+                                                                "min_num_questions": 4,
+                                                                "response": "",
+                                                                "required_web_search": "",
+                                                                "required_research_language": "",
+                                                                "required_report_language": "",
+                                                                "vais_grounding_metadata": null,
+                                                                "num_questions_asked": 0,
+                                                                "data_store_info_context": "google_drive: Google Drive\nArchitecture Documentation: Websites\narchitecture-diagram-3: Websites\ngoogle_mail: Google Gmail\ngoogle_calendar: Google Calendar\nnotebook-lm: Structured data\nmcp_data: Structured data\nattachment: Structured data\ncomment: Structured data\nevent: Structured data\npage: Structured data\nfile: Structured data",
+                                                                "max_num_questions": 4,
+                                                                "previous_questions": "",
+                                                                "query_language": "en",
+                                                                "required_miscellaneous": "",
+                                                                "required_report_tone": "",
+                                                                "research_plan": "",
+                                                                "root_agent_name": "research_assistant_agent"
+                                                            },
+                                                            "artifact_delta": {}
+                                                        },
+                                                        "author": "research_assistant_agent",
+                                                        "invocation_id": "e-a3606f3f-abc3-445e-bc7e-f2b8cc8b2272"
+                                                    },
+                                                    {
+                                                        "id": "dd7ddac6-21af-4fee-a7f2-ce495e9372ae",
+                                                        "actions": {
+                                                            "state_delta": {
+                                                                "file_list": []
+                                                            },
+                                                            "artifact_delta": {}
+                                                        },
+                                                        "content": {
+                                                            "parts": [
+                                                                {
+                                                                    "functionCall": {
+                                                                        "id": "adk-0b8909c5-c2ee-4767-807a-9b7abb64aabf",
+                                                                        "args": {
+                                                                            "agent_name": "research_plan_generation_and_execution_agent"
+                                                                        },
+                                                                        "name": "transfer_to_agent"
+                                                                    },
+                                                                    "thoughtSignature": "CrsLAY89a1+2pW2Ui/EETwypHuq0YGjo+xsL48IlVi/rUPXAIEVTuyxg5WYKIv3000kmdFoDaDDcS55xGsBwb6jMoVhabpLAfG6LWb71vXGwamI20yPdetrk7h6IjH2lLXntliPeEScKPKWW0JDM/LshlCW0C/oyEZrcUhjMuPgbfNclD8zXXHH5aCnLHxdeNDaT6W+/fjfPjaMkqpmy8gPy+s+cwfa2R2z5QPf98syMVmkAwDIwpjlvUbkdVC+LIKe3hLvnUpOLQQ4+xFGI3NTmKah0XkMIrD6udaUnISxp+emkKhYWWn7pSJJmenb79ApMsX6/Pu8v5oohEHKfKqVk+xUr0bqxJ7GPNrBEP0zIhJyYqver3YS1EfELptLSGlUyLONccNOSeX22UfFYJw/bPy+yhr96Oc2cw9yWa2+a7AmW1LrO1NA185x/GQ8qdBTOmwnX3RfCksVqSudV1dCNykl8dZKXbuwl6gvQnnAWx9s1Y3xaJFvluN8u4zFawzpDskjbglIYLxWnmt3Qsa2SWsb2nqC3KaRPFuSdf/ubRx9AFa5wQGxqQy6vJN2MHlakNJv/VSgbeYu9Za4CaRnpZRr82eST6MBEhtgI2EgUkE3mN2DVfz06e7k9/qulSSkow1GV8cazrJVUt5C1oRCXV+CBlGv/To+ix1oH1Sa4JJHB2Gsp/8/+g9RWoL6QzO1AHMX2fXzt6rcnE5UVvuOX0NMxvCTVO96jul+OE5JqMG9uq+x4NfMN/ogUjvqWTBBuL0YmjnZ6qP0n2ZJV3MaL7xU6ysFOSPa8//J68e58bHIdi7DjvlFwiCTh+AvM64xngt7hfLwPNd9ByWv8y5legQoGiLx6jlme6BczJN3+t4XDDwZLLoKeHeEB9VkBAowZtaFHSXsTM8CmpudmcjBTWeUChuLec96sdGBWgSrRnMHbMVGI8RPBPw6tb+s+fovlpVzRjaPxISniawjJDVTCr3HZZUclOh+Bl2PXTW3z37BfimJENIrRJ/S9ASXPXVZMylSwMnGbhsF71NvdU0sUvfoxYZYYSmsF3oXwEtZNW1BvB+A/cu++fLk9Pokeo4F76XDhtT+Y4fLNpRoOFtaUttwEM17bTnYFKhi+dAqgqo7BRM+dC25yJp8Rhj/Iun79iKXOLK1+iUDgD3ybsqy5AyG6d+EDSD+Otv4QRXB0CDjuNJ4t/48srBGvGX7Sy9NwgBCvC1JKa6f440L0uyRbyz1YviVbUd5nM/SuNKSVnQONAsItRrQzrRr2qV0LCpcsNmdTHcWLSXeyUdCVq7w7Vik4r7mBQmVApOvWTUje/sHbPTxYvXAO+PVDezn762KazycznzcFdMv+gd2fkx6t+6vvY/84lf5XiFILqTs9egVyunuBtlz72vG8l/XVRfEEeb69XBgr+YZ5p8fYpxVHNVw49dcqafZlaXCadn5uogaweFBKxhzOmcsW56K9onnGuZKWwDDvEEkIThbbl99SBugqiSBLvYL/ppoOsT0teE2owl/ptupLosWOkdO/8K7st9wX6OU3JBw8Zn0EDyeAVxvcI+i5rcMJlPoCpfW+B9cA9slWqvrm+ZoBQUekoAJmzZwx4c7L56WLVcIrGuxaXW1KA6F//JGd3ymkYe5ykYy7Dreeo28eMEOA3RcY98CUZGq9gTB8OXrYBJp1RLaPWrH/lr3XDc2a8vw5Yy60ZSlTm/v8G+3rU25K9rpzAySiG+/h0M8Vq9Rr51Yif2J1I+mn52u3OSq3TL97AkxHvx5pXC2Oj2YqSY+o8I/1YqxG8IsvoBtdN3IbjOp+OFnCVimklVyBN3XdLZvI1tjk/TeCaCFHFasPv5hthHfENgRqDd1OB7vWcZcjO4o5QOYPFHAw/jtC0KPnVgFAeH7WK9PAXMXdXEMRQBypyOwbSgqzxUx5hgknVIsoVNS5f+qooQo0X1JmYnYIn7f/"
+                                                                }
+                                                            ],
+                                                            "role": "model"
+                                                        },
+                                                        "timestamp": 1787269100,
+                                                        "author": "research_assistant_agent",
+                                                        "usage_metadata": {
+                                                            "candidates_token_count": 19,
+                                                            "thoughts_token_count": 318,
+                                                            "prompt_token_count": 1106,
+                                                            "total_token_count": 1443
+                                                        },
+                                                        "custom_metadata": {
+                                                            "agent_type": "ra_agent"
+                                                        },
+                                                        "model_version": "gemini-2.5-pro",
+                                                        "invocation_id": "e-a3606f3f-abc3-445e-bc7e-f2b8cc8b2272"
+                                                    },
+                                                    {
+                                                        "content": {
+                                                            "role": "user",
+                                                            "parts": [
+                                                                {
+                                                                    "functionResponse": {
+                                                                        "response": {
+                                                                            "result": null
+                                                                        },
+                                                                        "name": "transfer_to_agent",
+                                                                        "id": "adk-0b8909c5-c2ee-4767-807a-9b7abb64aabf"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "actions": {
+                                                            "state_delta": {
+                                                                "data_connector_request_count_recorded": {
+                                                                    "adk-0b8909c5-c2ee-4767-807a-9b7abb64aabf": true
+                                                                },
+                                                                "orcas_tool_call_security_check_states": {
+                                                                    "adk-0b8909c5-c2ee-4767-807a-9b7abb64aabf": "ALLOW"
+                                                                }
+                                                            },
+                                                            "transfer_to_agent": "research_plan_generation_and_execution_agent",
+                                                            "artifact_delta": {}
+                                                        },
+                                                        "custom_metadata": {
+                                                            "agent_type": "ra_agent"
+                                                        },
+                                                        "author": "research_assistant_agent",
+                                                        "invocation_id": "e-a3606f3f-abc3-445e-bc7e-f2b8cc8b2272",
+                                                        "id": "1a506cb9-c66d-44e8-aada-769479fc95d0",
+                                                        "timestamp": 1787269100
+                                                    },
+                                                    {
+                                                        "model_version": "gemini-2.5-pro",
+                                                        "invocation_id": "e-a3606f3f-abc3-445e-bc7e-f2b8cc8b2272",
+                                                        "author": "research_plan_generation_and_execution_agent",
+                                                        "id": "1595171a-f581-4c8a-8e36-ec717019303b",
+                                                        "custom_metadata": {
+                                                            "agent_type": "ra_agent",
+                                                            "content_kind": "RESEARCH_PLAN"
+                                                        },
+                                                        "content": {
+                                                            "role": "model",
+                                                            "parts": [
+                                                                {
+                                                                    "thoughtSignature": "CuYIAY89a1+GweTr2qcm0pV3ANfoS2VHF0l4BB3HfRmPpOB50xFFZCRxx/gt9GxIX8Y6YhgUtT2fZgKWRg5r/6V+wSuIMIKx9w6PJwK8E+S8HiObxwn2IsRANgbgCIyk0bWwhVSk6EV5R7M6mDEK4znwHlf9FxMXuC3odrwO1mOA1wH5o2B7otFy8+75N83y8VENjNK29niGNNJcN4ndNKsv1SZgMY3FKnunseBjp5KZIzHv7ItGiAYKHMDT8AF/qWSRwnljGRsZQZ7COC0tL68m9lDKidsrFFPQ2yKrUEZmIhqKB3H8r1iqx8UolOYI6pPdPp+VW3oXHSYT5sSPMp8JVNyTsvym2oOSPwI7uu/c0B0MuMvbNzN3XeRRQP9HtKvsHs+utL2bcvzWYQLA70JnzPC2B0YSZtA5AEpSmz1WhinHBH14zSgsRlMC/E0weLyvFx+I0MU/ExOZ+3iu/z3X7as6JhepFmHNm8oOcY/v8w1+iNM8IZ+rltDmWhFSbv30BDZh/T2rpvUp/kP0pCIHx/8aScBPrF88DZGYj1W59POXjD87ghE7XdD10XvBJ9Dee5eldQpaN38E206tKZZX60D5+y7qXpo+3p+I36EoL8rjCARegzHfslsFyy9BUOI8xmVcke/Hcc0l3ydbysT553OSEuPpQBo34YtvqLqFqKf0vnUeKFGdPPq9FBECYj38qyFwemgjR5KZWA8nsIW7iKWnK/v39Tp56NiWcGnxec/evtqX65MIZs+HwuIclBaZXBhE6mSSFyzlCnprzixMcW4OlwQpjDMlH4dfKcAwZ9sWJEY3eWP8BD0QjSbwyyDfRaQLVeorhkbcw45aYt1EpOuAtvWH3rYqDlCkn8+nhMnmoCrVXmsP4S5cu5v4pov0UnxIG3V09Nibs2ochoKqHUQhILuiRWSYgU92/uG1WSMmWoggsilc7zcrBSfYGIwsOzH8Y58KGqrD/8upxwKXkSWtPMriJU2ukrEOs2LxntAvWrxALF6YuJXkd9cUl3YJbMY3Q6Zhg548jr5Z2DPYAPDoQYRwvlV2PtXs+k+yI4PcQSvJMqaxUxtR4+O0iRZBmm/Dc1I/gtJOrhD71gYhYWqoQea/Csam9+/neJLLgJei/6wzSNsi5jfaE9qAoaQN8ZraNAhIF9xywd3mMkhJ6MZDLL4rYVvE+CXyS+Dm0lh2q3jsgZ7IeSZbIwtMj0xuy4mZPqvMW1+ED9kL+jq7FknsbAS/dwnLE61XsW9WIw+dimKuyVmhCNmVAsPgmdh6ggcIWuvMTVVJdBgeGzckLZbyf9kueC+/XyhTZAVllIpuCGXNtez1vzny5uG6htj61M4mROgf4IMwsIJjd2PCDQCABQeLyFjqXP+PQg4j2F2vM0VaUSoMMaoUkW3BkniepFNU/QEQySfN21WSfXMg23eSeIHakryN/GwkG1osqfNCL4cU5ajYiWge9/hpsKA02Kflp6OsXP7mRu5zOuvPR9u3+AWgqQ==",
+                                                                    "functionCall": {
+                                                                        "args": {
+                                                                            "request": "Run a deep research report on current trends in agentic AI adoption in retail banking. Keep scope tight."
+                                                                        },
+                                                                        "name": "detect_requirements_agent",
+                                                                        "id": "adk-c5c7dd74-4e45-4d26-acc4-ac8e724ffd26"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "actions": {
+                                                            "state_delta": {},
+                                                            "artifact_delta": {}
+                                                        },
+                                                        "usage_metadata": {
+                                                            "prompt_token_count": 1486,
+                                                            "candidates_token_count": 27,
+                                                            "total_token_count": 1751,
+                                                            "thoughts_token_count": 238
+                                                        },
+                                                        "timestamp": 1787269100
+                                                    },
+                                                    {
+                                                        "timestamp": 1787269100,
+                                                        "custom_metadata": {
+                                                            "agent_type": "ra_agent"
+                                                        },
+                                                        "author": "research_plan_generation_and_execution_agent",
+                                                        "invocation_id": "e-a3606f3f-abc3-445e-bc7e-f2b8cc8b2272",
+                                                        "id": "685c813e-f7f5-41ae-b04b-01b2043b02d3",
+                                                        "actions": {
+                                                            "artifact_delta": {},
+                                                            "state_delta": {
+                                                                "required_research_language": "English",
+                                                                "language": "English",
+                                                                "required_report_language": "English",
+                                                                "query": "Deep research report on current trends in agentic AI adoption in retail banking",
+                                                                "required_miscellaneous": "Keep the scope tight.",
+                                                                "orcas_tool_call_security_check_states": {
+                                                                    "adk-c5c7dd74-4e45-4d26-acc4-ac8e724ffd26": "ALLOW",
+                                                                    "adk-0b8909c5-c2ee-4767-807a-9b7abb64aabf": "ALLOW"
+                                                                },
+                                                                "data_connector_request_count_recorded": {
+                                                                    "adk-c5c7dd74-4e45-4d26-acc4-ac8e724ffd26": true,
+                                                                    "adk-0b8909c5-c2ee-4767-807a-9b7abb64aabf": true
+                                                                }
+                                                            }
+                                                        },
+                                                        "content": {
+                                                            "role": "user",
+                                                            "parts": [
+                                                                {
+                                                                    "functionResponse": {
+                                                                        "response": {
+                                                                            "report_language": "English",
+                                                                            "report_formatting": "",
+                                                                            "report_tone": "",
+                                                                            "query": "Deep research report on current trends in agentic AI adoption in retail banking",
+                                                                            "miscellaneous": "Keep the scope tight.",
+                                                                            "research_language": "English"
+                                                                        },
+                                                                        "name": "detect_requirements_agent",
+                                                                        "id": "adk-c5c7dd74-4e45-4d26-acc4-ac8e724ffd26"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "id": "28a5f6d0-bba6-4802-a12f-7824d98589b9",
+                                                        "timestamp": 1787269100,
+                                                        "actions": {
+                                                            "state_delta": {
+                                                                "research_plan": "Of course. Here is a research plan for your approval.\n\n## **Research Plan: Current Trends in Agentic AI Adoption in Retail Banking**\n\n### **1. Defining Agentic AI in the Context of Retail Banking**\nI will start by defining what \"agentic AI\" is and how it applies to the retail banking industry. This will involve explaining the key characteristics of agentic AI, such as autonomy, proactivity, and the ability to use various tools to achieve goals.\n\n### **2. Identifying Current and Emerging Use Cases**\nI will then research and identify specific use cases of agentic AI in retail banking. This will go beyond general AI applications and focus on agents that can perform tasks autonomously on behalf of the bank or the customer. I will look for examples in areas such as:\n*   Personalized financial advice and planning\n*   Automated fraud detection and resolution\n*   Streamlining complex back-office processes\n*   Proactive customer service and support\n\n### **3. Analyzing the Benefits and Challenges of Adoption**\nNext, I will analyze the potential benefits and challenges of adopting agentic AI in retail banking. The benefits I will investigate include increased efficiency, improved customer experience, and the creation of new revenue streams. The challenges will include regulatory compliance, data privacy and security concerns, and the potential for job displacement.\n\n### **4. Assessing the Future Outlook and Key Trends**\nFinally, I will assess the future outlook for agentic AI in retail banking. This will involve identifying key trends that are likely to shape the adoption of this technology in the coming years. I will look for information on the latest research and development, as well as predictions from industry experts.\n\nPlease let me know if you have any feedback or if you would like me to proceed with this plan."
+                                                            },
+                                                            "artifact_delta": {}
+                                                        },
+                                                        "invocation_id": "e-a3606f3f-abc3-445e-bc7e-f2b8cc8b2272",
+                                                        "model_version": "gemini-2.5-pro",
+                                                        "content": {
+                                                            "parts": [
+                                                                {
+                                                                    "text": "Of course. Here is a research plan for your approval."
+                                                                },
+                                                                {
+                                                                    "text": "## **Research Plan: Current Trends in Agentic AI Adoption in Retail Banking**\n\n### **1. Defining Agentic AI in the Context of Retail Banking**\nI will start by defining what \"agentic AI\" is and how it applies to the retail banking industry. This will involve explaining the key characteristics of agentic AI, such as autonomy, proactivity, and the ability to use various tools to achieve goals.\n\n### **2. Identifying Current and Emerging Use Cases**\nI will then research and identify specific use cases of agentic AI in retail banking. This will go beyond general AI applications and focus on agents that can perform tasks autonomously on behalf of the bank or the customer. I will look for examples in areas such as:\n*   Personalized financial advice and planning\n*   Automated fraud detection and resolution\n*   Streamlining complex back-office processes\n*   Proactive customer service and support\n\n### **3. Analyzing the Benefits and Challenges of Adoption**\nNext, I will analyze the potential benefits and challenges of adopting agentic AI in retail banking. The benefits I will investigate include increased efficiency, improved customer experience, and the creation of new revenue streams. The challenges will include regulatory compliance, data privacy and security concerns, and the potential for job displacement.\n\n### **4. Assessing the Future Outlook and Key Trends**\nFinally, I will assess the future outlook for agentic AI in retail banking. This will involve identifying key trends that are likely to shape the adoption of this technology in the coming years. I will look for information on the latest research and development, as well as predictions from industry experts.\n\nPlease let me know if you have any feedback or if you would like me to proceed with this plan."
+                                                                }
+                                                            ],
+                                                            "role": "model"
+                                                        },
+                                                        "usage_metadata": {
+                                                            "prompt_token_count": 1792,
+                                                            "thoughts_token_count": 737,
+                                                            "candidates_token_count": 367,
+                                                            "total_token_count": 3261,
+                                                            "tool_use_prompt_token_count": 365
+                                                        },
+                                                        "author": "research_plan_generation_and_execution_agent",
+                                                        "custom_metadata": {
+                                                            "content_kind": "RESEARCH_PLAN",
+                                                            "agent_type": "ra_agent"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "functionName": "Deep_Research"
+                                    }
+                                }
+                            ],
+                            "role": "SERVER_TOOL"
+                        },
+                        "createTime": "2026-08-20T23:39:41.789066507Z"
+                    },
+                    {
+                        "createTime": "2026-08-20T23:39:41.789271437Z",
+                        "planStep": {
+                            "parts": [
+                                {
+                                    "text": "Of course. Here is a research plan for your approval."
+                                }
+                            ],
+                            "role": "TOOL",
+                            "planStepId": "13088015602891468572"
+                        }
+                    },
+                    {
+                        "createTime": "2026-08-20T23:39:41.789318877Z",
+                        "planStep": {
+                            "planStepId": "13088015602891467525",
+                            "role": "TOOL",
+                            "parts": [
+                                {
+                                    "text": "## **Research Plan: Current Trends in Agentic AI Adoption in Retail Banking**\n\n### **1. Defining Agentic AI in the Context of Retail Banking**\nI will start by defining what \"agentic AI\" is and how it applies to the retail banking industry. This will involve explaining the key characteristics of agentic AI, such as autonomy, proactivity, and the ability to use various tools to achieve goals.\n\n### **2. Identifying Current and Emerging Use Cases**\nI will then research and identify specific use cases of agentic AI in retail banking. This will go beyond general AI applications and focus on agents that can perform tasks autonomously on behalf of the bank or the customer. I will look for examples in areas such as:\n*   Personalized financial advice and planning\n*   Automated fraud detection and resolution\n*   Streamlining complex back-office processes\n*   Proactive customer service and support\n\n### **3. Analyzing the Benefits and Challenges of Adoption**\nNext, I will analyze the potential benefits and challenges of adopting agentic AI in retail banking. The benefits I will investigate include increased efficiency, improved customer experience, and the creation of new revenue streams. The challenges will include regulatory compliance, data privacy and security concerns, and the potential for job displacement.\n\n### **4. Assessing the Future Outlook and Key Trends**\nFinally, I will assess the future outlook for agentic AI in retail banking. This will involve identifying key trends that are likely to shape the adoption of this technology in the coming years. I will look for information on the latest research and development, as well as predictions from industry experts.\n\nPlease let me know if you have any feedback or if you would like me to proceed with this plan."
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986",
+            "queryId": "794669445146974531"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    }
+]
