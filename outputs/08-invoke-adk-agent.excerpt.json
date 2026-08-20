@@ -1,0 +1,200 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "### \ud83d\udcc8 Rising Rates and the 60/40 Portfolio\n\nGood"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:18.199179835Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " call looking into this. In a rising interest rate environment, the traditional **60/40 portfolio** (60"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:18.312994984Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "% equities, 40% debt) faces unique headwinds because both halves of the asset allocation are pressured simultaneously, challenging"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:18.489624602Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " the historical diversification benefits.\n\n---\n\n### \ud83d\udccc Key Takeaway & Recommendation\n\n\ud83d\udca1 **Key Takeaway"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:18.631983751Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": ":** Rising rates create a **positive correlation** between stocks and bonds, meaning they often fall at the same time. If you expect"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:18.799605714Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " rates to continue rising, the recommended action is to **shorten bond duration** to protect capital and consider tilting your equity portion"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:19.001191201Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " toward **value and financial sectors** that benefit from higher rates.\n\n---\n\n### \ud83d\udd0d Impact Breakdown\n\nThe table below outlines"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:19.174804403Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " how rising interest rates pressure both components of your portfolio and how they interact:\n\n| Portfolio Component | Immediate Impact | Transmission"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:19.330084959Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " Mechanism | Watch Out For \u26a0\ufe0f |\n|---|---|---|---|\n| **40% Fixed Income (Bonds)**"
+                        }
+                    },
+                    "replyId": "16115576375763580788",
+                    "createTime": "2026-08-20T23:38:19.455309232Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/11726151477093397215",
+            "queryId": "13824025992689590228"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
