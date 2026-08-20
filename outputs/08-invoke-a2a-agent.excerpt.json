@@ -1,0 +1,200 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "For loan compliance, I run a systematic series of checks on processed financial packages (such as"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:37.118803496Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " mortgage and equipment finance files) to ensure they meet regulatory and internal standards:\n\n---\n\n### \ud83d\udccb Key Compliance Checks\n\n| Category"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:37.324786395Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " | Specific Verification Run |\n|---|---|\n| **Identity & KYC** | Cross-checking applicant credentials and key"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:37.480280303Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " identity records against regulatory databases. |\n| **Financial Integrity** | Validating financial metrics, income statements, and credit"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:37.592613497Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " information for accuracy. |\n| **Audit Trial & Logs** | Monitoring compliance reviews and generating unalterable status history"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:37.806929776Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " logs. |\n| **Risk Flags** | Scanning internal and external watchlists for potential transaction risks or inquiry discrepancies. |\n\n---"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:38.002156957Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "\n\n### \u26a0\ufe0f Common Pitfalls to Watch Out For\n* **Incomplete Documentation:** Missing signature pages or unreadable"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:38.191791060Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " uploads can trigger automatic package rejection.\n* **Mismatched IDs:** Ensure all inquiry IDs align perfectly across database records"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:38.360655535Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " to prevent processing delays.\n\nPlease let me know if you would like me to retrieve the compliance status of a specific package or run"
+                        }
+                    },
+                    "replyId": "2243209423700653657",
+                    "createTime": "2026-08-20T23:38:38.486300677Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/14881979459096460194",
+            "queryId": "14636939484460391665"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
