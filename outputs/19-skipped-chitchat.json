@@ -1,0 +1,11 @@
+[
+    {
+        "answer": {
+            "state": "SKIPPED",
+            "assistSkippedReasons": [
+                "NON_ASSIST_SEEKING_QUERY_IGNORED"
+            ]
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    }
+]
