@@ -1,0 +1,218 @@
+[
+  {
+    "answer": {
+      "state": "IN_PROGRESS",
+      "replies": [
+        {
+          "groundedContent": {
+            "content": {
+              "role": "model",
+              "text": "What are specific case studies, pilot programs, or deployed systems in retail banking and fintech that utilize agentic AI to autonomously execute complex tasks, and what are the defining technical characteristics (e.g., autonomy, goal-orientation, tool usage) of these agents in applications such as proactive fraud intervention, automated portfolio adjustments, personal financial management (optimi\u2026[truncated]"
+            },
+            "contentMetadata": {
+              "contentKind": "RESEARCH_QUESTION",
+              "contentId": "ID0"
+            }
+          }
+        }
+      ]
+    },
+    "sessionInfo": {
+      "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986",
+      "queryId": "4715158379014863734"
+    },
+    "assistToken": "REDACTED_ASSIST_TOKEN"
+  },
+  {
+    "answer": {
+      "state": "IN_PROGRESS",
+      "replies": [
+        {
+          "groundedContent": {
+            "content": {
+              "role": "model",
+              "text": "While the deployment of fully autonomous, agentic AI systems in retail banking and fintech is still an emerging field, several case studies, pilot programs, and detailed system designs are beginning to shed light on their transformative potential. These systems are characterized by their autonomy, goal-orientation, and sophisticated use of tools to execute complex tasks that traditionally required\u2026[truncated]"
+            },
+            "textGroundingMetadata": {
+              "references": [
+                {
+                  "documentMetadata": {
+                    "document": "projects/000000000000/locations/global/collections/default_collection/dataStores/data-connection-1-test_1768321886819_google_drive/branches/0/documents/1a56spGiaWJl9Q_UhjDl_V2GECjaG-xqf",
+                    "uri": "https://drive.google.com/a/azedan.altostrat.com/open?id=1a56spGiaWJl9Q_UhjDl_V2GECjaG-xqf",
+                    "title": "SOX Walkthrough Automation Flow Design.docx",
+                    "pageIdentifier": "",
+                    "domain": "drive.google.com",
+                    "mimeType": ""
+                  }
+                },
+                {
+                  "documentMetadata": {
+                    "document": "projects/000000000000/locations/global/collections/default_collection/dataStores/data-connection-1-test_1768321886819_google_drive/branches/0/documents/134dYkQZtHi2KW0bcT4BilmZ1V5Y6AK9A",
+                    "uri": "https://drive.google.com/a/azedan.altostrat.com/open?id=134dYkQZtHi2KW0bcT4BilmZ1V5Y6AK9A",
+                    "title": "Paste January 28, 2026 - 10:18AM",
+                    "pageIdentifier": "",
+                    "domain": "drive.google.com",
+                    "mimeType": ""
+                  }
+                },
+                {
+                  "documentMetadata": {
+                    "document": "projects/000000000000/locations/global/collections/default_collection/dataStores/data-connection-1-test_1768321886819_google_drive/branches/0/documents/1ifvLojhvEEh5mBN0qXIqxnm4iWd7sqzA",
+                    "uri": "https://drive.google.com/a/azedan.altostrat.com/open?id=1ifvLojhvEEh5mBN0qXIqxnm4iWd7sqzA",
+                    "title": "Paste January 28, 2026 - 10:21AM",
+                    "pageIdentifier": "",
+                    "domain": "drive.google.com",
+                    "mimeType": ""
+                  }
+                }
+              ],
+              "segments": [
+                {
+                  "startIndex": "783",
+                  "endIndex": "908",
+                  "referenceIndices": [
+                    0
+                  ],
+                  "text": "that uses a multimodal AI agent to automate the SOX walkthrough process, a critical component of internal financial controls."
+                },
+                {
+                  "startIndex": "910",
+                  "endIndex": "1132",
+                  "referenceIndices": [
+                    0
+                  ],
+                  "text": "*   **Goal-Orientation:** The primary goal of the agent is to perform a \"Gap Analysis\" between the company's documented financial policies and the actual procedures followed by employees, as recorded in video walkthroughs."
+                },
+                {
+                  "startIndex": "1133",
+                  "endIndex": "1242",
+                  "referenceIndices": [
+                    0
+                  ],
+                  "text": "This directly addresses the \"Design Effectiveness\" testing required by Section 404 of the Sarbanes-Oxley Act."
+                }
+              ]
+            },
+            "contentMetadata": {
+              "contentKind": "RESEARCH_ANSWER",
+              "contentId": "ID0"
+            }
+          }
+        }
+      ]
+    },
+    "sessionInfo": {
+      "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986",
+      "queryId": "4715158379014863734"
+    },
+    "assistToken": "REDACTED_ASSIST_TOKEN"
+  },
+  {
+    "answer": {
+      "state": "IN_PROGRESS",
+      "replies": [
+        {
+          "groundedContent": {
+            "content": {
+              "role": "model",
+              "text": "What are the primary regulatory and compliance challenges from authorities like the SEC, FCA, and CFPB that retail banks face when implementing agentic AI, what specific governance frameworks and explainability techniques are being developed to address issues like accountability and algorithmic bias, and what are the expert analyses on this technology's potential to generate new revenue streams an\u2026[truncated]"
+            },
+            "contentMetadata": {
+              "contentKind": "RESEARCH_QUESTION",
+              "contentId": "ID1"
+            }
+          }
+        }
+      ]
+    },
+    "sessionInfo": {
+      "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986",
+      "queryId": "4715158379014863734"
+    },
+    "assistToken": "REDACTED_ASSIST_TOKEN"
+  },
+  {
+    "answer": {
+      "state": "IN_PROGRESS",
+      "replies": [
+        {
+          "groundedContent": {
+            "content": {
+              "role": "model",
+              "text": "## Navigating the Agentic AI Revolution in Retail Banking: A Labyrinth of Regulation, Governance, and Untapped Revenue\n\nThe integration of agentic artificial intelligence (AI) into retail banking presents a paradigm shift, promising unprecedented operational efficiencies and novel revenue streams. However, this transformative technology also introduces a complex web of regulatory and compliance ch\u2026[truncated]"
+            },
+            "textGroundingMetadata": {
+              "references": [
+                {
+                  "documentMetadata": {
+                    "document": "projects/000000000000/locations/global/collections/default_collection/dataStores/data-connection-1-test_1768321886819_google_drive/branches/0/documents/1SzdxpiAPRhDysEPWJhadWS2GVsPKEYt4",
+                    "uri": "https://drive.google.com/a/azedan.altostrat.com/open?id=1SzdxpiAPRhDysEPWJhadWS2GVsPKEYt4",
+                    "title": "gen_ai_index_finance.pdf",
+                    "pageIdentifier": "",
+                    "domain": "drive.google.com",
+                    "mimeType": ""
+                  }
+                },
+                {
+                  "documentMetadata": {
+                    "document": "projects/000000000000/locations/global/collections/default_collection/dataStores/data-connection-1-test_1768321886819_google_drive/branches/0/documents/1a56spGiaWJl9Q_UhjDl_V2GECjaG-xqf",
+                    "uri": "https://drive.google.com/a/azedan.altostrat.com/open?id=1a56spGiaWJl9Q_UhjDl_V2GECjaG-xqf",
+                    "title": "SOX Walkthrough Automation Flow Design.docx",
+                    "pageIdentifier": "",
+                    "domain": "drive.google.com",
+                    "mimeType": ""
+                  }
+                },
+                {
+                  "documentMetadata": {
+                    "document": "projects/000000000000/locations/global/collections/default_collection/dataStores/data-connection-1-test_1768321886819_google_drive/branches/0/documents/1ifvLojhvEEh5mBN0qXIqxnm4iWd7sqzA",
+                    "uri": "https://drive.google.com/a/azedan.altostrat.com/open?id=1ifvLojhvEEh5mBN0qXIqxnm4iWd7sqzA",
+                    "title": "Paste January 28, 2026 - 10:21AM",
+                    "pageIdentifier": "",
+                    "domain": "drive.google.com",
+                    "mimeType": ""
+                  }
+                }
+              ],
+              "segments": [
+                {
+                  "startIndex": "1530",
+                  "endIndex": "1823",
+                  "referenceIndices": [
+                    0
+                  ],
+                  "text": "The Consumer Financial Protection Bureau (CFPB) in the United States, for instance, has rules regarding customer complaint capture and management that require robust processes for accurate tagging and routing of complaints, a task that can be complicated by the autonomous nature of agentic AI"
+                },
+                {
+                  "startIndex": "1825",
+                  "endIndex": "1976",
+                  "referenceIndices": [
+                    0
+                  ],
+                  "text": "In Europe, banks must guard against \"generative hallucinations\" to prevent chatbots from dispensing unintended and potentially harmful financial advice"
+                },
+                {
+                  "startIndex": "1979",
+                  "endIndex": "2201",
+                  "referenceIndices": [
+                    0
+                  ],
+                  "text": "The bespoke nature of AI review processes, coupled with the prevailing regulatory uncertainty, has led many financial institutions to prioritize internal, lower-risk AI use cases over external, customer-facing applications"
+                }
+              ]
+            },
+            "contentMetadata": {
+              "contentKind": "RESEARCH_ANSWER",
+              "contentId": "ID1"
+            }
+          }
+        }
+      ]
+    },
+    "sessionInfo": {
+      "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/196378747311806986",
+      "queryId": "4715158379014863734"
+    },
+    "assistToken": "REDACTED_ASSIST_TOKEN"
+  }
+]
