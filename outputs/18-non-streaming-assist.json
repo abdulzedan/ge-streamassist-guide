@@ -1,0 +1,49 @@
+{
+    "answer": {
+        "name": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8732891432990766193/assistAnswers/8732891432990768107",
+        "state": "SUCCEEDED",
+        "replies": [
+            {
+                "groundedContent": {
+                    "content": {
+                        "role": "model",
+                        "text": "OK.\n"
+                    }
+                },
+                "createTime": "2026-08-20T23:39:56.220227619Z"
+            }
+        ],
+        "diagnosticInfo": {
+            "plannerSteps": [
+                {
+                    "createTime": "2026-08-20T23:39:55.593039826Z",
+                    "queryStep": {
+                        "parts": [
+                            {
+                                "text": "Say OK."
+                            }
+                        ]
+                    }
+                },
+                {
+                    "planStep": {
+                        "planStepId": "16282042106648435792",
+                        "parts": [
+                            {
+                                "text": "OK.\n"
+                            },
+                            {}
+                        ],
+                        "role": "MODEL"
+                    },
+                    "createTime": "2026-08-20T23:39:56.220227619Z"
+                }
+            ]
+        }
+    },
+    "sessionInfo": {
+        "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8732891432990766193",
+        "queryId": "8732891432990767839"
+    },
+    "assistToken": "REDACTED_ASSIST_TOKEN"
+}
