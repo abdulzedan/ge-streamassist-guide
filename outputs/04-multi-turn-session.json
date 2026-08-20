@@ -1,0 +1,254 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "### \ud83d\udd0d Your Profile Details\n\nBased on your saved preferences, here are your details:"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:20:39.065862122Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8564985454051896417",
+            "queryId": "6529676460630499095"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "\n\n| Attribute | Saved Information |\n|---|---|\n| **Name** | Jordan |\n| **Asset"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:20:39.228514495Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8564985454051896417",
+            "queryId": "6529676460630499095"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " Class** | Fixed Income |\n\n---\n\nPlease let me know if you would like me to retrieve any specific"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:20:39.352770678Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8564985454051896417",
+            "queryId": "6529676460630499095"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " market data, analyze fixed income documents, or assist you with other tasks!\n\n"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:20:39.503954881Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8564985454051896417",
+            "queryId": "6529676460630499095"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "inlineData": {
+                                "mimeType": "application/json+suggestions",
+                                "data": "eyJyZWNvbW1lbmRlZFF1ZXN0aW9uc1Jlc3BvbnNlIjp7InF1ZXN0aW9ucyI6WyJXaGF0IGlzIHRoZSBjdXJyZW50IHlpZWxkIGN1cnZlIGxvb2tpbmcgbGlrZT8iLCJDYW4geW91IGhlbHAgbWUgYW5hbHl6ZSBhIGJvbmQgcHJvc3BlY3R1cz8iLCJEbyB5b3UgcmVtZW1iZXIgYW55dGhpbmcgZWxzZSBhYm91dCBtZT8iXX19"
+                            }
+                        }
+                    },
+                    "createTime": "2026-08-20T23:20:39.809262809Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8564985454051896417",
+            "queryId": "6529676460630499095"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "name": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8564985454051896417/assistAnswers/6529676460630496899",
+            "state": "SUCCEEDED",
+            "replies": [
+                {
+                    "groundedContent": {},
+                    "replyId": "17950662892188687543",
+                    "createTime": "2026-08-20T23:20:39.503954881Z"
+                },
+                {
+                    "groundedContent": {},
+                    "replyId": "17950662892188687543",
+                    "createTime": "2026-08-20T23:20:39.809262809Z"
+                },
+                {
+                    "groundedContent": {
+                        "textGroundingMetadata": {
+                            "references": [
+                                {
+                                    "content": "My name is Jordan.",
+                                    "documentMetadata": {
+                                        "document": "",
+                                        "uri": "memory://saved_memories",
+                                        "title": "Saved Memories",
+                                        "pageIdentifier": "",
+                                        "domain": "",
+                                        "mimeType": ""
+                                    }
+                                }
+                            ],
+                            "segments": [
+                                {
+                                    "startIndex": "88",
+                                    "endIndex": "151",
+                                    "referenceIndices": [
+                                        0
+                                    ],
+                                    "text": "| Attribute | Saved Information |\n|---|---|\n| **Name** | Jordan"
+                                },
+                                {
+                                    "startIndex": "88",
+                                    "endIndex": "186",
+                                    "referenceIndices": [
+                                        0
+                                    ],
+                                    "text": "| Attribute | Saved Information |\n|---|---|\n| **Name** | Jordan |\n| **Asset Class** | Fixed Income"
+                                }
+                            ]
+                        }
+                    },
+                    "replyId": "17950662892188687543",
+                    "createTime": "2026-08-20T23:20:39.844264615Z"
+                }
+            ],
+            "diagnosticInfo": {
+                "plannerSteps": [
+                    {
+                        "queryStep": {
+                            "parts": [
+                                {
+                                    "text": "What is my name and what asset class do I work in?"
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:20:35.001610983Z"
+                    },
+                    {
+                        "createTime": "2026-08-20T23:20:39.065862122Z",
+                        "planStep": {
+                            "planStepId": "17950662892188687543",
+                            "role": "MODEL",
+                            "parts": [
+                                {
+                                    "text": "### \ud83d\udd0d Your Profile Details\n\nBased on your saved preferences, here are your details:"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "planStep": {
+                            "planStepId": "17950662892188687543",
+                            "parts": [
+                                {
+                                    "text": "\n\n| Attribute | Saved Information |\n|---|---|\n| **Name** | Jordan |\n| **Asset"
+                                }
+                            ],
+                            "role": "MODEL"
+                        },
+                        "createTime": "2026-08-20T23:20:39.228514495Z"
+                    },
+                    {
+                        "planStep": {
+                            "planStepId": "17950662892188687543",
+                            "role": "MODEL",
+                            "parts": [
+                                {
+                                    "text": " Class** | Fixed Income |\n\n---\n\nPlease let me know if you would like me to retrieve any specific"
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:20:39.352770678Z"
+                    },
+                    {
+                        "createTime": "2026-08-20T23:20:39.503954881Z",
+                        "planStep": {
+                            "planStepId": "17950662892188687543",
+                            "parts": [
+                                {
+                                    "text": " market data, analyze fixed income documents, or assist you with other tasks!\n\n"
+                                }
+                            ],
+                            "role": "MODEL"
+                        }
+                    },
+                    {
+                        "createTime": "2026-08-20T23:20:39.809262809Z",
+                        "planStep": {
+                            "parts": [
+                                {}
+                            ],
+                            "role": "MODEL",
+                            "planStepId": "17950662892188687543"
+                        }
+                    },
+                    {
+                        "createTime": "2026-08-20T23:20:39.844264615Z",
+                        "planStep": {
+                            "role": "MODEL",
+                            "planStepId": "17950662892188687543",
+                            "parts": [
+                                {}
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/8564985454051896417",
+            "queryId": "6529676460630499095"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    }
+]
