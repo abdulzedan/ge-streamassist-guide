@@ -1,0 +1,250 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "At the most recent Federal Open Market Committee (FOMC) meeting, the U"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:17.890295705Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": ".S. Federal Reserve decided to **maintain the benchmark federal funds rate at 3.50% to 3.75"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:18.017573591Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "%**. \n\nAs someone working in fixed income, you are likely keeping a close eye on the shifts"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:18.194206862Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " in committee consensus and the hawkish tone of these recent discussions. Here is a breakdown of the key details from the latest"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:18.336682492Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " decision and subsequent minutes:\n\n### \ud83d\udcca Key Details of the July 2026 Decision\n\n| Parameter | Current"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:18.481919873Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " Status |\n|---|---|\n| **Target Rate Range** | **3.50% to 3."
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:18.574091470Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "75%** (Unchanged for the fifth consecutive meeting) |\n| **FOMC Vote**"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:18.738292987Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " | **9\u20133** in favor of holding rates steady |\n| **Meeting Date** | July"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:18.881625378Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " 28\u201329, 2026 |\n| **Meeting Minutes Released** | August "
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:19.004079773Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "19, 2026 |\n\n---\n\n### \u26a0\ufe0f Hawkish Dissents & Future"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:19.162715318Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " Outlook\n\nWhile the majority voted to hold, the July meeting marked a notable shift toward a more hawkish bias under Fed"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:19.330918245Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " Chair Kevin Warsh. \n\n* **The Dissidents:** Three FOMC members\u2014Beth Hamm"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:19.478512055Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/15786991343097412271",
+            "queryId": "14685598793676768962"
