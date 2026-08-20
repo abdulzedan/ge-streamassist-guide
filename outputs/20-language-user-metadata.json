@@ -1,0 +1,205 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "**Dollar-cost averaging (DCA)** is an investment strategy where you regularly"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:58.818839526Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4049593231619137711",
+            "queryId": "3893961548932083942"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " invest a fixed amount of money into a specific asset at set intervals, regardless of its fluctuating price. This approach helps lower the average"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:58.928977946Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4049593231619137711",
+            "queryId": "3893961548932083942"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " cost per share over time and removes the emotional stress of trying to perfectly time the market.\n\n---\n\n### \ud83d\udca1"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:59.078871686Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4049593231619137711",
+            "queryId": "3893961548932083942"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": " Suggested Next Steps\n\n"
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:59.203466246Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4049593231619137711",
+            "queryId": "3893961548932083942"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "inlineData": {
+                                "mimeType": "application/json+suggestions",
+                                "data": "eyJyZWNvbW1lbmRlZFF1ZXN0aW9uc1Jlc3BvbnNlIjp7InF1ZXN0aW9ucyI6WyJIb3cgZG9lcyBEQ0EgY29tcGFyZSB0byBsdW1wLXN1bSBpbnZlc3Rpbmc/IiwiV2hhdCBhcmUgdGhlIG1haW4gcmlza3Mgb2YgZG9sbGFyLWNvc3QgYXZlcmFnaW5nPyIsIkNhbiB5b3Ugc2hvdyBtZSBhIG1hdGhlbWF0aWNhbCBleGFtcGxlIG9mIERDQT8iXX19"
+                            }
+                        }
+                    },
+                    "createTime": "2026-08-20T23:39:59.429703159Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4049593231619137711",
+            "queryId": "3893961548932083942"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "name": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4049593231619137711/assistAnswers/3893961548932086322",
+            "state": "SUCCEEDED",
+            "replies": [
+                {
+                    "groundedContent": {},
+                    "replyId": "15878192495784231135",
+                    "createTime": "2026-08-20T23:39:59.203466246Z"
+                },
+                {
+                    "groundedContent": {},
+                    "replyId": "15878192495784231135",
+                    "createTime": "2026-08-20T23:39:59.429703159Z"
+                }
+            ],
+            "diagnosticInfo": {
+                "plannerSteps": [
+                    {
+                        "queryStep": {
+                            "parts": [
+                                {
+                                    "text": "Summarize what dollar-cost averaging is in two sentences."
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:39:56.977194924Z"
+                    },
+                    {
+                        "planStep": {
+                            "role": "MODEL",
+                            "parts": [
+                                {
+                                    "text": "**Dollar-cost averaging (DCA)** is an investment strategy where you regularly"
+                                }
+                            ],
+                            "planStepId": "15878192495784231135"
+                        },
+                        "createTime": "2026-08-20T23:39:58.818839526Z"
+                    },
+                    {
+                        "createTime": "2026-08-20T23:39:58.928977946Z",
+                        "planStep": {
+                            "planStepId": "15878192495784231135",
+                            "role": "MODEL",
+                            "parts": [
+                                {
+                                    "text": " invest a fixed amount of money into a specific asset at set intervals, regardless of its fluctuating price. This approach helps lower the average"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "planStep": {
+                            "role": "MODEL",
+                            "planStepId": "15878192495784231135",
+                            "parts": [
+                                {
+                                    "text": " cost per share over time and removes the emotional stress of trying to perfectly time the market.\n\n---\n\n### \ud83d\udca1"
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:39:59.078871686Z"
+                    },
+                    {
+                        "planStep": {
+                            "role": "MODEL",
+                            "planStepId": "15878192495784231135",
+                            "parts": [
+                                {
+                                    "text": " Suggested Next Steps\n\n"
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:39:59.203466246Z"
+                    },
+                    {
+                        "createTime": "2026-08-20T23:39:59.429703159Z",
+                        "planStep": {
+                            "role": "MODEL",
+                            "planStepId": "15878192495784231135",
+                            "parts": [
+                                {}
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4049593231619137711",
+            "queryId": "3893961548932083942"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    }
+]
