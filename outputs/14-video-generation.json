@@ -1,0 +1,117 @@
+[
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "text": "**Generating video. This may take a few minutes...**\n",
+                            "thought": true
+                        }
+                    },
+                    "createTime": "2026-08-20T23:47:41.443282169Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4143596069481303719",
+            "queryId": "15655995415382473074"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "state": "IN_PROGRESS",
+            "replies": [
+                {
+                    "groundedContent": {
+                        "content": {
+                            "role": "model",
+                            "file": {
+                                "mimeType": "video/mp4",
+                                "fileId": "b9f4de42-5344-44f0-a12c-c24f0cd8b1b2"
+                            }
+                        }
+                    },
+                    "createTime": "2026-08-20T23:48:38.233232559Z"
+                }
+            ]
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4143596069481303719",
+            "queryId": "15655995415382473074"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    },
+    {
+        "answer": {
+            "name": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4143596069481303719/assistAnswers/15655995415382472374",
+            "state": "SUCCEEDED",
+            "replies": [
+                {
+                    "groundedContent": {},
+                    "replyId": "14900887134645988736",
+                    "createTime": "2026-08-20T23:47:41.443282169Z"
+                },
+                {
+                    "groundedContent": {},
+                    "replyId": "14900887134645988736",
+                    "createTime": "2026-08-20T23:48:38.233232559Z"
+                }
+            ],
+            "diagnosticInfo": {
+                "plannerSteps": [
+                    {
+                        "queryStep": {
+                            "parts": [
+                                {
+                                    "text": "Generate a short video of a calm ocean at sunrise."
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:47:38.297112478Z"
+                    },
+                    {
+                        "planStep": {
+                            "planStepId": "14900887134645988736",
+                            "role": "MODEL",
+                            "parts": [
+                                {
+                                    "text": "**Generating video. This may take a few minutes...**\n"
+                                },
+                                {
+                                    "functionCall": {
+                                        "functionId": "adk-4d5dab21-525d-444b-91c3-8eabb4427157",
+                                        "args": {
+                                            "prompt": "A serene and cinematic wide shot of a calm ocean at sunrise. The sun is a glowing orange orb just breaking over the horizon, casting a shimmering golden path across the gentle, rippling waves. The sky is painted in soft hues of pastel pink, orange, and light blue. The water is clear and reflects the morning light. The atmosphere is peaceful and tranquil, with a light morning mist clinging to the surface of the sea. High-quality, realistic style, 4k resolution."
+                                        },
+                                        "functionName": "gen_video"
+                                    }
+                                }
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:47:41.443282169Z"
+                    },
+                    {
+                        "planStep": {
+                            "role": "MODEL",
+                            "planStepId": "14900887134645988736",
+                            "parts": [
+                                {},
+                                {}
+                            ]
+                        },
+                        "createTime": "2026-08-20T23:48:38.233232559Z"
+                    }
+                ]
+            }
+        },
+        "sessionInfo": {
+            "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4143596069481303719",
+            "queryId": "15655995415382473074"
+        },
+        "assistToken": "REDACTED_ASSIST_TOKEN"
+    }
+]
