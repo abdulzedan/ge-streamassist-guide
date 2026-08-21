@@ -1,0 +1,23 @@
+AGENT_ID               STATE     TYPE               DISPLAY NAME
+1030712722314703187    ENABLED   high-code (A2A)    Loan Compliance Supervisor
+10909838804142218022   ENABLED   high-code (ADK)    Claude Opus 4.8
+11495251960779440020   PRIVATE   workflow           My Agent
+11701366533091751175   PRIVATE   skill              Excel Workbook Creator
+11867618434103444869   ENABLED   high-code (ADK)    Mortgage Supervisor Agent
+13286759078015083149   ENABLED   high-code (ADK)    My Agent Garden Agent
+14956685891526937985   ENABLED   high-code (ADK)    Insurance Underwriting Agent
+15544621935963358819   ENABLED   high-code (ADK)    Insurance Claims Agent
+16333005829620803418   PRIVATE   low-code           SOX Agent Coodinator
+16843765095766025934   DISABLED  high-code (A2A)    Circle K Shift Assistant
+17470067792865873061   PRIVATE   workflow           Weekly Market Insight Automator
+177358225282593394     ENABLED   managed (no-code)  DI Agent
+18116775128829354966   PRIVATE   workflow           Pension Case Triage Agent
+236556840724368325     ENABLED   high-code (ADK)    Financial Advisor
+3144759177407648189    ENABLED   managed (no-code)  Data Insights Agent
+4552535041316855429    PRIVATE   workflow           Insurance Underwriting Triage Agent
+5071207529931697120    ENABLED   high-code (A2A)    Gemini Enterprise Usage Analytics
+5427360602546325419    DISABLED  high-code (ADK)    Pension Operations Agent
+663708804861715065     PRIVATE   workflow           Mortgage File Triage Agent
+7105212033794915263    ENABLED   high-code (ADK)    AZ Bank Investment Operations Agent
+8216985480830019919    ENABLED   high-code (ADK)    Pension Operations Agent
+deep_research          ENABLED   managed (no-code)  Deep Research
