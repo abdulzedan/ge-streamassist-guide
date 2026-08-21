@@ -27,7 +27,9 @@ TOKEN="$(gcloud auth print-access-token)"
 ENGINES_JSON=$(curl -sS "https://${DE_HOST}/v1alpha/projects/${PROJECT_ID}/locations/${LOCATION}/collections/default_collection/engines" \
   -H "Authorization: Bearer ${TOKEN}" -H "X-Goog-User-Project: ${PROJECT_ID}")
 
-mapfile -t APP_IDS < <(ENGINES_JSON="${ENGINES_JSON}" python3 <<'PYEOF'
+# bash-3.2 compatible (macOS default shell has no mapfile)
+APP_IDS=()
+while IFS= read -r line; do APP_IDS+=("$line"); done < <(ENGINES_JSON="${ENGINES_JSON}" python3 <<'PYEOF'
 import json, os, sys
 d = json.loads(os.environ["ENGINES_JSON"])
 if "error" in d:
