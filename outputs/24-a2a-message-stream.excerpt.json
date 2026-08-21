@@ -1,0 +1,120 @@
+[
+    {
+        "message": {
+            "contextId": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4507115201888119303",
+            "role": "ROLE_AGENT",
+            "metadata": {
+                "answer": {
+                    "state": "IN_PROGRESS",
+                    "replies": [
+                        {
+                            "groundedContent": {
+                                "content": {
+                                    "role": "model",
+                                    "text": "In one sentence, what do you do?\n",
+                                    "thought": true
+                                }
+                            },
+                            "agent": "1030712722314703187",
+                            "createTime": "2026-08-20T23:56:26.072001694Z",
+                            "replyId": "16369538318448433245"
+                        }
+                    ],
+                    "adkAuthor": "Loan_Compliance_Supervisor_1030712722314703187"
+                },
+                "sessionInfo": {
+                    "queryId": "6443231006424092860",
+                    "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4507115201888119303",
+                    "turnId": "4507115201888119303_6443231006424095993"
+                },
+                "assistToken": "M8gKCwibqJ7UBhDO95dtEiQ2YTg3Mjc1OS0wMDAwLTJkOTAtYmY1Mi01ODI0MjlhNzc1MGM"
+            }
+        }
+    },
+    {
+        "message": {
+            "contextId": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4507115201888119303",
+            "role": "ROLE_AGENT",
+            "content": [
+                {
+                    "text": "I am the Equipment Finance Compliance Supervisor, responsible for verifying loan package completeness, extracting metadata, performing automated compliance audits, and recording transaction states to ensure regulatory and policy alignment."
+                }
+            ],
+            "metadata": {
+                "assistToken": "M8gKCwibqJ7UBhDO95dtEiQ2YTg3Mjc1OS0wMDAwLTJkOTAtYmY1Mi01ODI0MjlhNzc1MGM",
+                "answer": {
+                    "state": "IN_PROGRESS",
+                    "adkAuthor": "Loan_Compliance_Supervisor_1030712722314703187",
+                    "replies": [
+                        {
+                            "agent": "1030712722314703187",
+                            "groundedContent": {
+                                "content": {
+                                    "text": "I am the Equipment Finance Compliance Supervisor, responsible for verifying loan package completeness, extracting metadata, performing automated compliance audits, and recording transaction states to ensure regulatory and policy alignment.",
+                                    "role": "model"
+                                }
+                            },
+                            "replyId": "16369538318448433245",
+                            "createTime": "2026-08-20T23:56:29.701831131Z"
+                        }
+                    ]
+                },
+                "sessionInfo": {
+                    "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4507115201888119303",
+                    "turnId": "4507115201888119303_6443231006424095993",
+                    "queryId": "6443231006424092860"
+                }
+            }
+        }
+    },
+    {
+        "message": {
+            "contextId": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4507115201888119303",
+            "role": "ROLE_AGENT",
+            "metadata": {
+                "answer": {
+                    "state": "SUCCEEDED",
+                    "diagnosticInfo": {
+                        "plannerSteps": [
+                            {
+                                "createTime": "2026-08-20T23:56:12.036441858Z",
+                                "queryStep": {
+                                    "parts": [
+                                        {
+                                            "text": "In one sentence, what do you do?"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "planStep": {
+                                    "parts": [
+                                        {
+                                            "text": "In one sentence, what do you do?\n"
+                                        }
+                                    ],
+                                    "role": "MODEL",
+                                    "planStepId": "16369538318448433245"
+                                },
+                                "createTime": "2026-08-20T23:56:26.072001694Z"
+                            },
+                            {
+                                "planStep": {
+                                    "planStepId": "16369538318448433245",
+                                    "parts": [
+                                        {
+                                            "text": "I am the Equipment Finance Compliance Supervisor, responsible for verifying loan package completeness, extracting metadata, performing automated compliance audits, and recording transaction states to ensure regulatory and policy alignment."
+                                        }
+                                    ],
+                                    "role": "MODEL"
+                                },
+                                "createTime": "2026-08-20T23:56:29.701831131Z"
+                            }
+                        ]
+                    },
+                    "name": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4507115201888119303/assistAnswers/6443231006424093104",
+                    "replies": [
+                        {
+                            "replyId": "16369538318448433245",
+                            "createTime": "2026-08-20T23:56:26.072001694Z",
+                            "groundedContent": {},
