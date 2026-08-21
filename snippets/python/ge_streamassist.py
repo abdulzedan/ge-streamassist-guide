@@ -168,6 +168,51 @@ class GEClient:
             fh.write(r.content)
         return out_path
 
+    def assist(self, query: str, session: Optional[str] = None) -> Dict[str, Any]:
+        """Non-streaming :assist — one JSON object with the whole answer.
+
+        Undocumented method (works on v1alpha today); prefer stream_assist
+        for production use.
+        """
+        body: Dict[str, Any] = {"query": {"text": query}}
+        if session:
+            body["session"] = session
+        r = requests.post(
+            self._url(f"{self.assistant_path}:assist"),
+            headers=self._headers(),
+            json=body,
+            timeout=300,
+        )
+        r.raise_for_status()
+        return r.json()
+
+    def a2a_message_stream(
+        self, agent_id: str, text: str, context_id: Optional[str] = None,
+        message_id: str = "msg-001", timeout: int = 600,
+    ) -> Generator[Dict[str, Any], None, None]:
+        """Native A2A surface: message the agent DIRECTLY (no orchestrator).
+
+        Yields A2A stream items; the Gemini Enterprise answer structure is
+        embedded under item["message"]["metadata"]. Note this surface is v1.
+        """
+        message: Dict[str, Any] = {
+            "role": "ROLE_USER",
+            "content": [{"text": text}],
+            "messageId": message_id,
+        }
+        if context_id:
+            message["contextId"] = context_id
+        resp = requests.post(
+            f"https://{self.host}/v1/{self.assistant_path}"
+            f"/agents/{agent_id}/a2a/v1/message:stream",
+            headers=self._headers(),
+            json={"message": message},
+            stream=True,
+            timeout=timeout,
+        )
+        resp.raise_for_status()
+        yield from _iter_json_array(resp)
+
     def list_agents(self) -> List[Dict[str, Any]]:
         r = requests.get(
             self._url(f"{self.assistant_path}/agents"),
