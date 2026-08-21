@@ -1,0 +1,52 @@
+# VS Code "REST Client" / JetBrains HTTP-client collection — basics.
+# Set the variables below (or use an http-client.env.json), get a token with:
+#   gcloud auth print-access-token
+# and click "Send Request" above any request.
+
+@host = discoveryengine.googleapis.com
+@version = v1alpha
+@project = your-project-id
+@location = global
+@app = your-app-id_0000000000000
+@assistant = projects/{{project}}/locations/{{location}}/collections/default_collection/engines/{{app}}/assistants/default_assistant
+@engine = projects/{{project}}/locations/{{location}}/collections/default_collection/engines/{{app}}
+@token = PASTE_OUTPUT_OF_gcloud_auth_print-access-token
+
+### Basic streamAssist
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query": { "text": "What can this assistant do?" }
+}
+
+### New session explicitly
+POST https://{{host}}/{{version}}/{{engine}}/sessions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{ "displayName": "http-client session" }
+
+### Continue a conversation (replace SESSION_ID)
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query":   { "text": "And what data sources are connected?" },
+  "session": "{{engine}}/sessions/SESSION_ID"
+}
+
+### List sessions
+GET https://{{host}}/{{version}}/{{engine}}/sessions?pageSize=10&orderBy=update_time desc
+Authorization: Bearer {{token}}
+X-Goog-User-Project: {{project}}
+
+### Get assistant configuration (web grounding type etc.)
+GET https://{{host}}/{{version}}/{{assistant}}
+Authorization: Bearer {{token}}
+X-Goog-User-Project: {{project}}
