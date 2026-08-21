@@ -61,6 +61,20 @@ Using the wrong host for your app's location returns 404s (or, worse, an empty
 resource list that sends you debugging in the wrong direction). `common.sh`
 derives the host from `LOCATION` automatically.
 
+## Corporate TLS interception
+
+On managed corporate machines with TLS-inspecting proxies, `curl` (which uses
+the OS trust store) works while Python/Node clients fail with
+`CERTIFICATE_VERIFY_FAILED` / `UNABLE_TO_GET_ISSUER_CERT`. Point them at the
+system bundle:
+
+```bash
+# Python (requests / google-auth)
+export REQUESTS_CA_BUNDLE=/etc/ssl/cert.pem SSL_CERT_FILE=/etc/ssl/cert.pem
+# Node
+export NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem
+```
+
 ## Common auth failures
 
 | Error | Actual cause |
