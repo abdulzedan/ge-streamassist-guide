@@ -1,0 +1,40 @@
+# REST-client collection — session context files.
+# Variables: see 01-basics.http.
+
+@host = discoveryengine.googleapis.com
+@version = v1alpha
+@project = your-project-id
+@location = global
+@app = your-app-id_0000000000000
+@assistant = projects/{{project}}/locations/{{location}}/collections/default_collection/engines/{{app}}/assistants/default_assistant
+@engine = projects/{{project}}/locations/{{location}}/collections/default_collection/engines/{{app}}
+@token = PASTE_OUTPUT_OF_gcloud_auth_print-access-token
+
+### Upload a file (base64 the content first; "-" creates the session)
+POST https://{{host}}/{{version}}/{{engine}}/sessions/-:addContextFile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "fileName": "memo.txt",
+  "mimeType": "text/plain",
+  "fileContents": "QUNNRSBDb3JwIG1lbW8uIERlbGlucXVlbmN5IHJhdGU6IDEuMiUu"
+}
+
+### Ask about the file (replace SESSION_ID + FILE_ID from the response above)
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query":   { "text": "What is the delinquency rate in the attached memo?" },
+  "session": "{{engine}}/sessions/SESSION_ID",
+  "fileIds": [ "FILE_ID" ]
+}
+
+### Download a session file (alt=media; client must follow the 302)
+GET https://{{host}}/{{version}}/{{engine}}/sessions/SESSION_ID:downloadFile?fileId=FILE_ID&alt=media
+Authorization: Bearer {{token}}
+X-Goog-User-Project: {{project}}
