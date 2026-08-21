@@ -1,0 +1,112 @@
+== final state ==
+SUCCEEDED
+
+== planner trace ==
+[
+  {
+    "step": "query",
+    "text": "Give me a market view on rising rates for my bond portfolio."
+  },
+  {
+    "step": "plan",
+    "call": "selfawareness_agent"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  },
+  {
+    "step": "plan",
+    "call": "answer-directly"
+  }
+]
+
+VERDICT: routed to agent function 'selfawareness_agent'
