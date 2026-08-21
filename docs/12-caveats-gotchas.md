@@ -120,3 +120,11 @@ chapter to read before writing production code.
     what your test user sees.
 32. ✓ **Keep `assistToken`.** It's the request correlation ID Google support
     asks for.
+33. ✓ **Failure shapes for bad agents are inconsistent.** With
+    `REQUEST_ASSIST`, an inaccessible PRIVATE agent produced
+    `FAILED` + mid-stream error, while a nonexistent ID sometimes produced a
+    normal `SUCCEEDED` base-assistant answer. Treat "wrong agent" as
+    undetectable from status alone — verify via `plannerSteps`
+    (snippet 26).
+34. ✓ **Corporate TLS interception breaks Python/Node but not curl.** See the
+    workaround in [chapter 2](02-authentication.md#corporate-tls-interception).
