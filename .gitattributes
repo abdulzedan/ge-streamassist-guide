@@ -1,0 +1,8 @@
+# Normalize line endings; keep scripts executable-friendly on checkout.
+* text=auto eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+*.mjs text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.http text eol=lf
