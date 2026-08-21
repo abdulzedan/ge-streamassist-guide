@@ -1,0 +1,96 @@
+# REST-client collection — agents, tools, deep research.
+# Variables: see 01-basics.http.
+
+@host = discoveryengine.googleapis.com
+@version = v1alpha
+@project = your-project-id
+@location = global
+@app = your-app-id_0000000000000
+@assistant = projects/{{project}}/locations/{{location}}/collections/default_collection/engines/{{app}}/assistants/default_assistant
+@engine = projects/{{project}}/locations/{{location}}/collections/default_collection/engines/{{app}}
+@token = PASTE_OUTPUT_OF_gcloud_auth_print-access-token
+
+### List registered agents (IDs for the calls below)
+GET https://{{host}}/{{version}}/{{assistant}}/agents?pageSize=100
+Authorization: Bearer {{token}}
+X-Goog-User-Project: {{project}}
+
+### Invoke a specific agent (replace AGENT_ID)
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query":   { "text": "Assess rising-rate impact on a 60/40 portfolio." },
+  "session": "{{engine}}/sessions/-",
+  "agentsSpec": { "agentSpecs": [ { "agentId": "AGENT_ID" } ] }
+}
+
+### Web grounding
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query": { "text": "Latest Fed funds rate decision?" },
+  "toolsSpec": { "webGroundingSpec": {} }
+}
+
+### Data store grounding (replace PROJECT_NUMBER + DATA_STORE_ID)
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query": { "text": "Summarize our architecture documentation." },
+  "toolsSpec": {
+    "vertexAiSearchSpec": {
+      "dataStoreSpecs": [
+        { "dataStore": "projects/PROJECT_NUMBER/locations/{{location}}/collections/default_collection/dataStores/DATA_STORE_ID" }
+      ]
+    }
+  }
+}
+
+### Deep Research step 1 — plan
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query":   { "text": "Current trends in agentic AI adoption in retail banking" },
+  "session": "{{engine}}/sessions/-",
+  "agentsSpec": { "agentSpecs": [ { "agentId": "deep_research" } ] },
+  "toolsSpec": { "webGroundingSpec": {} }
+}
+
+### Deep Research step 2 — approve (same SESSION_ID; runs for minutes)
+POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "query":   { "text": "Start Research" },
+  "session": "{{engine}}/sessions/SESSION_ID",
+  "agentsSpec": { "agentSpecs": [ { "agentId": "deep_research" } ] },
+  "toolsSpec": { "webGroundingSpec": {} }
+}
+
+### Native A2A — direct message to one agent (v1 surface)
+POST https://{{host}}/v1/{{assistant}}/agents/AGENT_ID/a2a/v1/message:stream
+Authorization: Bearer {{token}}
+Content-Type: application/json
+X-Goog-User-Project: {{project}}
+
+{
+  "message": {
+    "role": "ROLE_USER",
+    "content": [ { "text": "What checks do you run?" } ],
+    "messageId": "msg-http-001"
+  }
+}
