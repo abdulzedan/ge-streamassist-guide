@@ -27,7 +27,7 @@ TOKEN="$(gcloud auth print-access-token)"
 ENGINES_JSON=$(curl -sS "https://${DE_HOST}/v1alpha/projects/${PROJECT_ID}/locations/${LOCATION}/collections/default_collection/engines" \
   -H "Authorization: Bearer ${TOKEN}" -H "X-Goog-User-Project: ${PROJECT_ID}")
 
-APP_ID=$(ENGINES_JSON="${ENGINES_JSON}" python3 <<'PYEOF'
+mapfile -t APP_IDS < <(ENGINES_JSON="${ENGINES_JSON}" python3 <<'PYEOF'
 import json, os, sys
 d = json.loads(os.environ["ENGINES_JSON"])
 if "error" in d:
@@ -35,15 +35,21 @@ if "error" in d:
 engines = d.get("engines", [])
 if not engines:
     sys.exit("ERROR: no Gemini Enterprise apps found in this project/location.")
-if len(engines) == 1:
-    print(engines[0]["name"].rsplit("/", 1)[-1]); sys.exit(0)
-print("Multiple apps found:", file=sys.stderr)
-for i, e in enumerate(engines, 1):
-    print(f"  {i}. {e['name'].rsplit('/', 1)[-1]}  ({e.get('displayName','')})", file=sys.stderr)
-choice = input("Pick a number: ")
-print(engines[int(choice) - 1]["name"].rsplit("/", 1)[-1])
+for e in engines:
+    print(e["name"].rsplit("/", 1)[-1] + "\t" + e.get("displayName", ""))
 PYEOF
 )
+
+if [[ ${#APP_IDS[@]} -eq 1 ]]; then
+  APP_ID="${APP_IDS[0]%%$'\t'*}"
+else
+  echo "Multiple apps found:"
+  for i in "${!APP_IDS[@]}"; do
+    echo "  $((i + 1)). ${APP_IDS[$i]%%$'\t'*}  (${APP_IDS[$i]#*$'\t'})"
+  done
+  read -r -p "Pick a number: " choice
+  APP_ID="${APP_IDS[$((choice - 1))]%%$'\t'*}"
+fi
 
 cat > "${REPO_ROOT}/.env" <<EOF
 export PROJECT_ID="${PROJECT_ID}"
