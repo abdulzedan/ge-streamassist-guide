@@ -27,3 +27,10 @@ python-deps:
 
 clean:
 	rm -f generated.png video.mp4 image.png
+
+.PHONY: setup node-example
+setup:
+	./scripts/setup-env.sh $(PROJECT)
+
+node-example:
+	cd snippets/node && node example.mjs "$(Q)"
