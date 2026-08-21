@@ -19,8 +19,8 @@ git clone <this-repo> && cd ge-streamassist-guide
 # 1. find your app + agents (verifies auth at the same time)
 ./scripts/discover.sh <your-gcp-project-id>
 
-# 2. configure
-make env            # creates .env — fill in PROJECT_ID / LOCATION / APP_ID
+# 2. configure (writes .env for you)
+./scripts/setup-env.sh <your-gcp-project-id>   # or: make env + edit .env
 
 # 3. first call
 ./snippets/curl/01-basic-stream-assist.sh "What can you do?"
@@ -36,6 +36,7 @@ Requirements: `gcloud` (authenticated), `curl`, `jq`, `python3`. IAM:
 
 | Chapter | Covers |
 |---|---|
+| [00 Glossary](docs/00-glossary.md) | the terms used throughout |
 | [01 Overview](docs/01-overview.md) | surfaces, architecture, verified capability matrix |
 | [02 Authentication](docs/02-authentication.md) | IAM, tokens, headers, hosts, corp-TLS note |
 | [03 Request anatomy](docs/03-request-anatomy.md) | every request field + version matrix |
@@ -55,7 +56,7 @@ Requirements: `gcloud` (authenticated), `curl`, `jq`, `python3`. IAM:
 
 | Directory | Contents |
 |---|---|
-| [`snippets/curl/`](snippets/curl/) | 24 runnable bash snippets, one capability each (01 basic → 24 native A2A) |
+| [`snippets/curl/`](snippets/curl/) | 26 runnable bash snippets, one capability each (01 basic → 26 routing diagnosis) |
 | [`snippets/python/`](snippets/python/) | `GEClient` (true incremental stream decoding) + 6 examples |
 | [`snippets/node/`](snippets/node/) | zero-dependency Node 18+ streaming client + example |
 | [`snippets/http/`](snippets/http/) | VS Code / JetBrains REST-client collections |
