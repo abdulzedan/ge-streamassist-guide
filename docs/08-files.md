@@ -76,17 +76,29 @@ Where do fileIds come from?
 | generated image/video/audio | reply chunk `content.file.fileId` |
 | Drive/document references in queries | `queryPart.*Reference.fileId` (output only) |
 
-## Listing files: know this quirk
+## Listing files: use `:listSessionFileMetadata`, not `:listFiles`
 
-The API index defines `GET {session}:listFiles` (returns `FileMetadata` with
-`downloadUri`, `fileOriginType` USER_PROVIDED / AI_GENERATED, views like
-thumbnails). In practice it returns
-`403 "Session is not owned by the provided user"` for sessions created via
-API credentials (their `userPseudoId` is not bound to your identity).
+Two similar-looking verbs exist; only one is for you:
 
-**Practical rule: persist `fileId`s yourself** when you upload or when a
-generated-file reply arrives. `:downloadFile` works regardless of the
-listFiles quirk.
+```
+GET {session}:listSessionFileMetadata     ✅ works — AssistantService surface
+GET {session}:listFiles                   ❌ 403 "Session is not owned by the
+                                             provided user" for API-created
+                                             sessions (unreleased collaborative-
+                                             projects surface — not a real
+                                             ownership problem)
+GET {session}/files                       ❌ 404 (documented in the discovery
+                                             doc, not routed live)
+```
+
+`:listSessionFileMetadata` works headless with the same credentials that
+created the session and returns `fileId`, `name`, `mimeType`, `byteSize`,
+`tokenCount`, `quotaPercentage` (session file-quota consumption) and
+`selected` per file. Snippet:
+[`27-list-session-file-metadata.sh`](../snippets/curl/27-list-session-file-metadata.sh).
+
+Still good hygiene: persist `fileId`s from upload responses and
+generated-file replies rather than re-listing on every turn.
 
 ## MIME types
 
