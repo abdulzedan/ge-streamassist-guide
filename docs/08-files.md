@@ -93,8 +93,12 @@ GET {session}/files                       ❌ 404 (documented in the discovery
 
 `:listSessionFileMetadata` works headless with the same credentials that
 created the session and returns `fileId`, `name`, `mimeType`, `byteSize`,
-`tokenCount`, `quotaPercentage` (session file-quota consumption) and
-`selected` per file. Snippet:
+`tokenCount`, `quotaPercentage` (fraction of the session's file-context
+quota consumed — a usable context-budget gauge) and `selected` (whether the
+file is currently active in context) per file. Combined with
+`GET session?includeAnswerDetails=true` (per-turn `queryConfig` + full
+answers), this is the observable context-management metadata the API
+offers; conversation-history trimming itself remains unsignalled. Snippet:
 [`27-list-session-file-metadata.sh`](../snippets/curl/27-list-session-file-metadata.sh).
 
 Still good hygiene: persist `fileId`s from upload responses and
