@@ -1,0 +1,16 @@
+{
+  "fileMetadata": [
+    {
+      "fileId": "4722149654634122388",
+      "name": "adc-memo.txt",
+      "mimeType": "text/plain",
+      "byteSize": "39",
+      "tokenCount": "11",
+      "quotaPercentage": 0.0013749999925494194,
+      "selected": true,
+      "uploadTime": "1970-01-01T00:00:00Z",
+      "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/16991371392082078731"
+    }
+  ],
+  "totalQuotaPercentage": 0.0013749999925494194
+}
