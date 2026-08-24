@@ -32,3 +32,4 @@ from anywhere; most take their inputs as arguments.
 | 24 | `24-a2a-message-stream.sh` | native A2A direct message |
 | 25 | `25-list-data-stores.sh` | connected data stores |
 | 26 | `26-diagnose-routing.sh` | plannerSteps routing verdict |
+| 27 | `27-list-session-file-metadata.sh` | list session context files (the working verb) |
