@@ -63,11 +63,10 @@ All of these are wrapped in
   "as someone working in fixed income…" from an earlier, different session).
   Deleting a session does not necessarily erase that user-level memory —
   relevant for compliance discussions.
-- **Session ownership vs API callers**: `GET {session}:listFiles` returns
-  `403 Session is not owned by the provided user` for API-created sessions
-  (their `userPseudoId` is unset/auto). Track `fileId`s yourself from upload
-  responses and reply chunks instead of relying on listFiles; `:downloadFile`
-  works fine (see [08-files.md](08-files.md)).
+- **File listing**: use `{session}:listSessionFileMetadata` — it works for
+  API-created sessions with the creating credentials. `{session}:listFiles`
+  (an unreleased collaborative-projects surface) returns a misleading 403
+  instead; see [08-files.md](08-files.md).
 - Sessions are visible in the Gemini Enterprise UI for the same user —
   API-created sessions with odd display names will appear in the end user's
   history panel.
