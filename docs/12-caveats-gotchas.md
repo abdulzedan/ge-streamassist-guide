@@ -72,8 +72,13 @@ chapter to read before writing production code.
 
 ## Sessions, files, memory
 
-17. ✓ **`:listFiles` 403s on API-created sessions** ("Session is not owned by
-    the provided user"). Persist fileIds yourself; `:downloadFile` still works.
+17. ✓ **Use `{session}:listSessionFileMetadata` to list session files —
+    NOT `:listFiles`.** `:listFiles` belongs to an unreleased
+    collaborative-projects surface and returns a misleading
+    `403 "Session is not owned by the provided user"` for API-created
+    sessions regardless of caller; `GET {session}/files` (as documented in
+    the discovery doc) 404s. `:listSessionFileMetadata` works headless with
+    the creating credentials (snippet 27).
 18. ✓ **Downloads need `alt=media` AND `-L`.** Without `alt=media`: empty 200.
     Without following the 302 redirect: a JSON stub instead of bytes.
 19. ✓ **`fileIds` don't cross sessions.** Query must use the session the file
