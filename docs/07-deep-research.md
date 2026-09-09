@@ -31,7 +31,7 @@ You can also ground the research on your data stores by adding
 
 ### Step 2 — approve and run ([snippet 10](../snippets/curl/10-deep-research-execute.sh))
 
-Same body, same session, and a confirmation query — the documented phrase is
+Same body, same session, and a confirmation query...the documented phrase is
 `"Start Research"` (natural-language approvals like "the plan looks good,
 proceed" also work). You can also request plan edits instead; the agent
 returns a revised plan.
