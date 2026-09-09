@@ -13,7 +13,7 @@ every call.
 | `".../sessions/{id}"` | continues that session (history available to the model) |
 | `"isSessionLess": true` | exchange is not persisted (response still shows a synthetic `sessions/session-less-…` name) |
 
-`sessionInfo.session` is repeated on (almost) every stream chunk — read it
+`sessionInfo.session` is repeated on (almost) every stream chunk, read it
 from the first chunk you receive.
 
 ```bash
@@ -61,8 +61,7 @@ All of these are wrapped in
 - **Cross-session user memory**: the assistant maintains user-level
   personalization *across* sessions (a brand-new session may answer with
   "as someone working in fixed income…" from an earlier, different session).
-  Deleting a session does not necessarily erase that user-level memory —
-  relevant for compliance discussions.
+  Deleting a session does not necessarily erase that user-level memory.
 - **File listing**: use `{session}:listSessionFileMetadata` — it works for
   API-created sessions with the creating credentials. `{session}:listFiles`
   (an unreleased collaborative-projects surface) returns a misleading 403
