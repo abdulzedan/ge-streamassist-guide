@@ -9,7 +9,7 @@ and video generation), sessions and file uploads, without the UI.
 **Every snippet can be executed against a live Gemini Enterprise app.** 
 Captured (sanitized) responses live in
 [`outputs/`](outputs/), and the full smoke suite
-(`./scripts/run-all.sh`) passes 12/12 against a real app.
+(`./scripts/run-all.sh`) which is used to run the snippets on a real Gemini Enterprise app deployment 
 
 ## Quick start
 
