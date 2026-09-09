@@ -57,7 +57,7 @@ look like IAM problems but aren't.
 | `us` | `us-discoveryengine.googleapis.com` |
 | `eu` | `eu-discoveryengine.googleapis.com` |
 
-Using the wrong host for your app's location returns 404s (or, worse, an empty
+Using the wrong host for your app's location returns 404s (or an empty
 resource list that sends you debugging in the wrong direction). `common.sh`
 derives the host from `LOCATION` automatically.
 
