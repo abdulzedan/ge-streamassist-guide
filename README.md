@@ -51,6 +51,7 @@ Requirements: `gcloud` (authenticated), `curl`, `jq`, `python3`. IAM:
 | [12 Caveats & gotchas](docs/12-caveats-gotchas.md) | **32 verified gotchas — read before production** |
 | [13 API reference](docs/13-api-reference.md) | condensed field-level reference |
 | [14 Recipes](docs/14-recipes.md) | end-to-end FSI flows + production checklist |
+| [15 Soak test](docs/15-soak-test.md) | 24 h every-5-minutes reliability run from Cloud Run, quota accounting, report artifact |
 
 ## Snippets
 
@@ -60,6 +61,7 @@ Requirements: `gcloud` (authenticated), `curl`, `jq`, `python3`. IAM:
 | [`snippets/python/`](snippets/python/) | `GEClient` (true incremental stream decoding) + 6 examples |
 | [`snippets/node/`](snippets/node/) | zero-dependency Node 18+ streaming client + example |
 | [`snippets/http/`](snippets/http/) | VS Code / JetBrains REST-client collections |
+| [`soak/`](soak/README.md) | 24 h soak-test harness: Cloud Run Jobs + Scheduler, per-call evidence in GCS, markdown/CSV report |
 
 All curl snippets read the same [`.env`](.env.example) via
 [`common.sh`](snippets/curl/common.sh) — nothing to edit inside the scripts.
@@ -70,6 +72,7 @@ All curl snippets read the same [`.env`](.env.example) via
 docs/          the guide, chapter by chapter
 snippets/      curl / python / node / http clients & examples
 scripts/       discover.sh (find apps+agents), run-all.sh (smoke suite)
+soak/          24 h reliability soak test (Cloud Run Jobs + Cloud Scheduler)
 outputs/       real captured API responses (sanitized)
 ```
 
