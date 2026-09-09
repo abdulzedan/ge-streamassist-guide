@@ -7,7 +7,7 @@ definition key tells you what kind it is:
 
 | Definition key | Meaning | Built with |
 |---|---|---|
-| `adkAgentDefinition` | high-code agent on Vertex AI Agent Engine / Agent Runtime (`provisionedReasoningEngine`) | ADK (Python) |
+| `adkAgentDefinition` | high-code agent on Agent Platform Agent Engine / Agent Runtime (`provisionedReasoningEngine`) | ADK (Python) |
 | `a2aAgentDefinition` | high-code agent behind an external A2A endpoint | any A2A server |
 | `managedAgentDefinition` | Made-by-Google / managed agents (`deep_research`, Data Insights, …) | Google |
 | `workflowAgentDefinition` | no-code workflow agents | Agent Designer |
