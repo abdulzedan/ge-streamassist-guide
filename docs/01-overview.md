@@ -7,7 +7,7 @@ Enterprise app. One HTTP POST gives you programmatic access to everything the
 Gemini Enterprise UI can do:
 
 - the base assistant (grounded on your connected data stores and/or web search),
-- every **agent** registered on the app — no-code (Agent Designer / managed),
+- every **agent** registered on the app: This includes: no-code (Agent Designer / managed),
   high-code (ADK on Agent Engine / Agent Runtime), A2A, Dialogflow,
 - **Deep Research**,
 - tools: web grounding, data-store grounding, image generation, video generation,
@@ -76,3 +76,6 @@ being documented (captured responses in [`outputs/`](../outputs/)):
 New to the API? Read chapters 2 → 3 → 9 first (auth, request shape, stream
 parsing), then jump to the capability you need. Chapter 12 (caveats & gotchas)
 is worth a full read before you write production code.
+
+
+
