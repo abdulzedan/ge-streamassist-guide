@@ -8,7 +8,7 @@ chapter to read before writing production code.
 
 1. ✓ **No `agentsSpec` ⇒ base assistant.** The single most common mistake:
    omit `agentsSpec` and the orchestrator answers with the default assistant —
-   your custom agent's prompt "mysteriously doesn't apply".
+   your custom agent's prompt don't apply in this scenario.
 2. ✓ **`agentsSpec` scopes, it doesn't force.** Meta questions ("what do you
    do?") may still be answered by the orchestrator even with an agent pinned.
    Verify actual routing via `answer.diagnosticInfo.plannerSteps` (look for the
@@ -29,7 +29,7 @@ chapter to read before writing production code.
    project changes"). If routing never happens and plannerSteps show no
    functionCall, open a case. (discuss.google.dev thread 336726,
    google-cloud-python #16019)
-6. ✓ **`agentsConfig`/`answerGenerationMode` exist but are second-class.**
+6. ✓ **`agentsConfig`/`answerGenerationMode` exist but 
    `agentsConfig.agent` requires the **project-number** resource name
    (project ID → `Invalid agent name`), and results were inconsistent in
    testing. Prefer `agentsSpec`.
