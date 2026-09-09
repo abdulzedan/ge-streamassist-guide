@@ -1,0 +1,22 @@
+# gcloud builds submit --config soak/cloudbuild.yaml --substitutions=_TAG=<sha> .
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - soak/Dockerfile
+      - --build-arg
+      - GIT_SHA=${_TAG}
+      - -t
+      - ${_IMAGE}:${_TAG}
+      - -t
+      - ${_IMAGE}:latest
+      - .
+images:
+  - ${_IMAGE}:${_TAG}
+  - ${_IMAGE}:latest
+substitutions:
+  _IMAGE: us-central1-docker.pkg.dev/main-env-demo/cloud-run-source-deploy/ge-soak
+  _TAG: dev
+options:
+  logging: CLOUD_LOGGING_ONLY

@@ -1,0 +1,24 @@
+# Upload only what the soak image needs (Cloud Build context = repo root).
+.git
+.gitignore
+.venv
+.env
+.env.example
+.claude
+docs
+outputs
+scripts
+snippets/curl
+snippets/http
+snippets/node
+snippets/python/examples
+snippets/python/README.md
+snippets/python/requirements.txt
+soak/out
+soak/README.md
+soak/deploy.sh
+**/__pycache__
+**/*.pyc
+LICENSE
+README.md
+Makefile
