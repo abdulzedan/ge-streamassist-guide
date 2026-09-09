@@ -4,10 +4,10 @@ Ready guide to the Gemini Enterprise **Stream Assist
 API** (`assistants:streamAssist`): the headless entry point for invoking a
 Gemini Enterprise app, this includes: its base assistant, no-code agents, high-code
 (ADK / A2A) agents, Deep Research, tools (web & data-store grounding, image
-and video generation), sessions and file uploads — without the UI.
+and video generation), sessions and file uploads, without the UI.
 
-**Every snippet can be executed against a live Gemini Enterprise app.
-** Captured (sanitized) responses live in
+**Every snippet can be executed against a live Gemini Enterprise app.** 
+Captured (sanitized) responses live in
 [`outputs/`](outputs/), and the full smoke suite
 (`./scripts/run-all.sh`) passes 12/12 against a real app.
 
