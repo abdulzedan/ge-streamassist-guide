@@ -29,6 +29,7 @@ def client() -> GEClient:
         return GEClient(
             project_id=os.environ.get("PROJECT_ID", env["PROJECT_ID"]),
             app_id=os.environ.get("APP_ID", env["APP_ID"]),
+            project_number=os.environ.get("PROJECT_NUMBER", env.get("PROJECT_NUMBER")),
             location=os.environ.get("LOCATION", env.get("LOCATION", "global")),
         )
     except KeyError as missing:

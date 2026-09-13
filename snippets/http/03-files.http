@@ -2,7 +2,8 @@
 # Variables: see 01-basics.http.
 
 @host = discoveryengine.googleapis.com
-@version = v1alpha
+@version = v1
+@alpha = v1alpha
 @project = your-project-id
 @location = global
 @app = your-app-id_0000000000000
@@ -23,7 +24,7 @@ X-Goog-User-Project: {{project}}
 }
 
 ### Ask about the file (replace SESSION_ID + FILE_ID from the response above)
-POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
+POST https://{{host}}/{{alpha}}/{{assistant}}:streamAssist
 Authorization: Bearer {{token}}
 Content-Type: application/json
 X-Goog-User-Project: {{project}}
@@ -36,5 +37,10 @@ X-Goog-User-Project: {{project}}
 
 ### Download a session file (alt=media; client must follow the 302)
 GET https://{{host}}/{{version}}/{{engine}}/sessions/SESSION_ID:downloadFile?fileId=FILE_ID&alt=media
+Authorization: Bearer {{token}}
+X-Goog-User-Project: {{project}}
+
+### List session file metadata (v1alpha)
+GET https://{{host}}/{{alpha}}/{{engine}}/sessions/SESSION_ID:listSessionFileMetadata
 Authorization: Bearer {{token}}
 X-Goog-User-Project: {{project}}

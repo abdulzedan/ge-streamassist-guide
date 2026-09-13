@@ -12,6 +12,5 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 DISPLAY_NAME="${1:-api-created-session}"
 
-de_post "${ENGINE_PATH}/sessions" '{
-  "displayName": "'"${DISPLAY_NAME}"'"
-}'
+BODY=$(jq -nc --arg name "${DISPLAY_NAME}" '{displayName: $name}')
+de_post "${ENGINE_PATH}/sessions" "${BODY}"

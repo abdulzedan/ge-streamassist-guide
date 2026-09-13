@@ -1,7 +1,7 @@
 # Gemini Enterprise — Stream Assist guide
 # Common entry points; every target is safe to re-run.
 
-.PHONY: help env discover smoke smoke-full python-deps clean
+.PHONY: help env discover smoke smoke-full validate python-deps clean
 
 help:
 	@echo "make soak-*      - 24h reliability soak test on Cloud Run (see soak/README.md)"
@@ -9,6 +9,7 @@ help:
 	@echo "make discover    - list your apps and agents (uses .env or: make discover PROJECT=my-proj)"
 	@echo "make smoke       - run the fast snippet smoke suite against your app"
 	@echo "make smoke-full  - smoke suite including deep research plan + media generation"
+	@echo "make validate    - run the offline CI checks"
 	@echo "make python-deps - install the python client dependencies"
 
 env:
@@ -22,6 +23,9 @@ smoke:
 
 smoke-full:
 	./scripts/run-all.sh --full
+
+validate:
+	./scripts/validate.sh
 
 python-deps:
 	pip install -r snippets/python/requirements.txt

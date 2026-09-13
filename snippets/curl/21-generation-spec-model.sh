@@ -13,7 +13,6 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 MODEL_ID="${1:-gemini-2.5-flash}"
 QUERY="${2:-Say OK.}"
 
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query": { "text": "'"${QUERY}"'" },
-  "generationSpec": { "modelId": "'"${MODEL_ID}"'" }
-}'
+BODY=$(jq -nc --arg query "${QUERY}" --arg model "${MODEL_ID}" \
+  '{query: {text: $query}, generationSpec: {modelId: $model}}')
+de_post "${ASSISTANT_PATH}:streamAssist" "${BODY}"

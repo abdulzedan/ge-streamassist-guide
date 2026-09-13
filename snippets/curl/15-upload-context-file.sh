@@ -8,9 +8,7 @@
 # The response contains the session name and the fileId — pass the
 # fileId to streamAssist via "fileIds" (snippet 16).
 #
-# Preview/pre-GA feature. Practical size ceiling: base64 in a JSON
-# body — use it for documents, not gigabyte archives (see
-# docs/08-files.md for the multipart alternative).
+# Preview/pre-GA feature. The file is base64 encoded in a JSON body.
 #
 # Usage: ./15-upload-context-file.sh <path-to-file> [session-id]
 # ------------------------------------------------------------------
@@ -24,8 +22,6 @@ MIME_TYPE="$(file --mime-type -b "${FILE_PATH}")"
 # -i keeps macOS/BSD base64 happy; GNU base64 users can use -w 0.
 BASE64_CONTENT="$(base64 -i "${FILE_PATH}" | tr -d '\n')"
 
-de_post "${ENGINE_PATH}/sessions/${SESSION_ID}:addContextFile" '{
-  "fileName":     "'"${FILE_NAME}"'",
-  "mimeType":     "'"${MIME_TYPE}"'",
-  "fileContents": "'"${BASE64_CONTENT}"'"
-}'
+BODY=$(jq -nc --arg name "${FILE_NAME}" --arg mime "${MIME_TYPE}" --arg content "${BASE64_CONTENT}" \
+  '{fileName: $name, mimeType: $mime, fileContents: $content}')
+de_post "${ENGINE_PATH}/sessions/${SESSION_ID}:addContextFile" "${BODY}"

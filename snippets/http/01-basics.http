@@ -4,7 +4,7 @@
 # and click "Send Request" above any request.
 
 @host = discoveryengine.googleapis.com
-@version = v1alpha
+@version = v1
 @project = your-project-id
 @location = global
 @app = your-app-id_0000000000000

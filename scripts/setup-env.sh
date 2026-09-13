@@ -24,7 +24,8 @@ else
 fi
 
 TOKEN="$(gcloud auth print-access-token)"
-ENGINES_JSON=$(curl -sS "https://${DE_HOST}/v1alpha/projects/${PROJECT_ID}/locations/${LOCATION}/collections/default_collection/engines" \
+PROJECT_NUMBER="$(gcloud projects describe "${PROJECT_ID}" --format='value(projectNumber)')"
+ENGINES_JSON=$(curl -sS --fail-with-body "https://${DE_HOST}/v1alpha/projects/${PROJECT_ID}/locations/${LOCATION}/collections/default_collection/engines" \
   -H "Authorization: Bearer ${TOKEN}" -H "X-Goog-User-Project: ${PROJECT_ID}")
 
 # bash-3.2 compatible (macOS default shell has no mapfile)
@@ -55,10 +56,11 @@ fi
 
 cat > "${REPO_ROOT}/.env" <<EOF
 export PROJECT_ID="${PROJECT_ID}"
+export PROJECT_NUMBER="${PROJECT_NUMBER}"
 export LOCATION="${LOCATION}"
 export APP_ID="${APP_ID}"
 export ASSISTANT_ID="default_assistant"
-export API_VERSION="v1alpha"
+export API_VERSION="v1"
 EOF
 
 echo "Wrote ${REPO_ROOT}/.env:"

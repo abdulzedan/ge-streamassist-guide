@@ -16,19 +16,17 @@ extract_text() {
 }
 
 echo "== Turn 1 =="
-TURN1=$(de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query":   { "text": "My name is Jordan and I work in fixed income. Remember that." },
-  "session": "'"${ENGINE_PATH}"'/sessions/-"
-}')
+TURN1_BODY=$(jq -nc --arg session "${ENGINE_PATH}/sessions/-" \
+  '{query: {text: "My name is Jordan and I work in fixed income. Remember that."}, session: $session}')
+TURN1=$(de_post "${ASSISTANT_PATH}:streamAssist" "${TURN1_BODY}")
 echo "${TURN1}" | extract_text
 
-# Every chunk repeats sessionInfo; take it from the first one.
-SESSION=$(echo "${TURN1}" | jq -r '.[0].sessionInfo.session')
+# v1 sends sessionInfo on the final response object.
+SESSION=$(echo "${TURN1}" | jq -er '[.[] | .sessionInfo.session // empty] | last')
 echo
 echo "== session: ${SESSION}"
 echo
 echo "== Turn 2 (same session) =="
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query":   { "text": "What is my name and what asset class do I work in?" },
-  "session": "'"${SESSION}"'"
-}' | extract_text
+TURN2_BODY=$(jq -nc --arg session "${SESSION}" \
+  '{query: {text: "What is my name and what asset class do I work in?"}, session: $session}')
+de_post "${ASSISTANT_PATH}:streamAssist" "${TURN2_BODY}" | extract_text

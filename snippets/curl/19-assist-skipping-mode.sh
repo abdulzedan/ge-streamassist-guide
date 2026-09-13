@@ -15,12 +15,11 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 QUERY="${1:-hello}"
 
 echo "== Default behavior (likely SKIPPED for greetings) =="
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query": { "text": "'"${QUERY}"'" }
-}'
+DEFAULT_BODY=$(jq -nc --arg query "${QUERY}" \
+  '{query: {text: $query}, isSessionLess: true}')
+de_post_alpha "${ASSISTANT_PATH}:streamAssist" "${DEFAULT_BODY}"
 echo
 echo "== With assistSkippingMode=REQUEST_ASSIST =="
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query": { "text": "'"${QUERY}"'" },
-  "assistSkippingMode": "REQUEST_ASSIST"
-}'
+FORCED_BODY=$(jq -nc --arg query "${QUERY}" \
+  '{query: {text: $query}, assistSkippingMode: "REQUEST_ASSIST", isSessionLess: true}')
+de_post_alpha "${ASSISTANT_PATH}:streamAssist" "${FORCED_BODY}"

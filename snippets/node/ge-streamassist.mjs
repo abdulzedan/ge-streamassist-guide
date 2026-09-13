@@ -8,7 +8,7 @@
 import { execFileSync } from "node:child_process";
 
 export class GEClient {
-  constructor({ projectId, appId, location = "global", assistantId = "default_assistant", apiVersion = "v1alpha" }) {
+  constructor({ projectId, appId, location = "global", assistantId = "default_assistant", apiVersion = "v1" }) {
     this.projectId = projectId;
     this.appId = appId;
     this.location = location;
@@ -47,7 +47,7 @@ export class GEClient {
    * POST :streamAssist and yield response chunks as they arrive.
    * The wire format is a streamed JSON array — decoded incrementally.
    */
-  async *streamAssist({ query, session, agentId, fileIds, toolsSpec, forceAssist }) {
+  async *streamAssist({ query, session, agentId, fileIds, toolsSpec, forceAssist, isSessionLess }) {
     const body = {};
     if (query) body.query = { text: query };
     if (session) {
@@ -57,8 +57,11 @@ export class GEClient {
     if (fileIds) body.fileIds = fileIds;
     if (toolsSpec) body.toolsSpec = toolsSpec;
     if (forceAssist) body.assistSkippingMode = "REQUEST_ASSIST";
+    if (isSessionLess) body.isSessionLess = true;
 
-    const resp = await fetch(`https://${this.host}/${this.apiVersion}/${this.assistantPath}:streamAssist`, {
+    const version = (fileIds || forceAssist || isSessionLess) ? "v1alpha" : this.apiVersion;
+
+    const resp = await fetch(`https://${this.host}/${version}/${this.assistantPath}:streamAssist`, {
       method: "POST",
       headers: this.headers(),
       body: JSON.stringify(body),
@@ -66,17 +69,26 @@ export class GEClient {
     if (!resp.ok) throw new Error(`streamAssist HTTP ${resp.status}: ${await resp.text()}`);
 
     let buf = "";
+    let closed = false;
     const decoder = new TextDecoder();
     for await (const bytes of resp.body) {
       buf += decoder.decode(bytes, { stream: true });
       while (true) {
         buf = buf.replace(/^[\s\[,]+/, "");
-        if (!buf || buf[0] === "]") break;
+        if (!buf) break;
+        if (buf[0] === "]") { closed = true; break; }
         const obj = tryParsePrefix(buf);
         if (!obj) break; // need more bytes
+        if (obj.value.error) throw new Error(`streamAssist error: ${JSON.stringify(obj.value.error)}`);
         yield obj.value;
         buf = buf.slice(obj.length);
       }
+    }
+    buf += decoder.decode();
+    if (!closed && /^\s*\]/.test(buf)) closed = true;
+    if (!closed) throw new Error("stream ended before the closing JSON-array bracket");
+    if (!/^\s*\]\s*$/.test(buf)) {
+      throw new Error(`incomplete stream payload: ${buf.slice(0, 120)}`);
     }
   }
 }

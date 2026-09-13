@@ -1,7 +1,7 @@
 """Deep Research end-to-end: plan -> approve -> stream the report.
 
-The research phase commonly runs 5-20 minutes; progress markers are
-printed as contentKind transitions (RESEARCH_QUESTION / RESEARCH_ANSWER).
+The research phase can run for several minutes; progress markers are printed
+as contentKind transitions (RESEARCH_QUESTION / RESEARCH_ANSWER).
 Requires the deep_research agent (API access is allowlisted).
 """
 

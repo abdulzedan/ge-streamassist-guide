@@ -11,4 +11,4 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 AGENT_ID="${1:?usage: $0 <agent-id>   (find IDs with 06-list-agents.sh)}"
 
-de_get "${ASSISTANT_PATH}/agents/${AGENT_ID}"
+de_get_alpha "${ASSISTANT_PATH}/agents/${AGENT_ID}"

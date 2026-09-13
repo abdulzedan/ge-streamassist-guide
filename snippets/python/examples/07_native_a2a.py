@@ -19,9 +19,15 @@ context_id = None
 for item in ge.a2a_message_stream(agent_id, text):
     msg = item.get("message") or {}
     context_id = msg.get("contextId") or context_id
+    for part in msg.get("content", []):
+        if isinstance(part.get("text"), str):
+            print(part["text"], end="", flush=True)
     answer = (msg.get("metadata") or {}).get("answer") or {}
     for reply in answer.get("replies", []):
         content = (reply.get("groundedContent") or {}).get("content") or {}
         if content.get("text") and not content.get("thought"):
             print(content["text"], end="", flush=True)
+    meta = msg.get("metadata") or {}
+    if meta.get("requiredAuthorizations") or meta.get("agentInvocation"):
+        print("\n[agent requires authorization or user confirmation]", end="")
 print(f"\n\ncontextId (reuse for multi-turn): {context_id}")

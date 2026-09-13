@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------
 # 06 — List every agent registered on the assistant.
-# The agent ID printed here is what you pass in agentsSpec when
-# invoking a specific agent (snippets 08-10).
+# Agent discovery is v1alpha. Check the type before choosing the
+# Stream Assist or native A2A invocation path.
 #
 # Usage: ./06-list-agents.sh [--raw]
 # ------------------------------------------------------------------
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-RAW="$(de_get "${ASSISTANT_PATH}/agents?pageSize=100")"
+RAW="$(de_get_alpha "${ASSISTANT_PATH}/agents?pageSize=100")"
 
 if [[ "${1:-}" == "--raw" ]]; then
   echo "${RAW}"

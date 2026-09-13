@@ -11,9 +11,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 QUERY="${1:-Summarize what dollar-cost averaging is in two sentences.}"
 
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query": { "text": "'"${QUERY}"'" }
-}' | jq -r '
+BODY=$(jq -nc --arg query "${QUERY}" '{query: {text: $query}, isSessionLess: true}')
+de_post_alpha "${ASSISTANT_PATH}:streamAssist" "${BODY}" | jq -r '
   [ .[]
     | .answer.replies[]?
     | .groundedContent.content

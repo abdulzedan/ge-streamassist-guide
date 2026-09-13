@@ -20,7 +20,7 @@ source "${REPO_ROOT}/.env"
 : "${LOCATION:?set LOCATION in .env}"
 : "${APP_ID:?set APP_ID in .env}"
 : "${ASSISTANT_ID:=default_assistant}"
-: "${API_VERSION:=v1alpha}"
+: "${API_VERSION:=v1}"
 
 # Global apps use the bare hostname; regional apps (us / eu) use a
 # location-prefixed hostname. Getting this wrong returns 404s.
@@ -38,11 +38,12 @@ export TOKEN
 export ENGINE_PATH="projects/${PROJECT_ID}/locations/${LOCATION}/collections/default_collection/engines/${APP_ID}"
 export ASSISTANT_PATH="${ENGINE_PATH}/assistants/${ASSISTANT_ID}"
 export BASE_URL="https://${DE_HOST}/${API_VERSION}"
+export ALPHA_BASE_URL="https://${DE_HOST}/v1alpha"
 
 # Convenience wrapper: authenticated JSON POST.
 # usage: de_post <url-after-base> <json-body>
 de_post() {
-  curl -sS -X POST "${BASE_URL}/$1" \
+  curl -sS --fail-with-body -X POST "${BASE_URL}/$1" \
     -H "Authorization: Bearer ${TOKEN}" \
     -H "Content-Type: application/json" \
     -H "X-Goog-User-Project: ${PROJECT_ID}" \
@@ -52,7 +53,22 @@ de_post() {
 # Convenience wrapper: authenticated GET.
 # usage: de_get <url-after-base>
 de_get() {
-  curl -sS "${BASE_URL}/$1" \
+  curl -sS --fail-with-body "${BASE_URL}/$1" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H "X-Goog-User-Project: ${PROJECT_ID}"
+}
+
+# Agent discovery, file selection and file metadata remain v1alpha.
+de_post_alpha() {
+  curl -sS --fail-with-body -X POST "${ALPHA_BASE_URL}/$1" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H "Content-Type: application/json" \
+    -H "X-Goog-User-Project: ${PROJECT_ID}" \
+    -d "$2"
+}
+
+de_get_alpha() {
+  curl -sS --fail-with-body "${ALPHA_BASE_URL}/$1" \
     -H "Authorization: Bearer ${TOKEN}" \
     -H "X-Goog-User-Project: ${PROJECT_ID}"
 }

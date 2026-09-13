@@ -105,7 +105,7 @@ def a_text(res: CheckResult, rec: CallRecord, name: str = "has_text", critical: 
 
 def a_contains(res: CheckResult, rec: CallRecord, needle: str, name: str, critical: bool = True) -> bool:
     ok = needle.lower() in rec.text.lower()
-    res.assertions.append(Assertion(name, ok, critical, f"looking for {needle!r} in {rec.text[:120]!r}"))
+    res.assertions.append(Assertion(name, ok, critical, f"needle={needle!r} text_chars={len(rec.text)}"))
     return ok
 
 
@@ -140,12 +140,12 @@ def c_control_plane(ctx: Ctx, res: CheckResult) -> None:
             states[a.get("state", "?")] = states.get(a.get("state", "?"), 0) + 1
         res.notes["agents_total"] = len(items)
         res.notes["agents_by_state"] = states
-        for label, aid in (("adk", cfg.adk_agent_id), ("a2a", cfg.a2a_agent_id)):
-            a = by_id.get(aid)
-            res.assertions.append(Assertion(
-                f"fixture_{label}_agent_enabled", bool(a) and a.get("state") == "ENABLED", False,
-                f"{aid}: {a.get('state') if a else 'missing'} {a.get('displayName', '') if a else ''}"))
-    agent = api.get_agent(res.name, cfg.adk_agent_id)
+        a = by_id.get(cfg.a2a_agent_id)
+        res.assertions.append(Assertion(
+            "fixture_a2a_agent_enabled", bool(a) and a.get("state") == "ENABLED", False,
+            f"{cfg.a2a_agent_id}: {a.get('state') if a else 'missing'} "
+            f"{a.get('displayName', '') if a else ''}"))
+    agent = api.get_agent(res.name, cfg.a2a_agent_id)
     a_http(res, agent, "agents_get_ok")
     assistant = api.get_assistant(res.name)
     if a_http(res, assistant, "assistants_get_ok"):
@@ -164,11 +164,14 @@ def c_control_plane(ctx: Ctx, res: CheckResult) -> None:
 
 
 def c_probe(ctx: Ctx, res: CheckResult) -> None:
-    rec = ctx.api.stream_assist(res.name, _sessionless(_OK_QUERY), read_timeout=120)
+    rec = ctx.api.stream_assist(res.name, {
+        "query": {"text": _OK_QUERY}, "session": ctx.new_session_ref()
+    }, read_timeout=120)
     a_answer(res, rec)
     a_contains(res, rec, "ok", "says_ok", critical=False)
     res.notes["ttfb_ms"] = rec.ttfb_ms
     res.notes["first_chunk_ms"] = rec.first_chunk_ms
+    ctx.cleanup(res.name, res, rec.session)
 
 
 def c_multiturn(ctx: Ctx, res: CheckResult) -> None:
@@ -192,40 +195,20 @@ def c_multiturn(ctx: Ctx, res: CheckResult) -> None:
     ctx.cleanup(res.name, res, t1.session)
 
 
-def _pinned_agent(ctx: Ctx, res: CheckResult, agent_id: str, query: str, timeout: float) -> None:
-    rec = ctx.api.stream_assist(res.name, {
-        "query": {"text": query}, "session": ctx.new_session_ref(),
-        "agentsSpec": {"agentSpecs": [{"agentId": agent_id}]},
-        "assistSkippingMode": "REQUEST_ASSIST"}, read_timeout=timeout)
-    a_answer(res, rec)
-    routed = bool(rec.planner_calls) or any(agent_id in a for a in rec.reply_agents)
-    res.assertions.append(Assertion("routed_to_agent", routed, False,
-                                    f"planner functionCalls={rec.planner_calls[:5]} replyAgents={sorted(set(rec.reply_agents))[:5]}"))
-    res.notes["planner_calls"] = rec.planner_calls[:10]
-    res.notes["reply_agents"] = sorted(set(rec.reply_agents))[:10]
-    ctx.cleanup(res.name, res, rec.session)
-
-
-def c_agent_adk(ctx: Ctx, res: CheckResult) -> None:
-    _pinned_agent(ctx, res, ctx.cfg.adk_agent_id,
-                  "Review this mortgage file: borrower income 95,000, loan amount 420,000, LTV 85%, "
-                  "credit score 700, 30-year fixed. List the key underwriting risks in bullet points.", 300)
-
-
-def c_agent_a2a(ctx: Ctx, res: CheckResult) -> None:
-    _pinned_agent(ctx, res, ctx.cfg.a2a_agent_id,
-                  "Run a compliance check on loan package #4711 and list any KYC flags.", 300)
-
-
 def c_a2a_native(ctx: Ctx, res: CheckResult) -> None:
-    card = ctx.api.a2a_card(res.name, ctx.cfg.adk_agent_id)
+    card = ctx.api.a2a_card(res.name, ctx.cfg.a2a_agent_id)
     a_http(res, card, "card_ok")
-    rec = ctx.api.a2a_message_stream(res.name, ctx.cfg.adk_agent_id,
+    rec = ctx.api.a2a_message_stream(res.name, ctx.cfg.a2a_agent_id,
                                      "In one sentence, what can you help me with?", read_timeout=300)
     a_http(res, rec)
     res.assertions.append(Assertion("agent_role_seen", "ROLE_AGENT" in rec.a2a_roles, True, f"roles={sorted(set(rec.a2a_roles))}"))
-    a_text(res, rec)
+    res.assertions.append(Assertion(
+        "text_or_handoff", bool(rec.text.strip()) or rec.handoff_required, True,
+        f"text_chars={len(rec.text)} handoff_required={rec.handoff_required} "
+        f"required_authorizations={rec.required_authorizations}",
+    ))
     res.notes["answer_state"] = rec.answer_state
+    res.notes["handoff_required"] = rec.handoff_required
     ctx.cleanup(res.name, res, rec.session)
 
 
@@ -302,7 +285,8 @@ def c_language(ctx: Ctx, res: CheckResult) -> None:
         "Quels sont les avantages des achats périodiques par sommes fixes? Réponds en deux phrases.",
         userMetadata={"preferredLanguageCode": "fr-CA", "timeZone": "America/Toronto"}), read_timeout=180)
     a_answer(res, rec)
-    res.assertions.append(Assertion("answer_in_french", len(_FRENCH.findall(rec.text)) >= 3, False, rec.text[:100]))
+    matches = len(_FRENCH.findall(rec.text))
+    res.assertions.append(Assertion("answer_in_french", matches >= 3, False, f"matches={matches} text_chars={len(rec.text)}"))
 
 
 def c_model_override(ctx: Ctx, res: CheckResult) -> None:
@@ -366,7 +350,7 @@ class CheckSpec:
     tier: str
     every: int          # run when index % every == offset
     offset: int
-    assist_queries: int  # expected Assistant-query quota consumption per execution
+    candidate_queries: int  # streamAssist/assist calls expected per execution
     description: str
 
 
@@ -374,13 +358,11 @@ FAST_CHECKS: list[CheckSpec] = [
     CheckSpec("control_plane", c_control_plane, "fast", 1, 0, 0, "agents.list/get, assistants.get, engines.get, sessions.list"),
     CheckSpec("probe", c_probe, "fast", 1, 0, 1, "sessionless streamAssist expecting 'OK' (core availability probe)"),
     CheckSpec("multiturn", c_multiturn, "fast", 6, 0, 2, "two turns in one session, recall a reference code, sessions.get, delete"),
-    CheckSpec("agent_adk", c_agent_adk, "fast", 6, 1, 1, "agentsSpec pinned to the ADK agent; routing verified via plannerSteps"),
-    CheckSpec("agent_a2a", c_agent_a2a, "fast", 6, 2, 1, "agentsSpec pinned to the A2A agent; routing verified via plannerSteps"),
-    CheckSpec("a2a_native", c_a2a_native, "fast", 6, 3, 1, "native a2a/v1 card + message:stream to the ADK agent"),
+    CheckSpec("a2a_native", c_a2a_native, "fast", 6, 3, 0, "native a2a/v1 card + message:stream to an A2A agent"),
     CheckSpec("web_grounding", c_web_grounding, "fast", 6, 4, 1, "toolsSpec.webGroundingSpec"),
     CheckSpec("datastore_grounding", c_datastore_grounding, "fast", 6, 5, 1, "toolsSpec.vertexAiSearchSpec on one data store"),
     CheckSpec("file_roundtrip", c_file_roundtrip, "fast", 12, 6, 1, "addContextFile, listSessionFileMetadata, fileIds query, downloadFile"),
-    CheckSpec("assist_nonstreaming", c_assist_nonstreaming, "fast", 12, 0, 1, "undocumented :assist"),
+    CheckSpec("assist_nonstreaming", c_assist_nonstreaming, "fast", 12, 0, 1, "documented non-streaming :assist"),
     CheckSpec("skip_mode", c_skip_mode, "fast", 12, 3, 2, "'hello' with and without assistSkippingMode=REQUEST_ASSIST"),
     CheckSpec("language", c_language, "fast", 12, 9, 1, "userMetadata.preferredLanguageCode=fr-CA"),
     CheckSpec("model_override", c_model_override, "fast", 12, 11, 1, "generationSpec.modelId"),

@@ -12,25 +12,70 @@ set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CURL_DIR="${REPO_ROOT}/snippets/curl"
 FULL="${1:-}"
+# shellcheck disable=SC1091
+source "${CURL_DIR}/common.sh"
+set +e
 
-pass=0; fail=0
+pass=0; fail=0; sessions=(); LAST_OUT=""
+
+remember_sessions() {
+  local found sid
+  found=$(printf '%s' "$1" | python3 -c '
+import re, sys
+s = sys.stdin.read()
+ids = re.findall(r"/sessions/([0-9]+)", s)
+ids += re.findall(r"(?:== session:|^session:)\s*([0-9]+)", s, re.M)
+print("\n".join(dict.fromkeys(ids)))
+' 2>/dev/null)
+  while IFS= read -r sid; do
+    [[ -n "${sid}" ]] && sessions+=("${sid}")
+  done <<< "${found}"
+}
+
+has_api_failure() {
+  printf '%s' "$1" | jq -e '
+    .. | objects |
+    select((.error? != null) or (.answer?.state? == "FAILED"))
+  ' >/dev/null 2>&1
+}
+
+cleanup() {
+  local sid
+  [[ ${#sessions[@]} -eq 0 ]] && return
+  while IFS= read -r sid; do
+    curl -sS --fail-with-body -X DELETE \
+      "${BASE_URL}/${ENGINE_PATH}/sessions/${sid}" \
+      -H "Authorization: Bearer ${TOKEN}" \
+      -H "X-Goog-User-Project: ${PROJECT_ID}" >/dev/null 2>&1 || true
+  done < <(printf '%s\n' "${sessions[@]}" | sort -u)
+}
+trap cleanup EXIT
+
 run() {
-  local name="$1"; shift
+  local name="$1" out status; shift
   printf '%-46s' "${name}"
-  if out=$("$@" 2>&1); then
-    if echo "${out}" | grep -q '"error"'; then
-      echo "FAIL (error in response)"; echo "${out}" | head -5; fail=$((fail+1))
-    else
-      echo "PASS"; pass=$((pass+1))
-    fi
+  out=$("$@" 2>&1)
+  status=$?
+  LAST_OUT="${out}"
+  remember_sessions "${out}"
+  if [[ ${status} -ne 0 ]]; then
+    echo "FAIL (exit ${status})"; printf '%s\n' "${out}" | head -5; fail=$((fail+1))
+  elif has_api_failure "${out}"; then
+    echo "FAIL (API failure in response)"; printf '%s\n' "${out}" | head -5; fail=$((fail+1))
   else
-    echo "FAIL (exit $?)"; echo "${out}" | head -5; fail=$((fail+1))
+    echo "PASS"; pass=$((pass+1))
   fi
 }
 
 run "01 basic streamAssist"        "${CURL_DIR}/01-basic-stream-assist.sh" "Say OK."
 run "02 extract answer text"       "${CURL_DIR}/02-extract-answer-text.sh" "Say OK."
 run "03 create session"            "${CURL_DIR}/03-create-session.sh" "smoke-test"
+CRUD_SID=$(printf '%s' "${LAST_OUT}" | jq -r '.name // empty | split("/")[-1]')
+if [[ -n "${CRUD_SID}" ]]; then
+  run "05 get session"              "${CURL_DIR}/05-session-crud.sh" get "${CRUD_SID}"
+  run "05 pin session"              "${CURL_DIR}/05-session-crud.sh" pin "${CRUD_SID}"
+  run "05 delete session"           "${CURL_DIR}/05-session-crud.sh" delete "${CRUD_SID}"
+fi
 run "04 multi-turn session"        "${CURL_DIR}/04-multi-turn-session.sh"
 run "05 list sessions"             "${CURL_DIR}/05-session-crud.sh" list
 run "06 list agents"               "${CURL_DIR}/06-list-agents.sh"
@@ -45,9 +90,13 @@ TMPFILE=$(mktemp /tmp/ge-smoke-XXXX.txt)
 echo "Smoke test memo. The magic number is 42." > "${TMPFILE}"
 printf '%-46s' "15+16 file upload + query"
 UP=$("${CURL_DIR}/15-upload-context-file.sh" "${TMPFILE}" 2>&1)
+remember_sessions "${UP}"
 SID=$(echo "${UP}" | python3 -c "import json,sys;print(json.load(sys.stdin)['session'].rsplit('/',1)[-1])" 2>/dev/null)
 FID=$(echo "${UP}" | python3 -c "import json,sys;print(json.load(sys.stdin)['fileId'])" 2>/dev/null)
-if [[ -n "${SID}" && -n "${FID}" ]] && "${CURL_DIR}/16-query-with-files.sh" "${SID}" "${FID}" "What is the magic number?" | grep -q "42"; then
+FILE_ANSWER=$("${CURL_DIR}/16-query-with-files.sh" "${SID}" "${FID}" "What is the magic number?" 2>&1)
+remember_sessions "${FILE_ANSWER}"
+if [[ -n "${SID}" && -n "${FID}" ]] && ! has_api_failure "${FILE_ANSWER}" && \
+   printf '%s' "${FILE_ANSWER}" | grep -q "42"; then
   echo "PASS"; pass=$((pass+1))
 else
   echo "FAIL"; fail=$((fail+1))

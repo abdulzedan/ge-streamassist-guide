@@ -30,12 +30,11 @@ class Config:
     # --- where results go ---
     bucket: str | None
     # --- fixtures used by the capability checks ---
-    adk_agent_id: str
     a2a_agent_id: str
     data_store_id: str
     model_id: str
     # --- quota context for the report ---
-    license_limit: int      # per-license Assistant queries/day (Standard = 160)
+    license_limit: int      # configured feature allowance; zero means unknown
     license_count: int      # licenses in the pool for this project+location
     license_edition: str
     # --- provenance ---
@@ -49,16 +48,15 @@ class Config:
             location=_env("LOCATION", "global"),
             app_id=_require("APP_ID"),
             assistant_id=_env("ASSISTANT_ID", "default_assistant"),
-            api_version=_env("API_VERSION", "v1alpha"),
+            api_version=_env("API_VERSION", "v1"),
             project_number=_env("SOAK_PROJECT_NUMBER"),
             bucket=_env("SOAK_BUCKET"),
-            adk_agent_id=_env("SOAK_ADK_AGENT_ID", "11867618434103444869"),
-            a2a_agent_id=_env("SOAK_A2A_AGENT_ID", "1030712722314703187"),
-            data_store_id=_env("SOAK_DATA_STORE_ID", "architecture-documentation_1770737462806"),
+            a2a_agent_id=_require("SOAK_A2A_AGENT_ID"),
+            data_store_id=_require("SOAK_DATA_STORE_ID"),
             model_id=_env("SOAK_MODEL_ID", "gemini-2.5-flash"),
-            license_limit=int(_env("SOAK_LICENSE_LIMIT", "160")),
-            license_count=int(_env("SOAK_LICENSE_COUNT", "20")),
-            license_edition=_env("SOAK_LICENSE_EDITION", "Standard"),
+            license_limit=int(_env("SOAK_LICENSE_LIMIT", "0")),
+            license_count=int(_env("SOAK_LICENSE_COUNT", "0")),
+            license_edition=_env("SOAK_LICENSE_EDITION", "unconfigured"),
             git_sha=_env("GIT_SHA", "dev"),
             region=_env("SOAK_REGION", "us-central1"),
         )
@@ -82,6 +80,15 @@ class Config:
     def assistant_path(self) -> str:
         return f"{self.engine_path}/assistants/{self.assistant_id}"
 
+    @property
+    def a2a_assistant_path(self) -> str:
+        project = self.project_number or self.project_id
+        return (
+            f"projects/{project}/locations/{self.location}"
+            f"/collections/default_collection/engines/{self.app_id}"
+            f"/assistants/{self.assistant_id}"
+        )
+
     def url(self, path_and_verb: str, version: str | None = None) -> str:
         return f"https://{self.host}/{version or self.api_version}/{path_and_verb}"
 
@@ -102,7 +109,6 @@ class Config:
             "assistant_id": self.assistant_id,
             "api_version": self.api_version,
             "bucket": self.bucket,
-            "adk_agent_id": self.adk_agent_id,
             "a2a_agent_id": self.a2a_agent_id,
             "data_store_id": self.data_store_id,
             "model_id": self.model_id,

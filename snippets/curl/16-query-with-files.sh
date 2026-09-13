@@ -16,8 +16,7 @@ SESSION_ID="${1:?usage: $0 <session-id> <file-id> \"question\"}"
 FILE_ID="${2:?usage: $0 <session-id> <file-id> \"question\"}"
 QUERY="${3:-Summarize the attached file.}"
 
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query":   { "text": "'"${QUERY}"'" },
-  "session": "'"${ENGINE_PATH}"'/sessions/'"${SESSION_ID}"'",
-  "fileIds": [ "'"${FILE_ID}"'" ]
-}'
+BODY=$(jq -nc --arg query "${QUERY}" --arg session "${ENGINE_PATH}/sessions/${SESSION_ID}" \
+  --arg file "${FILE_ID}" \
+  '{query: {text: $query}, session: $session, fileIds: [$file]}')
+de_post_alpha "${ASSISTANT_PATH}:streamAssist" "${BODY}"

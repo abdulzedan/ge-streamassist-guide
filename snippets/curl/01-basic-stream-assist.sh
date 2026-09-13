@@ -11,6 +11,5 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 QUERY="${1:-What can this assistant do?}"
 
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query": { "text": "'"${QUERY}"'" }
-}'
+BODY=$(jq -nc --arg query "${QUERY}" '{query: {text: $query}}')
+de_post "${ASSISTANT_PATH}:streamAssist" "${BODY}"

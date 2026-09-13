@@ -15,16 +15,18 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 TOPIC="${1:-Current trends in agentic AI adoption in retail banking}"
 
-RESP=$(de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query":   { "text": "'"${TOPIC}"'" },
-  "session": "'"${ENGINE_PATH}"'/sessions/-",
-  "agentsSpec": { "agentSpecs": [ { "agentId": "deep_research" } ] },
-  "toolsSpec": { "webGroundingSpec": {} }
-}')
+BODY=$(jq -nc --arg topic "${TOPIC}" --arg session "${ENGINE_PATH}/sessions/-" \
+  '{query: {text: $topic}, session: $session,
+    agentsSpec: {agentSpecs: [{agentId: "deep_research"}]},
+    toolsSpec: {webGroundingSpec: {}}}')
+RESP=$(de_post "${ASSISTANT_PATH}:streamAssist" "${BODY}")
 
 echo "== Research plan =="
 echo "${RESP}" | jq -r '[ .[] | .answer.replies[]? | .groundedContent.content
                           | select(. != null and .thought != true) | .text // empty ] | join("")'
+SESSION=$(echo "${RESP}" | jq -er '[.[] | .sessionInfo.session // empty] | last')
+echo
+echo "== session: ${SESSION}"
 echo
 echo "== To execute the plan, run: =="
-echo "./10-deep-research-execute.sh $(echo "${RESP}" | jq -r '.[0].sessionInfo.session' | awk -F/ '{print $NF}')"
+echo "./10-deep-research-execute.sh ${SESSION##*/}"

@@ -32,9 +32,10 @@ TOKEN="$(gcloud auth print-access-token)"
 BASE="https://${DE_HOST}/v1alpha/projects/${PROJECT_ID}/locations/${LOCATION}/collections/default_collection"
 
 echo "== Engines (Gemini Enterprise apps) in ${PROJECT_ID}/${LOCATION} =="
-curl -sS "${BASE}/engines" \
+ENGINES_JSON=$(curl -sS --fail-with-body "${BASE}/engines" \
   -H "Authorization: Bearer ${TOKEN}" -H "X-Goog-User-Project: ${PROJECT_ID}" \
-  | python3 -c '
+)
+printf '%s' "${ENGINES_JSON}" | python3 -c '
 import json, sys
 d = json.load(sys.stdin)
 if "error" in d:
@@ -45,11 +46,10 @@ for e in d.get("engines", []):
 
 echo
 echo "== Registered agents per app =="
-for ENGINE in $(curl -sS "${BASE}/engines" \
-    -H "Authorization: Bearer ${TOKEN}" -H "X-Goog-User-Project: ${PROJECT_ID}" \
-    | python3 -c 'import json,sys; [print(e["name"].split("/")[-1]) for e in json.load(sys.stdin).get("engines",[])]'); do
+for ENGINE in $(printf '%s' "${ENGINES_JSON}" | python3 -c \
+    'import json,sys; [print(e["name"].split("/")[-1]) for e in json.load(sys.stdin).get("engines",[])]'); do
   echo "-- ${ENGINE}"
-  curl -sS "${BASE}/engines/${ENGINE}/assistants/default_assistant/agents?pageSize=100" \
+  curl -sS --fail-with-body "${BASE}/engines/${ENGINE}/assistants/default_assistant/agents?pageSize=100" \
     -H "Authorization: Bearer ${TOKEN}" -H "X-Goog-User-Project: ${PROJECT_ID}" \
     | python3 -c '
 import json, sys

@@ -25,14 +25,14 @@ case "${ACTION}" in
     ;;
   pin)
     : "${SESSION_ID:?usage: $0 pin <session-id>}"
-    curl -sS -X PATCH "${BASE_URL}/${ENGINE_PATH}/sessions/${SESSION_ID}?updateMask=isPinned" \
+    curl -sS --fail-with-body -X PATCH "${BASE_URL}/${ENGINE_PATH}/sessions/${SESSION_ID}?updateMask=isPinned" \
       -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" \
       -H "X-Goog-User-Project: ${PROJECT_ID}" \
       -d '{"isPinned": true}'
     ;;
   delete)
     : "${SESSION_ID:?usage: $0 delete <session-id>}"
-    curl -sS -X DELETE "${BASE_URL}/${ENGINE_PATH}/sessions/${SESSION_ID}" \
+    curl -sS --fail-with-body -X DELETE "${BASE_URL}/${ENGINE_PATH}/sessions/${SESSION_ID}" \
       -H "Authorization: Bearer ${TOKEN}" -H "X-Goog-User-Project: ${PROJECT_ID}"
     ;;
   *)

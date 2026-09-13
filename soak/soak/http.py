@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import codecs
 import json
+import re
 import sys
 import time
 import uuid
@@ -29,8 +30,10 @@ from .config import Config
 
 _SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
-# Verbs that consume the per-license "Assistant queries" feature quota.
-ASSIST_QUERY_VERBS = {"streamAssist", "assist", "a2a.message:stream"}
+# Heuristic counter for comparison with the Assistant feature allowance. The
+# quota page does not map native A2A calls to that unit, so they stay separate.
+# The Usage & Spending page remains authoritative.
+ASSIST_QUERY_VERBS = {"streamAssist", "assist"}
 
 
 def utcnow_iso() -> str:
@@ -110,6 +113,8 @@ class CallRecord:
     grounding_refs: int = 0
     content_kinds: list[str] = field(default_factory=list)
     a2a_roles: list[str] = field(default_factory=list)
+    handoff_required: bool = False
+    required_authorizations: int = 0
     meta_text: str = field(default="", repr=False)
     error: CallError | None = None
     retry_after: str | None = None
@@ -129,12 +134,14 @@ class CallRecord:
             "first_chunk_ms": self.first_chunk_ms, "bytes": self.bytes, "chunks": self.chunks,
             "assist_query": self.assist_query, "answer_state": self.answer_state,
             "skipped_reasons": self.skipped_reasons, "assist_token": self.assist_token,
-            "session": self.session, "text_chars": len(self.text), "text_head": self.text[:300],
+            "session": self.session, "text_chars": len(self.text),
             "thought_chars": self.thought_chars, "files": self.files, "planner_calls": self.planner_calls,
             "tool_results": self.tool_results, "reply_agents": sorted(set(self.reply_agents)), "grounding_refs": self.grounding_refs,
             "content_kinds": sorted(set(self.content_kinds)), "a2a_roles": sorted(set(self.a2a_roles)),
+            "handoff_required": self.handoff_required,
+            "required_authorizations": self.required_authorizations,
             "error": self.error.to_dict() if self.error else None, "retry_after": self.retry_after,
-            "response_excerpt": self.response_excerpt, "request_excerpt": self.request_excerpt,
+            "response_shape": self.response_excerpt, "request_shape": self.request_excerpt,
         }
         return d
 
@@ -153,38 +160,41 @@ def _parse_google_error(payload: Any) -> CallError | None:
         e = payload["error"]
         code = e.get("code")
         status = e.get("status")
-        message = str(e.get("message", ""))
+        message = _safe_error_message(e.get("message", ""))
         return CallError("http", code, status, message, _quota_like(code, status, message))
     return None
 
 
-def _excerpt(obj: Any, limit: int = 1500) -> Any:
-    """A compact, JSON-safe excerpt of a response body for the run record."""
+def _excerpt(obj: Any) -> Any:
+    """Record payload structure without storing prompts, answers or auth URLs."""
     if obj is None:
         return None
     if isinstance(obj, (bytes, bytearray)):
         return {"bytes": len(obj)}
-    try:
-        text = json.dumps(obj, default=str)
-    except TypeError:
-        text = str(obj)
-    if len(text) <= limit:
-        return obj
-    return {"_truncated": True, "_chars": len(text), "head": text[:limit]}
+    if isinstance(obj, dict):
+        return {str(k): _excerpt(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return {"type": "array", "items": len(obj), "sample": [_excerpt(v) for v in obj[:2]]}
+    if isinstance(obj, str):
+        return {"type": "string", "chars": len(obj)}
+    if isinstance(obj, bool):
+        return {"type": "boolean"}
+    if isinstance(obj, int):
+        return {"type": "integer"}
+    if isinstance(obj, float):
+        return {"type": "number"}
+    return {"type": type(obj).__name__}
 
 
 def redact_request(body: Any) -> Any:
-    if isinstance(body, dict):
-        out = {}
-        for k, v in body.items():
-            if k == "fileContents":
-                out[k] = f"<base64 {len(str(v))} chars>"
-            else:
-                out[k] = redact_request(v)
-        return out
-    if isinstance(body, list):
-        return [redact_request(v) for v in body]
-    return body
+    return _excerpt(body)
+
+
+def _safe_error_message(value: Any) -> str:
+    text = str(value or "")
+    text = re.sub(r"https?://\S+", "<url>", text)
+    text = re.sub(r"(?i)bearer\s+[A-Za-z0-9._~-]+", "Bearer <redacted>", text)
+    return text[:600]
 
 
 class _CountingResponse:
@@ -274,8 +284,8 @@ class Api:
                     err = _parse_google_error(payload)
                     rec.response_excerpt = _excerpt(payload)
                 except ValueError:
-                    rec.response_excerpt = raw[:800].decode("utf-8", "replace")
-                rec.error = err or CallError("http", resp.status_code, None, rec.response_excerpt if isinstance(rec.response_excerpt, str) else "",
+                    rec.response_excerpt = {"type": "non_json", "bytes": len(raw)}
+                rec.error = err or CallError("http", resp.status_code, None, "non-JSON error response",
                                              _quota_like(resp.status_code, None, ""))
                 return rec
             if stream:
@@ -293,8 +303,8 @@ class Api:
                     try:
                         rec.json = json.loads(raw.decode("utf-8", "replace"))
                     except ValueError:
-                        rec.error = CallError("parse", resp.status_code, None, raw[:300].decode("utf-8", "replace"))
-                        rec.response_excerpt = raw[:800].decode("utf-8", "replace")
+                        rec.error = CallError("parse", resp.status_code, None, "non-JSON response body")
+                        rec.response_excerpt = {"type": "non_json", "bytes": len(raw)}
                         rec.latency_ms = _ms(t0)
                         return rec
                 else:
@@ -311,13 +321,13 @@ class Api:
             rec.latency_ms = _ms(t0)
         except requests.exceptions.Timeout as exc:
             rec.latency_ms = _ms(t0)
-            rec.error = CallError("timeout", None, None, f"{type(exc).__name__}: {exc}"[:300])
+            rec.error = CallError("timeout", None, None, _safe_error_message(f"{type(exc).__name__}: {exc}"))
         except requests.exceptions.ConnectionError as exc:
             rec.latency_ms = _ms(t0)
-            rec.error = CallError("connection", None, None, f"{type(exc).__name__}: {exc}"[:300])
+            rec.error = CallError("connection", None, None, _safe_error_message(f"{type(exc).__name__}: {exc}"))
         except requests.exceptions.RequestException as exc:
             rec.latency_ms = _ms(t0)
-            rec.error = CallError("client", None, None, f"{type(exc).__name__}: {exc}"[:300])
+            rec.error = CallError("client", None, None, _safe_error_message(f"{type(exc).__name__}: {exc}"))
         return rec
 
     # -- stream handling -----------------------------------------------
@@ -334,11 +344,11 @@ class Api:
                 else:
                     self._absorb_answer_chunk(rec, obj)
         except requests.exceptions.ChunkedEncodingError as exc:
-            rec.error = rec.error or CallError("connection", None, None, f"stream cut: {exc}"[:300])
+            rec.error = rec.error or CallError("connection", None, None, _safe_error_message(f"stream cut: {exc}"))
         except requests.exceptions.Timeout as exc:
-            rec.error = rec.error or CallError("timeout", None, None, f"mid-stream: {type(exc).__name__}: {exc}"[:300])
+            rec.error = rec.error or CallError("timeout", None, None, _safe_error_message(f"mid-stream: {type(exc).__name__}: {exc}"))
         except (ValueError, json.JSONDecodeError) as exc:
-            rec.error = rec.error or CallError("parse", None, None, f"stream decode: {exc}"[:300])
+            rec.error = rec.error or CallError("parse", None, None, _safe_error_message(f"stream decode: {exc}"))
         finally:
             rec.bytes = shim.n
             resp.close()
@@ -357,7 +367,7 @@ class Api:
             return
         if isinstance(chunk.get("error"), dict) and rec.error is None:
             e = chunk["error"]
-            code, status, msg = e.get("code"), e.get("status"), str(e.get("message", ""))
+            code, status, msg = e.get("code"), e.get("status"), _safe_error_message(e.get("message", ""))
             rec.error = CallError("stream_error", code, status, msg, _quota_like(code, status, msg))
             rec.response_excerpt = _excerpt(chunk)
         info = chunk.get("sessionInfo") or {}
@@ -405,7 +415,7 @@ class Api:
             return
         if isinstance(item.get("error"), dict) and rec.error is None:
             e = item["error"]
-            code, status, msg = e.get("code"), e.get("status"), str(e.get("message", ""))
+            code, status, msg = e.get("code"), e.get("status"), _safe_error_message(e.get("message", ""))
             rec.error = CallError("stream_error", code, status, msg, _quota_like(code, status, msg))
         msg = item.get("message") or {}
         if msg.get("role"):
@@ -417,6 +427,13 @@ class Api:
                 rec.text += part["text"]
         meta = msg.get("metadata") or {}
         if meta:
+            auths = meta.get("requiredAuthorizations") or meta.get("required_authorizations") or []
+            rec.required_authorizations += len(auths) if isinstance(auths, list) else 1
+            structured = meta.get("structuredData") or {}
+            rec.handoff_required = rec.handoff_required or bool(
+                auths or meta.get("agentInvocation") or meta.get("agent_invocation")
+                or structured.get("required_authorization")
+            )
             saved = rec.text
             rec.text = rec.meta_text
             self._absorb_answer_chunk(rec, meta)   # fills state/session/token/planner/thoughts
@@ -429,8 +446,11 @@ class Api:
     # -- verbs -----------------------------------------------------------
 
     def stream_assist(self, check: str, body: dict, read_timeout: float = 300) -> CallRecord:
+        version = "v1alpha" if any(
+            key in body for key in ("fileIds", "assistSkippingMode", "isSessionLess", "actionSpec")
+        ) else None
         return self.request(check, "streamAssist", "POST", f"{self.cfg.assistant_path}:streamAssist",
-                            json_body=body, stream=True, timeout=(10, read_timeout))
+                            version=version, json_body=body, stream=True, timeout=(10, read_timeout))
 
     def assist(self, check: str, body: dict, read_timeout: float = 300) -> CallRecord:
         return self.request(check, "assist", "POST", f"{self.cfg.assistant_path}:assist",
@@ -440,12 +460,12 @@ class Api:
         body = {"message": {"role": "ROLE_USER", "content": [{"text": text}],
                             "messageId": f"soak-{uuid.uuid4().hex[:10]}"}}
         return self.request(check, "a2a.message:stream", "POST",
-                            f"{self.cfg.assistant_path}/agents/{agent_id}/a2a/v1/message:stream",
+                            f"{self.cfg.a2a_assistant_path}/agents/{agent_id}/a2a/v1/message:stream",
                             version="v1", json_body=body, stream=True, timeout=(10, read_timeout))
 
     def a2a_card(self, check: str, agent_id: str) -> CallRecord:
         return self.request(check, "a2a.card", "GET",
-                            f"{self.cfg.assistant_path}/agents/{agent_id}/a2a/v1/card", version="v1")
+                            f"{self.cfg.a2a_assistant_path}/agents/{agent_id}/a2a/v1/card", version="v1")
 
     def get(self, check: str, verb: str, path: str, params: dict | None = None, version: str | None = None) -> CallRecord:
         return self.request(check, verb, "GET", path, params=params, version=version)
@@ -473,7 +493,7 @@ class Api:
 
     def list_session_files(self, check: str, session_id: str) -> CallRecord:
         return self.get(check, "sessions.listSessionFileMetadata",
-                        f"{self.cfg.engine_path}/sessions/{session_id}:listSessionFileMetadata")
+                        f"{self.cfg.engine_path}/sessions/{session_id}:listSessionFileMetadata", version="v1alpha")
 
     def download_file(self, check: str, session_id: str, file_id: str) -> CallRecord:
         return self.request(check, "sessions.downloadFile", "GET",
@@ -481,10 +501,11 @@ class Api:
                             params={"fileId": file_id, "alt": "media"}, expect_bytes=True, timeout=(10, 300))
 
     def list_agents(self, check: str) -> CallRecord:
-        return self.get(check, "agents.list", f"{self.cfg.assistant_path}/agents", params={"pageSize": 100})
+        return self.get(check, "agents.list", f"{self.cfg.assistant_path}/agents",
+                        params={"pageSize": 100}, version="v1alpha")
 
     def get_agent(self, check: str, agent_id: str) -> CallRecord:
-        return self.get(check, "agents.get", f"{self.cfg.assistant_path}/agents/{agent_id}")
+        return self.get(check, "agents.get", f"{self.cfg.assistant_path}/agents/{agent_id}", version="v1alpha")
 
     def get_assistant(self, check: str) -> CallRecord:
         return self.get(check, "assistants.get", self.cfg.assistant_path)

@@ -288,11 +288,17 @@ def render_md(m: dict) -> str:
             ["Runs recorded", f"{m['run_count']} ({s['fast_seen']} fast, {s['heavy_seen']} heavy)"],
             ["Fast slots expected / seen / missed", f"{s['fast_expected']} / {s['fast_seen']} / {s['fast_missed']}"],
             ["API calls (all verbs)", f"{u['calls_total']} ({u['calls_ok']} ok)"],
-            ["Assistant queries (streamAssist + assist + native A2A)", f"{u['assist_queries']} ({u['assist_queries_ok']} ok, {u['assist_success_rate']})"],
-            [f"vs one {u['license_edition']} license ({u['per_license_limit']}/day)", f"{u['assist_vs_one_license']}x"],
-            [f"vs the pooled quota ({u['license_count']} licenses x {u['per_license_limit']} = {u['pool_limit']}/day)", u["assist_vs_pool"]],
+            ["Candidate feature-query calls (streamAssist + assist)", f"{u['assist_queries']} ({u['assist_queries_ok']} ok, {u['assist_success_rate']})"],
+            ["vs one configured allowance", (
+                f"{u['assist_vs_one_license']}x ({u['license_edition']}, {u['per_license_limit']}/day)"
+                if u["per_license_limit"] else "not configured"
+            )],
+            ["vs configured licence pool", (
+                f"{u['assist_vs_pool']} ({u['license_count']} x {u['per_license_limit']} = {u['pool_limit']}/day)"
+                if u["license_count"] else "not configured"
+            )],
             ["Quota errors (429 / RESOURCE_EXHAUSTED)", u["quota_errors"] if not u["first_quota_error"] else
-             f"{u['quota_errors']}, first at {u['first_quota_error']['at']} after {u['first_quota_error']['assist_queries_before']} queries"],
+             f"{u['quota_errors']}, first at {u['first_quota_error']['at']} after {u['first_quota_error']['assist_queries_before']} candidate calls"],
             ["Probe availability", f"{a['probe_success_rate']} ({a['probe_ok']}/{a['probe_attempts']})"],
             ["Longest probe failure streak", (f"{a['longest_probe_failure_streak']['count']} runs, {a['longest_probe_failure_streak']['from']} to {a['longest_probe_failure_streak']['to']}"
                                               if a["longest_probe_failure_streak"]["count"] else "none")],
@@ -300,9 +306,9 @@ def render_md(m: dict) -> str:
             ["Time to first byte p50 (assist calls)", ms(u["assist_ttfb_p50_ms"])],
         ]),
         "",
-        "Assistant queries per Pacific calendar day (the quota window resets at midnight PT):",
+        "Candidate feature-query calls per Pacific calendar day (confirm against Usage & Spending):",
         "",
-        _table(["PT day", "Assistant queries", f"% of one license ({u['per_license_limit']})", f"% of pool ({u['pool_limit']})"],
+        _table(["PT day", "Candidate calls", f"% of one allowance ({u['per_license_limit']})", f"% of pool ({u['pool_limit']})"],
                [[d, n, rate(n, u["per_license_limit"]), rate(n, u["pool_limit"])] for d, n in u["assist_queries_per_pt_day"].items()]) or "(none)",
         "",
         "## Scheduler and runtime",
@@ -335,7 +341,7 @@ def render_md(m: dict) -> str:
         "",
         "## Hourly timeline (UTC)",
         "",
-        _table(["Hour", "Runs", "Calls", "Assist queries", "Failed calls", "Failed checks", "Assist p95", "Cumulative (PT day)"], [
+        _table(["Hour", "Runs", "Calls", "Candidate calls", "Failed calls", "Failed checks", "Assist p95", "Cumulative (PT day)"], [
             [t["hour_utc"], t["runs"], t["calls"], t["assist_queries"], t["failed_calls"], t["failed_checks"], ms(t["assist_p95_ms"]),
              f"{t['cumulative_assist_queries_pt_day']} ({t['pt_day']})"] for t in m["timeline"]]) if m["timeline"] else "(empty)",
         "",
@@ -353,7 +359,7 @@ def render_md(m: dict) -> str:
         "- `calls.csv`: one row per API call (timestamp, verb, status, latency, assistToken, error)",
         "- `runs.csv`: one row per scheduled run",
         "- `checks.csv`: one row per check execution with failed assertions and observations",
-        "- `runs/YYYY-MM-DD/*.json` in the bucket: full evidence per run (request excerpts, response excerpts, planner traces)",
+        "- `runs/YYYY-MM-DD/*.json` in the bucket: per-run timings, payload shape, states and planner markers; prompt and answer text are not stored",
         "",
     ]
     return "\n".join(lines)

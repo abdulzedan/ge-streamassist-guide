@@ -1,7 +1,7 @@
-"""Invoke a specific registered agent (high-code ADK/A2A or no-code).
+"""Invoke a Stream Assist-supported agent.
 
 Run with no arguments to list agents; pass an agent ID and a question
-to invoke one.
+to invoke one. ADK and A2A agents use 07_native_a2a.py instead.
 """
 
 import sys

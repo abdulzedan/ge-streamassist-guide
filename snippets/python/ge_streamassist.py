@@ -32,7 +32,8 @@ class GEClient:
     app_id: str
     location: str = "global"
     assistant_id: str = "default_assistant"
-    api_version: str = "v1alpha"
+    api_version: str = "v1"
+    project_number: Optional[str] = None
     _creds: Any = field(default=None, repr=False)
 
     # -- plumbing ------------------------------------------------------
@@ -68,8 +69,8 @@ class GEClient:
             "X-Goog-User-Project": self.project_id,
         }
 
-    def _url(self, path_and_verb: str) -> str:
-        return f"https://{self.host}/{self.api_version}/{path_and_verb}"
+    def _url(self, path_and_verb: str, version: Optional[str] = None) -> str:
+        return f"https://{self.host}/{version or self.api_version}/{path_and_verb}"
 
     # -- streamAssist --------------------------------------------------
 
@@ -82,14 +83,16 @@ class GEClient:
         tools_spec: Optional[Dict[str, Any]] = None,
         model_id: Optional[str] = None,
         force_assist: bool = False,
+        is_session_less: bool = False,
         user_metadata: Optional[Dict[str, str]] = None,
+        api_version: Optional[str] = None,
         timeout: int = 1800,
     ) -> Generator[Dict[str, Any], None, None]:
         """Call :streamAssist and yield StreamAssistResponse chunks as dicts.
 
         session: full session resource name, a bare session ID, or "-" to
-        create a new one. agent_id pins the call to a specific registered
-        agent (without it, the orchestrator routes to the base assistant).
+        create a new one. agent_id selects a Stream Assist-supported agent
+        such as Deep Research or an Agent Designer chat agent.
         """
         body: Dict[str, Any] = {}
         if query is not None:
@@ -108,11 +111,17 @@ class GEClient:
             body["generationSpec"] = {"modelId": model_id}
         if force_assist:
             body["assistSkippingMode"] = "REQUEST_ASSIST"
+        if is_session_less:
+            body["isSessionLess"] = True
         if user_metadata:
             body["userMetadata"] = user_metadata
 
+        version = api_version
+        if version is None and (file_ids or force_assist or is_session_less):
+            version = "v1alpha"
+
         resp = requests.post(
-            self._url(f"{self.assistant_path}:streamAssist"),
+            self._url(f"{self.assistant_path}:streamAssist", version),
             headers=self._headers(),
             json=body,
             stream=True,
@@ -169,11 +178,7 @@ class GEClient:
         return out_path
 
     def assist(self, query: str, session: Optional[str] = None) -> Dict[str, Any]:
-        """Non-streaming :assist — one JSON object with the whole answer.
-
-        Undocumented method (works on v1alpha today); prefer stream_assist
-        for production use.
-        """
+        """Non-streaming :assist — one JSON object with the whole answer."""
         body: Dict[str, Any] = {"query": {"text": query}}
         if session:
             body["session"] = session
@@ -202,8 +207,12 @@ class GEClient:
         }
         if context_id:
             message["contextId"] = context_id
+        if not self.project_number:
+            raise ValueError("project_number is required for the native A2A endpoint")
+        assistant_path = self.assistant_path.replace(
+            f"projects/{self.project_id}/", f"projects/{self.project_number}/", 1)
         resp = requests.post(
-            f"https://{self.host}/v1/{self.assistant_path}"
+            f"https://{self.host}/v1/{assistant_path}"
             f"/agents/{agent_id}/a2a/v1/message:stream",
             headers=self._headers(),
             json={"message": message},
@@ -215,13 +224,25 @@ class GEClient:
 
     def list_agents(self) -> List[Dict[str, Any]]:
         r = requests.get(
-            self._url(f"{self.assistant_path}/agents"),
+            self._url(f"{self.assistant_path}/agents", "v1alpha"),
             headers=self._headers(),
             params={"pageSize": 100},
             timeout=60,
         )
         r.raise_for_status()
         return r.json().get("agents", [])
+
+    def list_session_files(self, session_id: str) -> List[Dict[str, Any]]:
+        r = requests.get(
+            self._url(
+                f"{self.engine_path}/sessions/{session_id}:listSessionFileMetadata",
+                "v1alpha",
+            ),
+            headers=self._headers(),
+            timeout=60,
+        )
+        r.raise_for_status()
+        return r.json().get("fileMetadata", [])
 
     def list_sessions(self, page_size: int = 20) -> List[Dict[str, Any]]:
         r = requests.get(
@@ -301,3 +322,4 @@ def _iter_json_array(resp: requests.Response) -> Generator[Dict[str, Any], None,
                 break  # need more bytes
             yield obj
             buf = stripped[end:]
+    raise ValueError("stream ended before the closing JSON-array bracket")

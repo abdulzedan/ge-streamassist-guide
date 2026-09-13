@@ -23,7 +23,7 @@ const ge = new GEClient({
 
 const query = process.argv[2] ?? "Explain dollar-cost averaging in two sentences.";
 
-for await (const chunk of ge.streamAssist({ query })) {
+for await (const chunk of ge.streamAssist({ query, isSessionLess: true })) {
   for (const reply of chunk.answer?.replies ?? []) {
     const content = reply.groundedContent?.content;
     if (content?.text && !content.thought) process.stdout.write(content.text);

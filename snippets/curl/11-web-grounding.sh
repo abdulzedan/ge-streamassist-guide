@@ -12,7 +12,6 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 QUERY="${1:-What was the most recent US Fed funds rate decision?}"
 
-de_post "${ASSISTANT_PATH}:streamAssist" '{
-  "query": { "text": "'"${QUERY}"'" },
-  "toolsSpec": { "webGroundingSpec": {} }
-}'
+BODY=$(jq -nc --arg query "${QUERY}" \
+  '{query: {text: $query}, toolsSpec: {webGroundingSpec: {}}}')
+de_post "${ASSISTANT_PATH}:streamAssist" "${BODY}"

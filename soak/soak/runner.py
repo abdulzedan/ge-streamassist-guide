@@ -88,7 +88,7 @@ def run(tier: str, local_dir: str | None = None, profile_override: str | None = 
     }
     finished = datetime.now(timezone.utc)
     record = {
-        "schema": 1,
+        "schema": 2,
         "harness_version": __version__,
         "run_id": run_id,
         "tier": tier,
@@ -120,4 +120,4 @@ def run(tier: str, local_dir: str | None = None, profile_override: str | None = 
         if not r.ok:
             log("WARNING", f"check {r.name} failed", run_id=run_id,
                 failed=[a.to_dict() for a in r.assertions if a.critical and not a.ok], error=r.error)
-    return 0
+    return 1 if summary["checks_failed"] else 0
