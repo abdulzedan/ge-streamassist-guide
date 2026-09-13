@@ -52,8 +52,7 @@ three of them are empty objects.
 
 - Restricts retrieval to the listed stores — only meaningful on apps with
   multiple data stores; omit the spec to search all of them.
-- The `dataStore` path officially requires the **project number** (ID has been
-  observed to work; don't rely on it).
+- The `dataStore` path requires the **project number**.
 - `filter` uses Vertex AI Search filter syntax against your schema's
   indexable/filterable fields; an unparseable filter fails the request with
   `INVALID_ARGUMENT`.
@@ -89,8 +88,5 @@ open (snippet 14 raises curl's `--max-time`).
 
 - Tool selection is still model-driven: enabling a spec makes the tool
   *available*; a prompt that doesn't call for it won't use it.
-- The deprecated top-level fields (`googleSearchGroundingEnabled`,
-  `webGroundingEnabled`, top-level `dataStoreSpecs`) still appear in older
-  examples — use `toolsSpec` exclusively.
 - Generated media lives inside the session that produced it; files are only
   addressable through that session (there is no global file API).

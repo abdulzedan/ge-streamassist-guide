@@ -27,7 +27,7 @@
                     "session": "projects/000000000000/locations/global/collections/default_collection/engines/gemini-enterprise-testng_1760546748983/sessions/4507115201888119303",
                     "turnId": "4507115201888119303_6443231006424095993"
                 },
-                "assistToken": "M8gKCwibqJ7UBhDO95dtEiQ2YTg3Mjc1OS0wMDAwLTJkOTAtYmY1Mi01ODI0MjlhNzc1MGM"
+                "assistToken": "REDACTED_ASSIST_TOKEN"
             }
         }
     },
@@ -41,7 +41,7 @@
                 }
             ],
             "metadata": {
-                "assistToken": "M8gKCwibqJ7UBhDO95dtEiQ2YTg3Mjc1OS0wMDAwLTJkOTAtYmY1Mi01ODI0MjlhNzc1MGM",
+                "assistToken": "REDACTED_ASSIST_TOKEN",
                 "answer": {
                     "state": "IN_PROGRESS",
                     "adkAuthor": "Loan_Compliance_Supervisor_1030712722314703187",

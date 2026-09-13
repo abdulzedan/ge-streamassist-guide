@@ -5,10 +5,9 @@
 1. A Gemini Enterprise app (engine). Find its ID with `./scripts/discover.sh <project-id>`.
 2. The **Discovery Engine API** enabled in the project
    (`gcloud services enable discoveryengine.googleapis.com`).
-3. An identity holding the IAM permission **`discoveryengine.assistants.assist`**
-   (e.g. `roles/discoveryengine.user` or broader). File upload additionally
-   needs `discoveryengine.sessions.addContextFile`; agent management needs
-   admin-level Discovery Engine roles.
+3. An identity holding **`discoveryengine.assistants.assist`**. File and agent
+   methods require their named `discoveryengine.sessions.*` or
+   `discoveryengine.agents.*` permissions.
 
 ## Getting a token
 
@@ -21,12 +20,20 @@ curl -X POST \
   -H "Authorization: Bearer ${TOKEN}" \
   -H "Content-Type: application/json" \
   -H "X-Goog-User-Project: ${PROJECT_ID}" \
-  "https://discoveryengine.googleapis.com/v1alpha/.../assistants/default_assistant:streamAssist" \
+  "https://discoveryengine.googleapis.com/v1/.../assistants/default_assistant:streamAssist" \
   -d '{ "query": { "text": "Hello" } }'
 ```
 
 Required scope: `https://www.googleapis.com/auth/cloud-platform`
 (`discoveryengine.readwrite` also works for most calls).
+
+The curl snippets use the active gcloud login. The Python client uses ADC:
+
+```bash
+gcloud auth login
+gcloud auth application-default login
+gcloud auth application-default set-quota-project "${PROJECT_ID}"
+```
 
 ### User credentials vs service account
 
@@ -34,7 +41,7 @@ Required scope: `https://www.googleapis.com/auth/cloud-platform`
 |---|---|---|
 | Good for | exploration, this repo's snippets | production backends |
 | Data-store ACLs | enforced as that user (Drive/SharePoint/Gmail results are the user's own) | SA sees only what the SA can see |
-| Personalization / memory | tied to the user | tied to the SA identity |
+| Personalization | tied to the caller | tied to the service account |
 
 Because Gemini Enterprise apps sit on top of ACL-aware connectors, **who calls
 matters**: the same query can return different grounding results per identity.
@@ -43,9 +50,9 @@ that a service account has its own (usually narrower) view of the data.
 
 ## The `X-Goog-User-Project` header
 
-Always send `X-Goog-User-Project: <project-id>`. Without it, quota/billing
-attribution falls back to the OAuth client's default project, which for user
-credentials commonly produces
+The examples send `X-Goog-User-Project: <project-id>`. It sets the quota
+project for ADC and user credentials. A missing or unauthorized quota project
+can produce
 `403 PERMISSION_DENIED (CONSUMER_INVALID / USER_PROJECT_DENIED)` errors that
 look like IAM problems but aren't.
 
@@ -57,22 +64,20 @@ look like IAM problems but aren't.
 | `us` | `us-discoveryengine.googleapis.com` |
 | `eu` | `eu-discoveryengine.googleapis.com` |
 
-Using the wrong host for your app's location returns 404s (or an empty
-resource list that sends you debugging in the wrong direction). `common.sh`
-derives the host from `LOCATION` automatically.
+Using the wrong host can return a 404 or an empty resource list. `common.sh`
+derives the host from `LOCATION`.
 
 ## Corporate TLS interception
 
-On managed corporate machines with TLS-inspecting proxies, `curl` (which uses
-the OS trust store) works while Python/Node clients fail with
-`CERTIFICATE_VERIFY_FAILED` / `UNABLE_TO_GET_ISSUER_CERT`. Point them at the
-system bundle:
+On managed machines with TLS inspection, Python or Node may need the approved
+corporate CA bundle:
 
 ```bash
 # Python (requests / google-auth)
-export REQUESTS_CA_BUNDLE=/etc/ssl/cert.pem SSL_CERT_FILE=/etc/ssl/cert.pem
+export REQUESTS_CA_BUNDLE=/path/to/approved-ca-bundle.pem
+export SSL_CERT_FILE=/path/to/approved-ca-bundle.pem
 # Node
-export NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem
+export NODE_EXTRA_CA_CERTS=/path/to/approved-ca-bundle.pem
 ```
 
 ## Common auth failures

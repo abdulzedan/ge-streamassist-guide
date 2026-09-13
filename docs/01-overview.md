@@ -1,81 +1,47 @@
 # 1. Overview
 
-## What Stream Assist is
+Stream Assist is the conversational API for a Gemini Enterprise app. It
+handles the base assistant, sessions, connected data, tools, Agent Designer
+chat agents and Deep Research.
 
-`assistants:streamAssist` is the headless (API) entry point to a Gemini
-Enterprise app. One HTTP POST gives you programmatic access to everything the
-Gemini Enterprise UI can do:
+Registered ADK and A2A agents use the registry A2A endpoint. They are not
+supported through `streamAssist`.
 
-- the base assistant (grounded on your connected data stores and/or web search),
-- every **agent** registered on the app: This includes: no-code (Agent Designer / managed),
-  high-code (ADK on Agent Engine / Agent Runtime), A2A, Dialogflow,
-- **Deep Research**,
-- tools: web grounding, data-store grounding, image generation, video generation,
-- sessions (multi-turn memory) and context files (upload → ask → download).
-
-```
-your code ──POST :streamAssist──▶ default_assistant (orchestrator/planner)
-                                        │
-              ┌─────────────┬───────────┼──────────────┬───────────────┐
-              ▼             ▼           ▼              ▼               ▼
-        base answer   ADK agents   A2A agents   no-code agents   deep_research
-        (RAG + web)   (Agent       (external    (Agent Designer, (made by
-                       Engine)      endpoint)    managed)         Google)
+```text
+application
+  ├─ Stream Assist
+  │    ├─ core assistant
+  │    ├─ Agent Designer chat agent
+  │    ├─ Deep Research
+  │    └─ grounding, files and media tools
+  └─ registry A2A endpoint
+       └─ agent advertising an A2A protocol
 ```
 
-## The two invocation surfaces
+## invocation surfaces
 
-| Surface | Endpoint | What it does |
+| Surface | Endpoint | Use it for |
 |---|---|---|
-| **streamAssist** | `POST .../assistants/default_assistant:streamAssist` | Goes through the orchestrator. Sessions, files, tools, agent routing. This is what the Gemini Enterprise UI itself uses. |
-| **Native A2A** | `POST .../assistants/default_assistant/agents/{id}/a2a/v1/message:stream` | Talks to ONE registered agent directly, A2A protocol, no orchestrator in between. See [11-a2a.md](11-a2a.md). |
+| Stream Assist | `POST {assistant}:streamAssist` | conversations, supported agents, tools, files and grounding |
+| Assist | `POST {assistant}:assist` | the same request as one non-streaming response |
+| Registry A2A | `POST {a2a-url}/v1/message:stream` | direct calls to an agent that advertises A2A |
 
-Rule of thumb: use streamAssist when you want the full assistant experience
-(grounding, sessions, routing); use the native A2A surface when you need a
-guaranteed direct line to one specific agent.
+Agent list/get is a separate `v1alpha` control-plane surface. Discovering an
+agent does not mean that every invocation surface supports it.
 
-## Verified capability matrix
+## checked capabilities
 
-Everything below was executed against a live Gemini Enterprise app before
-being documented (captured responses in [`outputs/`](../outputs/)):
+| Capability | Current path | Live check |
+|---|---|---|
+| base query and multi-turn session | Stream Assist `v1` | yes |
+| unary assist | Assist `v1` | yes |
+| Agent Designer chat agent | `agentsSpec` on Stream Assist `v1` | yes |
+| Deep Research | `agentsSpec` on Stream Assist `v1` | yes |
+| registered ADK/A2A agent | registry A2A endpoint | yes; may return an auth or confirmation handoff |
+| web and data-store grounding | `toolsSpec` on Stream Assist `v1` | yes |
+| image and video generation | `toolsSpec` on Stream Assist `v1` | yes |
+| file upload and download | session methods on `v1` | yes |
+| file selection and metadata list | `v1alpha` | yes |
 
-| Capability | Snippet | Works | Notes |
-|---|---|---|---|
-| Basic query | curl 01/02 | ✅ | |
-| Sessions & multi-turn | curl 03-05 | ✅ | auto-create with `-` |
-| List/get agents | curl 06-07 | ✅ | v1alpha only |
-| Invoke ADK (high-code) agent | curl 08 | ✅ | `agentsSpec` |
-| Invoke A2A agent | curl 08 | ✅ | same `agentsSpec` shape |
-| Invoke no-code / managed agent | curl 08 | ✅ | some return empty text — see gotchas |
-| Deep Research (plan + execute) | curl 09-10 | ✅ | allowlisted API feature |
-| Web grounding | curl 11 | ✅ | assistant-level setting required |
-| Data store grounding | curl 12 | ✅ | filter + boost supported |
-| Image generation | curl 13 | ✅ | returns session fileId |
-| Video generation | curl 14 | ✅ | returns session fileId |
-| File upload + file Q&A | curl 15-16 | ✅ | `addContextFile` + `fileIds` |
-| Download session files | curl 17 | ✅ | `alt=media` + follow redirect |
-| Non-streaming `:assist` | curl 18 | ✅ | undocumented; best-effort |
-| Skip-mode override | curl 19 | ✅ | `REQUEST_ASSIST` |
-| Language & user metadata | curl 20 | ✅ | fallback only, not a force |
-| Per-request model override | curl 21 | ✅ | `generationSpec.modelId` |
-| Native A2A card + message:stream | curl 23-24 | ✅ | direct agent line |
-
-## Editions and availability
-
-- streamAssist request/response is GA in `v1`; **agent management, `agentsSpec`,
-  `fileIds` and several other fields require `v1alpha`** (this repo defaults to
-  v1alpha). See [03-request-anatomy.md](03-request-anatomy.md).
-- Deep Research via API is GA **with allowlist** — request it via your Google
-  account team if calls to `deep_research` fail.
-- Made-by-Google agents (Deep Research, Core Assistant extras) are not
-  available in the Frontline edition.
-- `actionSpec.actionDisabled` only works on Enterprise edition.
-
-## Reading order
-
-New to the API? Read chapters 2 → 3 → 9 first (auth, request shape, stream
-parsing), then jump to the capability you need. Chapter 12 (caveats & gotchas)
-is worth a full read before you write production code.
-
-
-
+The detailed run record is in [chapter 16](16-verification.md). Captured
+payload shapes are in [`outputs/`](../outputs/).

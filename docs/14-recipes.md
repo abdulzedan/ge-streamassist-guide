@@ -20,28 +20,20 @@ FID=$(echo "$UP" | jq -r '.fileId')
 ./05-session-crud.sh get "$SID" | jq '.turns[].query.text'
 ```
 
-## Recipe B — Compliance check via a pinned high-code agent
+## Recipe B — Compliance check through a registered A2A agent
 
 ```bash
-./06-list-agents.sh                          # find your compliance agent's ID
-./08-invoke-specific-agent.sh <AGENT_ID> \
-  "Run compliance checks on package #4711 and list any KYC flags."
-# confirm the agent actually ran:
-./08-invoke-specific-agent.sh <AGENT_ID> "..." \
-  | jq '.[-1].answer.diagnosticInfo.plannerSteps[]?.planStep.parts[]?.functionCall.functionName'
-```
-
-If routing must be deterministic (straight-through processing), use the
-native A2A line instead:
-
-```bash
+./06-list-agents.sh
+./23-a2a-get-card.sh <AGENT_ID>
 ./24-a2a-message-stream.sh <AGENT_ID> "Audit package #4711."
 ```
+
+Inspect the response for answer text or an authorization/confirmation handoff.
 
 ## Recipe C — Morning market brief (deep research, unattended)
 
 ```bash
-PLAN=$(./09-deep-research-plan.sh "Overnight moves in USD rates and IG credit; implications for our book")
+./09-deep-research-plan.sh "Overnight moves in USD rates and IG credit; implications for our book"
 SID=<session id printed by step 1>
 ./10-deep-research-execute.sh "$SID" > research.json          # runs minutes
 jq -r '[ .[] | .answer.replies[]?
@@ -72,10 +64,10 @@ AFID=$(jq -r '[ .[] | .answer.replies[]?.groundedContent.content.file
 
 - [ ] Parse the stream per chapter 9 (thoughts filtered, mid-stream errors handled, empty-text SUCCEEDED handled)
 - [ ] Session strategy decided (persist per user? `isSessionLess` for one-shots?)
-- [ ] Agent routing verified via `plannerSteps`, not assumed
-- [ ] `REQUEST_ASSIST` set for programmatic traffic that may look like chit-chat
+- [ ] Agent type matched to a supported invocation surface
+- [ ] Skip behavior tested; `REQUEST_ASSIST` used only where needed
 - [ ] Read timeouts ≥ 5 min for research/media calls
-- [ ] fileIds persisted at upload time (listFiles quirk)
+- [ ] file IDs persisted at upload time
 - [ ] Caller identity chosen deliberately (ACL-aware grounding)
 - [ ] `assistToken` logged for supportability
-- [ ] Quota alerting on the Discovery Engine API
+- [ ] Technical quota alerts and licence usage reviewed separately

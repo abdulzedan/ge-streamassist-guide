@@ -13,11 +13,10 @@ every call.
 | `".../sessions/{id}"` | continues that session (history available to the model) |
 | `"isSessionLess": true` | exchange is not persisted (response still shows a synthetic `sessions/session-less-…` name) |
 
-`sessionInfo.session` is repeated on (almost) every stream chunk, read it
-from the first chunk you receive.
+On `v1`, `sessionInfo` is returned on the final response object.
 
 ```bash
-SESSION=$(echo "$RESPONSE" | jq -r '.[0].sessionInfo.session')
+SESSION=$(echo "$RESPONSE" | jq -er '[.[] | .sessionInfo.session // empty] | last')
 ```
 
 See [`04-multi-turn-session.sh`](../snippets/curl/04-multi-turn-session.sh)
@@ -53,19 +52,16 @@ All of these are wrapped in
 
 ## Behaviors worth knowing
 
-- **Resource names come back with the project NUMBER**, even if you send the
-  project ID. Both work in requests; don't string-compare them.
+- **Resource names can come back with the project number**, even if the
+  request used the project ID. Parse resource names instead of string-matching
+  the path you sent.
 - **Auto-titling**: sessions created through streamAssist get a
   `displayName` generated from the first query (e.g. "Bar chart concept
   image"). Don't key any logic off display names.
-- **Cross-session user memory**: the assistant maintains user-level
-  personalization *across* sessions (a brand-new session may answer with
-  "as someone working in fixed income…" from an earlier, different session).
-  Deleting a session does not necessarily erase that user-level memory.
-- **File listing**: use `{session}:listSessionFileMetadata` — it works for
-  API-created sessions with the creating credentials. `{session}:listFiles`
-  (an unreleased collaborative-projects surface) returns a misleading 403
-  instead; see [08-files.md](08-files.md).
+- **Personalization can outlive one session.** Do not treat session deletion
+  as a general user-data erasure mechanism.
+- **File listing**: use the `v1alpha`
+  `{session}:listSessionFileMetadata` method; see [08-files.md](08-files.md).
 - Sessions are visible in the Gemini Enterprise UI for the same user —
   API-created sessions with odd display names will appear in the end user's
   history panel.

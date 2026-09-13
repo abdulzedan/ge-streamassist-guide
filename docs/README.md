@@ -19,3 +19,5 @@ before shipping anything.
 12. [Caveats & gotchas](12-caveats-gotchas.md)
 13. [API reference](13-api-reference.md)
 14. [Recipes](14-recipes.md)
+15. [Soak test](15-soak-test.md)
+16. [Verification record](16-verification.md)

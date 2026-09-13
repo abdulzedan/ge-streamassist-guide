@@ -13,7 +13,7 @@ from anywhere; most take their inputs as arguments.
 | 05 | `05-session-crud.sh` | list / get / pin / delete sessions |
 | 06 | `06-list-agents.sh` | agent inventory with types & states |
 | 07 | `07-get-agent.sh` | one agent's full definition |
-| 08 | `08-invoke-specific-agent.sh` | invoke any agent via agentsSpec |
+| 08 | `08-invoke-specific-agent.sh` | invoke a supported Agent Designer/managed agent |
 | 09 | `09-deep-research-plan.sh` | Deep Research step 1 (plan) |
 | 10 | `10-deep-research-execute.sh` | Deep Research step 2 (execute) |
 | 11 | `11-web-grounding.sh` | web-grounded answer |
@@ -28,8 +28,8 @@ from anywhere; most take their inputs as arguments.
 | 20 | `20-language-and-user-metadata.sh` | language fallback + time zone |
 | 21 | `21-generation-spec-model.sh` | per-request model override |
 | 22 | `22-get-assistant.sh` | assistant configuration |
-| 23 | `23-a2a-get-card.sh` | native A2A agent card |
-| 24 | `24-a2a-message-stream.sh` | native A2A direct message |
+| 23 | `23-a2a-get-card.sh` | registry A2A agent card |
+| 24 | `24-a2a-message-stream.sh` | registry A2A direct message |
 | 25 | `25-list-data-stores.sh` | connected data stores |
-| 26 | `26-diagnose-routing.sh` | plannerSteps routing verdict |
-| 27 | `27-list-session-file-metadata.sh` | list session context files (the working verb) |
+| 26 | `26-diagnose-routing.sh` | print optional planner diagnostics |
+| 27 | `27-list-session-file-metadata.sh` | list session context files |

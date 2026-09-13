@@ -1,143 +1,79 @@
-# 24-hour soak test for the Stream Assist API
+# Stream Assist soak test
 
-A small harness that calls the Gemini Enterprise Stream Assist API **every
-5 minutes for 24 hours from Cloud Run** (not from a laptop), exercises every
-capability the guide documents, counts what it used against the licence
-quota, and renders the evidence into a report artifact.
+Cloud Scheduler triggers three Cloud Run Jobs:
 
-```
-Cloud Scheduler ──every 5 min──▶ Cloud Run Job ge-soak-fast   ─┐
-Cloud Scheduler ──every 4 h────▶ Cloud Run Job ge-soak-heavy  ─┼─▶ gs://<bucket>/runs/YYYY-MM-DD/*.json
-Cloud Scheduler ──hourly───────▶ Cloud Run Job ge-soak-report ─┘        └─▶ gs://<bucket>/reports/latest/{report.md,report.json,*.csv}
+```text
+every 5 min  -> ge-soak-fast
+every 4 h    -> ge-soak-heavy
+hourly       -> ge-soak-report
+                         -> gs://{bucket}/runs and reports
 ```
 
-All three jobs run the same image (`soak/Dockerfile`, built by Cloud Build
-from the repo root so it reuses `snippets/python/ge_streamassist.py`). The
-jobs run as the service account `ge-soak@<project>.iam.gserviceaccount.com`
-with `roles/discoveryengine.user` + `viewer`, i.e. a plain headless caller
-with no Gemini Enterprise licence assigned.
+The jobs use one image built from `soak/Dockerfile`. They run under
+`ge-soak@{project}.iam.gserviceaccount.com`; the target project and app come
+from `.env`.
 
-## Quick start
+## commands
 
 ```bash
-./soak/deploy.sh deploy        # APIs, SA, bucket, image, 3 jobs, 3 schedulers (created paused)
-./soak/deploy.sh run fast      # one manual execution; check it wrote runs/... to the bucket
-./soak/deploy.sh start 24      # campaign.json: start at the next 5-min mark, end 24h later; schedulers resumed
-./soak/deploy.sh status        # any time
-./soak/deploy.sh report final  # after the window: report rendered for the campaign window, downloaded to soak/out/final/
-./soak/deploy.sh stop          # early stop (pauses schedulers, closes the window)
-./soak/deploy.sh destroy       # remove schedulers + jobs (bucket and SA are kept)
+./soak/deploy.sh deploy
+./soak/deploy.sh run fast
+./soak/deploy.sh start 24 standard
+./soak/deploy.sh status
+./soak/deploy.sh report final
+./soak/deploy.sh stop
+./soak/deploy.sh destroy
 ```
 
-`make soak-deploy / soak-start / soak-status / soak-report` wrap the same
-commands. Everything reads the repo `.env` for the target app.
+`deploy` creates or updates cloud resources and leaves schedulers paused.
+`destroy` removes the jobs and schedulers but keeps the bucket and service
+account.
 
-## What runs, and how often (profile `standard`)
+## standard profile
 
-| Check | Cadence | Assistant queries / day | What it proves |
-|---|---|---|---|
-| `control_plane` | every run | 0 | agents.list/get, assistants.get, engines.get, sessions.list answer |
-| `probe` | every 5 min (288/day) | 288 | sessionless `streamAssist` returns SUCCEEDED + text (availability + latency series) |
-| `multiturn` | every 30 min | 96 | session memory across two turns, `sessions.get` shows the turns, delete works |
-| `agent_adk` | every 30 min | 48 | `agentsSpec` pinned to an ADK agent answers; observation: planner really routed (`plannerSteps` functionCall) |
-| `agent_a2a` | every 30 min | 48 | same for a registered A2A agent |
-| `a2a_native` | every 30 min | 48 | native `a2a/v1/card` + `message:stream` direct line |
-| `web_grounding` | every 30 min | 48 | `webGroundingSpec`; observation: grounding references present |
-| `datastore_grounding` | every 30 min | 48 | `vertexAiSearchSpec` on one data store; observation: references present |
-| `file_roundtrip` | every hour | 24 | `addContextFile` -> `listSessionFileMetadata` -> `fileIds` query answers from the file -> `downloadFile` bytes match |
-| `assist_nonstreaming` | every hour | 24 | undocumented `:assist` still works |
-| `skip_mode` | every hour | 48 | "hello" is SKIPPED by default and answered with `REQUEST_ASSIST` |
-| `language` | every hour | 24 | `preferredLanguageCode=fr-CA` produces French |
-| `model_override` | every hour | 24 | `generationSpec.modelId` accepted |
-| `image_generation` | every 4 h | 6 | image tool returns a file, download is plausible |
-| `video_generation` | every 8 h | 3 | video tool returns a file (minutes-long stream) |
-| `deep_research` | every 12 h | 4 | plan + "Start Research" produce a `RESEARCH_REPORT` |
-| **total** | | **~781/day** | about 4.9x one Standard licence (160/day), about 24% of a 20-licence pool |
+| Check | Cadence | What it checks |
+|---|---|---|
+| control plane | every run | agent, assistant, engine and session reads |
+| probe | 5 min | stable `v1` Stream Assist, text and session cleanup |
+| multi-turn | 30 min | two turns, recall, get and delete |
+| native A2A | 30 min | card plus text or an auth/confirmation handoff |
+| web grounding | 30 min | web tool response and reference observation |
+| data-store grounding | 30 min | one selected store |
+| file round trip | hourly | upload, list, query, download and byte comparison |
+| Assist | hourly | non-streaming response |
+| skip mode | hourly | classifier and alpha override |
+| language/model | hourly | metadata and model override |
+| image | 4 h | file response and download |
+| video | 8 h | file response and download |
+| Deep Research | 12 h | plan, execute and report marker |
 
-Other profiles: `probe` (only `probe` + `control_plane`, 288 queries/day) and
-`full` (every fast check every run, about 3,500 queries/day - enough to
-exhaust a 20-licence Standard pool and lock real users out until midnight PT;
-use deliberately). Set the profile with `deploy.sh start 24 <profile>`.
+The standard schedule makes about 637 `streamAssist`/`assist` calls per day.
+This is an estimate from scheduled calls, not a billing counter. Configure
+`SOAK_LICENSE_COUNT` before comparing with a pool; the default is zero.
 
-Cadence is slot based (`slot = unix_time // 300`), so a missed run does not
-shift the rotation and the report can list exactly which 5-minute slots have
-no record.
+The `full` profile runs every fast check every five minutes and every heavy
+check every four hours. It can create more than 3,000 candidate calls per day.
 
-## What is recorded
+## evidence and privacy
 
-One JSON object per run in `runs/YYYY-MM-DD/HHMMSS_<tier>_<slot>.json`:
+Each run records method, API version, timing, byte/chunk counts, answer state,
+skip reasons, support token, session, file metadata, content kinds, routing
+markers, handoff flags and sanitized errors. Request and response values are
+reduced to structure and character counts before storage.
 
-- run metadata: slot, scheduled vs actual start (`late_ms`), duration, caller
-  identity, image sha, profile, campaign id;
-- every API call: verb, path, HTTP status, latency, time to first byte, time
-  to first decoded chunk, bytes, chunk count, `answer.state`,
-  `assistSkippedReasons`, **`assistToken`** (what Google support asks for),
-  session, text head, thought chars, generated files, planner functionCalls,
-  grounding reference count, normalised error (kind / code / status /
-  message / is_quota), redacted request body, response excerpt;
-- every check: pass/fail, failed assertions, observations (non-critical
-  facts such as "planner routed to the agent"), notes.
+Every created session has a cleanup observation. A failed critical assertion
+now makes the Cloud Run Job fail.
 
-Mid-stream `{"error":...}` chunks, `answer.state == FAILED`, timeouts,
-connection drops and non-JSON bodies are all classified separately
-(chapter 9 / gotcha 9), and anything that looks like quota
-(`429`, `RESOURCE_EXHAUSTED`, "quota" in the message) is flagged so the report
-can say exactly when the pool ran out.
-
-Every session a check creates is deleted at the end of the check
-(`cleanup_delete_session` observation), so the SA's history does not grow
-by 300 sessions a day; one-shot calls use `isSessionLess: true`.
-
-## The report artifact
-
-`python -m soak report` (the hourly `ge-soak-report` job, or
-`deploy.sh report <label>`) writes to `reports/<label>/`:
-
-| File | Contents |
-|---|---|
-| `report.md` | headline table (runs, calls, Assistant queries vs 160 and vs the pool, quota errors, probe availability, latency percentiles), queries per Pacific day, scheduler punctuality, per-check pass rates + observations, per-verb latency, hourly timeline, error catalogue with sample run ids and assistTokens |
-| `report.json` | the same as data |
-| `calls.csv` | one row per API call (open in Sheets to chart latency over the day) |
-| `runs.csv`, `checks.csv` | one row per run / per check execution |
-
-The window defaults to the campaign (`campaign.json` in the bucket); pass
-`--start/--end` or `--window-hours` to override.
-
-## Quota context
-
-Per Google's [quotas and overages](https://docs.cloud.google.com/gemini/enterprise/docs/quotas-and-overages)
-page, Assistant queries are a **licence feature quota pooled per project and
-location**: Standard 160/day per licence, Plus 200, Frontline 40, reset at
-midnight Pacific. The Discovery Engine technical quota ("Assist requests on
-Assistants") is separate: 600/min/project by default. `SOAK_LICENSE_LIMIT`,
-`SOAK_LICENSE_COUNT` and `SOAK_LICENSE_EDITION` feed the comparison in the
-report; the values are not enforced by the harness.
-
-## Local use
+## local
 
 ```bash
-uv venv --python 3.12 .venv && .venv/bin/pip install -r soak/requirements.txt
-make soak-local                                   # full fast tier once, results in soak/out/
-cd soak && ../.venv/bin/python -m soak --local out report --window-hours 2 --no-upload --out out/report-local
-cd soak && ../.venv/bin/python -m soak --local out run --tier heavy --only image_generation --ignore-campaign
+python3 -m venv .venv
+.venv/bin/pip install -r soak/requirements.txt
+cd soak
+set -a; . ../.env; set +a
+../.venv/bin/python -m soak --local out run --tier fast --all --ignore-campaign
+../.venv/bin/python -m soak --local out report --window-hours 2 --no-upload --out out/report-local
 ```
 
-Local runs use your gcloud ADC (so they count as *you*); on a corporate
-machine export the TLS bundle variables from chapter 2 first.
-
-## Layout
-
-```
-soak/
-  deploy.sh          provision / build / deploy / start / stop / status / report / destroy
-  Dockerfile         python:3.12-slim, context = repo root
-  cloudbuild.yaml    Cloud Build recipe (tags image with the git sha)
-  requirements.txt   requests, google-auth, tzdata
-  soak/
-    config.py        env-driven settings (.env names + SOAK_* fixtures)
-    http.py          instrumented calls -> CallRecord (uses the guide's stream decoder)
-    checks.py        the checks, their cadence and assertions
-    runner.py        one scheduled execution -> runs/<date>/<file>.json
-    report.py        aggregation + markdown/json/csv rendering
-    storage.py       GCS via the JSON API, or a local directory
-```
+Quota notes and the completed campaign summary are in
+[chapter 15](../docs/15-soak-test.md).

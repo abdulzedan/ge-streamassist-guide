@@ -1,7 +1,7 @@
 # 9. Parsing the stream
 
-Getting this wrong is the most common integration failure. The rules below are
-all verified against live responses (see [`outputs/`](../outputs/)).
+This chapter follows the current schema and live response shapes in
+[`outputs/`](../outputs/).
 
 ## Wire format: a streamed JSON array
 
@@ -49,7 +49,7 @@ It is **not** Server-Sent Events (`data:` lines) and **not** NDJSON. Options:
       "createTime": "…"
     } ],
     "assistSkippedReasons": [...],        // when state == SKIPPED
-    "diagnosticInfo": { "plannerSteps": [...] },  // routing trace (final chunk)
+    "diagnosticInfo": { "plannerSteps": [...] },  // optional planner detail
     "name": ".../assistAnswers/{id}"      // only on the final chunk
   },
   "sessionInfo": { "session": "…", "queryId": "…" },
@@ -68,10 +68,9 @@ It is **not** Server-Sent Events (`data:` lines) and **not** NDJSON. Options:
    - `inlineData` present → small binary payload (base64) delivered inline.
    - `executableCode` / `codeExecutionResult` → code-interpreter traffic.
 3. Watch `answer.state`: `IN_PROGRESS` → keep reading; anything else is final.
-4. Read `sessionInfo.session` (any chunk that has it) to continue the
-   conversation.
+4. Read `sessionInfo.session` from the final object on `v1`.
 
-Edge cases that WILL occur:
+Handle these cases:
 
 - **Empty content objects**: `{"content": {"role": "model"}}` with no text —
   skip them.
@@ -99,7 +98,7 @@ jq -r '.[-1].answer | "\(.state) \(.assistSkippedReasons // [] | join(","))"'
 jq '[ .[] | .answer.replies[]? | .groundedContent.content.file | select(. != null) ]'
 
 # session to continue with
-jq -r '[ .[] | .sessionInfo.session // empty ][0]'
+jq -er '[ .[] | .sessionInfo.session // empty ] | last'
 
 # routing trace: which agent actually ran
 jq '.[-1].answer.diagnosticInfo.plannerSteps // "no planner trace"'
@@ -107,8 +106,5 @@ jq '.[-1].answer.diagnosticInfo.plannerSteps // "no planner trace"'
 
 ## HTTP client settings
 
-- Use a streaming-capable client and **no read-idle timeout under 5 minutes**
-  (Deep Research and video generation go quiet for long stretches).
-- Compression is fine; chunked transfer is standard.
-- If you cancel mid-stream the answer state becomes `CANCELLED` server-side;
-  the partial turn may still be stored in the session.
+- Use a streaming client and allow several quiet minutes for Deep Research or
+  video generation.

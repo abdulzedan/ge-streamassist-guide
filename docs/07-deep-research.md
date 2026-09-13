@@ -1,81 +1,40 @@
 # 7. Deep Research
 
-Deep Research is a Made-by-Google agent registered on the app with the fixed
-agent ID **`deep_research`**. Via API it is GA **with allowlist** — if step 1
-below fails for you, request allowlisting through your Google account team.
-(Made-by-Google agents are not available in Frontline edition.)
+Deep Research uses the fixed agent ID `deep_research`. API access is GA with
+allowlisting and is unavailable in Frontline editions.
 
-## The two-step flow
-
-Deep Research never runs immediately: step 1 returns a research **plan**, and
-the research only starts when you approve it **in the same session**.
-
-### Step 1 — request the plan ([snippet 09](../snippets/curl/09-deep-research-plan.sh))
+## 1. get the plan
 
 ```json
 {
-  "query":   { "text": "Current trends in agentic AI adoption in retail banking" },
-  "session": ".../sessions/-",
-  "agentsSpec": { "agentSpecs": [ { "agentId": "deep_research" } ] },
-  "toolsSpec": { "webGroundingSpec": {} }
+  "query": {"text": "Current trends in agentic AI adoption in retail banking"},
+  "session": "projects/.../engines/.../sessions/-",
+  "agentsSpec": {"agentSpecs": [{"agentId": "deep_research"}]},
+  "toolsSpec": {"webGroundingSpec": {}}
 }
 ```
 
-Response: a normal short stream whose text is the plan (a reply may carry
-`contentMetadata.contentKind: "RESEARCH_PLAN"`). **Save
-`sessionInfo.session`.**
-Captured: [`outputs/09-deep-research-plan.json`](../outputs/09-deep-research-plan.json).
+Save the final `sessionInfo.session`. The plan may be marked
+`RESEARCH_PLAN`.
 
-You can also ground the research on your data stores by adding
-`vertexAiSearchSpec` to `toolsSpec` in both steps.
+## 2. approve it
 
-### Step 2 — approve and run ([snippet 10](../snippets/curl/10-deep-research-execute.sh))
+Send `Start Research` in the same session and include the same `agentsSpec`.
+Keep any data-store grounding spec on both calls.
 
-Same body, same session, and a confirmation query...the documented phrase is
-`"Start Research"` (natural-language approvals like "the plan looks good,
-proceed" also work). You can also request plan edits instead; the agent
-returns a revised plan.
+The execution takes minutes and may be quiet between chunks. The guide uses a
+30-minute client timeout.
 
-**This call streams for the entire research run — typically 5–20 minutes.**
-Configure your HTTP client accordingly (snippet 10 sets `--max-time 1800`).
-
-### What the execution stream contains (verified live)
-
-Replies are tagged via `groundedContent.contentMetadata.contentKind`, in
-roughly this order:
-
-| contentKind | Meaning |
+| `contentKind` | Content |
 |---|---|
-| `RESEARCH_PLAN` | (step 1 / revised plans) |
-| `RESEARCH_QUESTION` | each sub-question the agent decided to investigate (has a `contentId`) |
-| `RESEARCH_ANSWER` | streamed findings per question, grounded with `textGroundingMetadata` |
-| `RESEARCH_REPORT` | the final consolidated report text |
-| `RESEARCH_AUDIO_SUMMARY` | an audio summary; the reply content is `{"file": {"fileId": "...", "mimeType": "audio/mp3"}}` |
+| `RESEARCH_QUESTION` | generated sub-question |
+| `RESEARCH_ANSWER` | grounded findings |
+| `RESEARCH_REPORT` | final report |
+| `RESEARCH_AUDIO_SUMMARY` | downloadable audio file, when produced |
 
-A real run against a live app produced 8 research questions, a ~72,000
-character report and an mp3 audio summary
-(structure excerpt: [`outputs/10-deep-research-execute.excerpt.json`](../outputs/10-deep-research-execute.excerpt.json)).
+Concatenate text by `contentKind`; use `contentId` when pairing questions and
+answers. Download files with [snippet 17](../snippets/curl/17-download-session-file.sh).
 
-Download the audio summary with
-[`17-download-session-file.sh`](../snippets/curl/17-download-session-file.sh)
-using the session from step 1 and the audio `fileId`.
-
-## Python
-
-[`04_deep_research.py`](../snippets/python/examples/04_deep_research.py) runs
-the full flow and prints contentKind transitions as progress markers.
-
-## Caveats
-
-- **Do not** send step 2 without `agentsSpec` pinning `deep_research` — the
-  approval would be answered by the base assistant and the research never
-  starts.
-- The stream can stay silent for minutes between chunks. Don't set idle
-  timeouts below ~5 minutes; if the connection drops you can re-attach by
-  polling the session (`GET session?includeAnswerDetails=true`), but the
-  simplest robust pattern is a generous read timeout.
-- Each research question re-grounds; expect the run to consume noticeably
-  more quota than regular assist calls.
-- The report arrives as many `RESEARCH_ANSWER`/`RESEARCH_REPORT` fragments —
-  concatenate text per `contentKind` (and use `contentId` to group
-  question/answer pairs).
+The 2026-09-13 live run completed with a report, grounding references and an
+MP3 summary. No size or duration from that single run is treated as a service
+guarantee.

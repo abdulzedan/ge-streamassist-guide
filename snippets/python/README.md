@@ -12,7 +12,7 @@ python examples/01_basic_streaming.py
 - `GEClient.ask(...)` — collect a whole call into an `AssistResult`
   (`.text`, `.thoughts`, `.files`, `.session`, `.state`, `.skipped_reasons`),
 - `upload_file`, `download_file`, `assist`, `a2a_message_stream`,
-  `list_agents`, `list_sessions`, `delete_session`.
+  `list_agents`, `list_session_files`, `list_sessions`, `delete_session`.
 
 Examples (all read `../../.env` via `_env.py`):
 

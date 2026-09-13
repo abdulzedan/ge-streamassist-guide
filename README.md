@@ -1,89 +1,66 @@
-# Gemini Enterprise — Stream Assist API Guide
+# Gemini Enterprise Stream Assist API guide
 
-Ready guide to the Gemini Enterprise **Stream Assist
-API** (`assistants:streamAssist`): the headless entry point for invoking a
-Gemini Enterprise app, this includes: its base assistant, no-code agents, high-code
-(ADK / A2A) agents, Deep Research, tools (web & data-store grounding, image
-and video generation), sessions and file uploads, without the UI.
+Runnable REST, Python and Node examples for calling a Gemini Enterprise app
+without the web UI. The guide covers Stream Assist, sessions, files, grounding,
+media generation, Deep Research, agent discovery and native A2A calls.
 
-**Every snippet can be executed against a live Gemini Enterprise app.** 
-Captured (sanitized) responses live in
-[`outputs/`](outputs/), and the full smoke suite
-(`./scripts/run-all.sh`) which is used to run the snippets on a real Gemini Enterprise app deployment 
+The examples default to stable `v1`. Snippets that need agent discovery,
+`fileIds`, `isSessionLess`, `assistSkippingMode` or file metadata select
+`v1alpha` themselves.
 
-## Quick start
+## quick start
 
 ```bash
-git clone <this-repo> && cd ge-streamassist-guide
+git clone <this-repo>
+cd ge-streamassist-guide
 
-# 1. find your app + agents (verifies auth at the same time)
-./scripts/discover.sh <your-gcp-project-id>
-
-# 2. configure (writes .env for you)
-./scripts/setup-env.sh <your-gcp-project-id>   # or: make env + edit .env
-
-# 3. first call
+./scripts/discover.sh <gcp-project-id>
+./scripts/setup-env.sh <gcp-project-id>
 ./snippets/curl/01-basic-stream-assist.sh "What can you do?"
-
-# 4. optional: run everything
 make smoke
 ```
 
-Requirements: `gcloud` (authenticated), `curl`, `jq`, `python3`. IAM:
-`discoveryengine.assistants.assist` on the app's project.
+Requirements: `gcloud`, `curl`, `jq` and Python 3. IAM must include
+`discoveryengine.assistants.assist`; individual file and control-plane methods
+have their own permissions.
 
-## The guide
+## guide
 
-| Chapter | Covers |
+| Chapter | Subject |
 |---|---|
-| [00 Glossary](docs/00-glossary.md) | the terms used throughout |
-| [01 Overview](docs/01-overview.md) | surfaces, architecture, verified capability matrix |
-| [02 Authentication](docs/02-authentication.md) | IAM, tokens, headers, hosts, corp-TLS note |
-| [03 Request anatomy](docs/03-request-anatomy.md) | every request field + version matrix |
-| [04 Sessions](docs/04-sessions.md) | lifecycle, CRUD, memory behaviors |
-| [05 Invoking agents](docs/05-invoking-agents.md) | agent types, `agentsSpec` semantics, routing proof |
-| [06 Tools](docs/06-tools.md) | web/data-store grounding, image & video generation |
-| [07 Deep Research](docs/07-deep-research.md) | the two-step flow, contentKind markers |
-| [08 Files](docs/08-files.md) | upload, `fileIds` queries, download quirks |
-| [09 Parsing the stream](docs/09-parsing-the-stream.md) | wire format, assembly algorithm, edge cases |
-| [10 Agent management](docs/10-agent-management.md) | register/update/delete, OAuth authorizations |
-| [11 A2A](docs/11-a2a.md) | A2A registration + native direct-invocation surface |
-| [12 Caveats & gotchas](docs/12-caveats-gotchas.md) | **32 verified gotchas — read before production** |
-| [13 API reference](docs/13-api-reference.md) | condensed field-level reference |
-| [14 Recipes](docs/14-recipes.md) | end-to-end FSI flows + production checklist |
-| [15 Soak test](docs/15-soak-test.md) | 24 h every-5-minutes reliability run from Cloud Run, quota accounting, report artifact |
+| [00](docs/00-glossary.md) | glossary |
+| [01](docs/01-overview.md) | surfaces and supported paths |
+| [02](docs/02-authentication.md) | auth, IAM, headers and regional hosts |
+| [03](docs/03-request-anatomy.md) | request fields and API versions |
+| [04](docs/04-sessions.md) | sessions and multi-turn state |
+| [05](docs/05-invoking-agents.md) | supported Stream Assist agents |
+| [06](docs/06-tools.md) | web, data-store and media tools |
+| [07](docs/07-deep-research.md) | plan and execution flow |
+| [08](docs/08-files.md) | upload, query, list and download |
+| [09](docs/09-parsing-the-stream.md) | streamed JSON-array parsing |
+| [10](docs/10-agent-management.md) | agent registration and auth resources |
+| [11](docs/11-a2a.md) | direct A2A invocation |
+| [12](docs/12-caveats-gotchas.md) | short production notes |
+| [13](docs/13-api-reference.md) | condensed REST reference |
+| [14](docs/14-recipes.md) | composed examples |
+| [15](docs/15-soak-test.md) | soak-test method and results |
+| [16](docs/16-verification.md) | source and live verification record |
 
-## Snippets
+## repository
 
-| Directory | Contents |
+| Path | Contents |
 |---|---|
-| [`snippets/curl/`](snippets/curl/) | 26 runnable bash snippets, one capability each (01 basic → 26 routing diagnosis) |
-| [`snippets/python/`](snippets/python/) | `GEClient` (true incremental stream decoding) + 6 examples |
-| [`snippets/node/`](snippets/node/) | zero-dependency Node 18+ streaming client + example |
-| [`snippets/http/`](snippets/http/) | VS Code / JetBrains REST-client collections |
-| [`soak/`](soak/README.md) | 24 h soak-test harness: Cloud Run Jobs + Scheduler, per-call evidence in GCS, markdown/CSV report |
-
-All curl snippets read the same [`.env`](.env.example) via
-[`common.sh`](snippets/curl/common.sh) — nothing to edit inside the scripts.
-
-## Repository layout
-
-```
-docs/          the guide, chapter by chapter
-snippets/      curl / python / node / http clients & examples
-scripts/       discover.sh (find apps+agents), run-all.sh (smoke suite)
-soak/          24 h reliability soak test (Cloud Run Jobs + Cloud Scheduler)
-outputs/       real captured API responses (sanitized)
-```
-
-## Reproducing this repo's verification
+| [`snippets/curl/`](snippets/curl/) | 27 runnable shell examples |
+| [`snippets/python/`](snippets/python/) | incremental client and 8 examples |
+| [`snippets/node/`](snippets/node/) | zero-dependency streaming client |
+| [`snippets/http/`](snippets/http/) | REST-client requests |
+| [`soak/`](soak/README.md) | Cloud Run reliability harness |
+| [`outputs/`](outputs/README.md) | sanitized response shapes |
 
 ```bash
-make env && $EDITOR .env     # point at your own app
-make smoke                   # 12 fast checks
-make smoke-full              # + deep-research plan, image & video generation
+make validate       # offline tests used by CI
+make smoke          # live, fast checks against .env
+make smoke-full     # adds a research plan and media generation
 ```
 
-## License
-
-Apache 2.0 — see [LICENSE](LICENSE).
+Apache 2.0. See [LICENSE](LICENSE).
