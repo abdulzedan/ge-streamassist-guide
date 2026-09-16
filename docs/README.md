@@ -5,7 +5,7 @@ stream parsing), then the capability chapters you need. Read **12** in full
 before shipping anything.
 
 0. [Glossary](00-glossary.md)
-1. [Overview](01-overview.md) — surfaces, architecture, verified capability matrix
+1. [Overview](01-overview.md) — surfaces and verified capability matrix
 2. [Authentication](02-authentication.md)
 3. [Request anatomy](03-request-anatomy.md)
 4. [Sessions](04-sessions.md)

@@ -4,7 +4,7 @@ Last checked: 2026-09-13.
 
 ## sources
 
-- [Stream Assist v1 REST reference](https://docs.cloud.google.com/gemini/enterprise/docs/reference/rest/v1/projects.locations.collections.engines.assistants/streamAssist)
+- [StreamAssist v1 REST reference](https://docs.cloud.google.com/gemini/enterprise/docs/reference/rest/v1/projects.locations.collections.engines.assistants/streamAssist)
 - [Call a specific agent](https://docs.cloud.google.com/gemini/enterprise/docs/invoke-agent-streamassist)
 - [Call an agent through its registry A2A endpoint](https://docs.cloud.google.com/gemini/enterprise/docs/invoke-agent-a2a)
 - [Deep Research](https://docs.cloud.google.com/gemini/enterprise/docs/research-assistant)
@@ -26,7 +26,7 @@ GenXpress credential path was used.
 |---|---|
 | versions | `streamAssist` and `assist` returned HTTP 200 and `SUCCEEDED` on `v1`, `v1beta` and `v1alpha` |
 | supported agents | Deep Research and an Agent Designer chat agent answered through `agentsSpec` |
-| unsupported Stream Assist agents | registered ADK/A2A IDs produced base-assistant behavior with no routing evidence, matching the current documented limitation |
+| unsupported StreamAssist agents | registered ADK/A2A IDs produced base-assistant behavior with no routing evidence, matching the current documented limitation |
 | native A2A | cards and message streams worked for A2A-capable agents; some returned authorization or confirmation handoffs instead of text |
 | Agent Registry | API enabled; live records advertised `A2A_AGENT` in global, us and eu locations |
 | non-A2A agent | Deep Research card returned 501 and message returned 400 |

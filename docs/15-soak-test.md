@@ -31,7 +31,7 @@ The existing 24-hour campaign ran from 2026-09-09 17:30Z to 2026-09-10
 | duplicate slots | 3 |
 
 That campaign proved the base probe and the listed capability responses during
-the window. It did not prove licence consumption. Its ADK/A2A Stream Assist
+the window. It did not prove licence consumption. Its ADK/A2A StreamAssist
 checks only required a successful text response, so they are not accepted as
 routing proof; current Google documentation says those agent types are not
-supported through Stream Assist.
+supported through StreamAssist.

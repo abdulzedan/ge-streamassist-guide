@@ -1,4 +1,4 @@
-# Gemini Enterprise — Stream Assist guide
+# Gemini Enterprise — StreamAssist guide
 # Common entry points; every target is safe to re-run.
 
 .PHONY: help env discover smoke smoke-full validate python-deps clean

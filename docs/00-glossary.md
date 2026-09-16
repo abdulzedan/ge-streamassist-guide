@@ -4,7 +4,7 @@
 |---|---|
 | **App / Engine** | A Gemini Enterprise application. API resource: `engines/{APP_ID}`. The UI "name" is its display name — the resource ID has a numeric suffix. |
 | **Assistant** | The conversational surface of an app (`assistants/default_assistant`). Holds web-grounding settings and customer policy; parent of registered agents. |
-| **Orchestrator / planner** | The system behind Stream Assist that classifies the query, selects supported tools/agents and assembles the answer. Optional detail can appear in `diagnosticInfo`. |
+| **Orchestrator / planner** | The system behind StreamAssist that classifies the query, selects supported tools/agents and assembles the answer. Optional detail can appear in `diagnosticInfo`. |
 | **Agent** | A registered capability. Its supported invocation path depends on its type and advertised protocols. |
 | **Agent Engine / Agent Runtime** | Vertex AI service hosting high-code (ADK) agents as `reasoningEngines/{id}`. |
 | **A2A** | Agent-to-Agent protocol. Registry agents advertising `A2A_AGENT` expose card and message endpoints. |

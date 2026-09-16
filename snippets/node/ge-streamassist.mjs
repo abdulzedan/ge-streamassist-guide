@@ -1,4 +1,4 @@
-// Minimal Node.js (18+) client for the Gemini Enterprise Stream Assist API.
+// Minimal Node.js (18+) client for the Gemini Enterprise StreamAssist API.
 // Zero dependencies: uses fetch + gcloud for the token.
 //
 //   import { GEClient } from "./ge-streamassist.mjs";

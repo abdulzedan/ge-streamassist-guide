@@ -17,7 +17,7 @@ GET https://{{host}}/{{alpha}}/{{assistant}}/agents?pageSize=100
 Authorization: Bearer {{token}}
 X-Goog-User-Project: {{project}}
 
-### Invoke a Stream Assist-supported agent (Agent Designer or Deep Research)
+### Invoke a StreamAssist-supported agent (Agent Designer or Deep Research)
 POST https://{{host}}/{{version}}/{{assistant}}:streamAssist
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -47,7 +47,7 @@ Content-Type: application/json
 X-Goog-User-Project: {{project}}
 
 {
-  "query": { "text": "Summarize our architecture documentation." },
+  "query": { "text": "Summarize our connected documentation." },
   "toolsSpec": {
     "vertexAiSearchSpec": {
       "dataStoreSpecs": [

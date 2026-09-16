@@ -1,4 +1,4 @@
-"""Invoke a Stream Assist-supported agent.
+"""Invoke a StreamAssist-supported agent.
 
 Run with no arguments to list agents; pass an agent ID and a question
 to invoke one. ADK and A2A agents use 07_native_a2a.py instead.

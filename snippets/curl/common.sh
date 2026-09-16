@@ -2,7 +2,7 @@
 # ------------------------------------------------------------------
 # common.sh — shared environment for every curl snippet.
 # Every snippet sources this file. It loads .env, mints an access
-# token, and exports the base URLs used by the Stream Assist API.
+# token, and exports the base URLs used by the StreamAssist API.
 # ------------------------------------------------------------------
 set -euo pipefail
 

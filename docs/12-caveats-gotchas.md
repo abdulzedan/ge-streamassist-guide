@@ -3,9 +3,9 @@
 ## requests
 
 - Default to `v1`; use `v1alpha` only for the alpha fields or control-plane calls you need.
-- Stream Assist supports Core Assistant, Deep Research and Agent Designer chat agents. Use registry A2A for registered ADK/A2A agents.
+- StreamAssist supports Core Assistant, Deep Research and Agent Designer chat agents. Use registry A2A for registered ADK/A2A agents.
 - A registry entry must advertise `A2A_AGENT`. Card and message calls fail for agents without it.
-- Stream Assist does not support mutative connector actions.
+- StreamAssist does not support mutative connector actions.
 - Data-store and registry A2A paths use the project number.
 - Build JSON with a serializer. Shell string interpolation breaks on quotes, backslashes and newlines.
 

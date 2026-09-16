@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------
-# 08 — Invoke a Stream Assist-supported agent directly.
+# 08 — Invoke a StreamAssist-supported agent directly.
 # Supported types: Core Assistant, Deep Research and Agent Designer
 # chat agents. Registered ADK/A2A agents use snippet 24 instead.
 #

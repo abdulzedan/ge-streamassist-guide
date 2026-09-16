@@ -1,12 +1,23 @@
-# Gemini Enterprise Stream Assist API guide
+# Gemini Enterprise StreamAssist API guide
 
 Runnable REST, Python and Node examples for calling a Gemini Enterprise app
-without the web UI. The guide covers Stream Assist, sessions, files, grounding,
+without the web UI. The guide covers StreamAssist, sessions, files, grounding,
 media generation, Deep Research, agent discovery and native A2A calls.
 
 The examples default to stable `v1`. Snippets that need agent discovery,
 `fileIds`, `isSessionLess`, `assistSkippingMode` or file metadata select
 `v1alpha` themselves.
+
+> [!IMPORTANT]
+> **Availability and API stability**
+>
+> This guide shows how to use StreamAssist and related Gemini Enterprise APIs.
+> StreamAssist is generally available (GA), but exposes a subset of Gemini
+> Enterprise app capabilities. GA does not imply support for every current or
+> future app capability. Some examples use documented `v1alpha` fields or
+> methods when stable `v1` does not expose the feature. Alpha interfaces may
+> change. Existing capabilities will be maintained or replaced with equivalents
+> as the APIs evolve, which may require customers to update their code.
 
 ## quick start
 
@@ -33,7 +44,7 @@ have their own permissions.
 | [02](docs/02-authentication.md) | auth, IAM, headers and regional hosts |
 | [03](docs/03-request-anatomy.md) | request fields and API versions |
 | [04](docs/04-sessions.md) | sessions and multi-turn state |
-| [05](docs/05-invoking-agents.md) | supported Stream Assist agents |
+| [05](docs/05-invoking-agents.md) | supported StreamAssist agents |
 | [06](docs/06-tools.md) | web, data-store and media tools |
 | [07](docs/07-deep-research.md) | plan and execution flow |
 | [08](docs/08-files.md) | upload, query, list and download |

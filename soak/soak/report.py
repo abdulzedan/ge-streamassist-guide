@@ -274,7 +274,7 @@ def render_md(m: dict) -> str:
     u, s, a = m["usage"], m["scheduler"], m["availability"]
     w = m["window"]
     lines = [
-        "# Gemini Enterprise Stream Assist - 24h soak report",
+        "# Gemini Enterprise StreamAssist - 24h soak report",
         "",
         f"Generated {m['generated_at']} by ge-soak {m['harness_version']}. "
         f"Window {w['start']} to {w['end']} ({w['hours']} h{'' if w['complete'] else ', still running'}).",

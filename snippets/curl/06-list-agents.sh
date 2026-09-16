@@ -2,7 +2,7 @@
 # ------------------------------------------------------------------
 # 06 — List every agent registered on the assistant.
 # Agent discovery is v1alpha. Check the type before choosing the
-# Stream Assist or native A2A invocation path.
+# StreamAssist or native A2A invocation path.
 #
 # Usage: ./06-list-agents.sh [--raw]
 # ------------------------------------------------------------------

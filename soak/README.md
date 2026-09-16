@@ -1,4 +1,4 @@
-# Stream Assist soak test
+# StreamAssist soak test
 
 Cloud Scheduler triggers three Cloud Run Jobs:
 
@@ -34,7 +34,7 @@ account.
 | Check | Cadence | What it checks |
 |---|---|---|
 | control plane | every run | agent, assistant, engine and session reads |
-| probe | 5 min | stable `v1` Stream Assist, text and session cleanup |
+| probe | 5 min | stable `v1` StreamAssist, text and session cleanup |
 | multi-turn | 30 min | two turns, recall, get and delete |
 | native A2A | 30 min | card plus text or an auth/confirmation handoff |
 | web grounding | 30 min | web tool response and reference observation |

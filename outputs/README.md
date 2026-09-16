@@ -7,7 +7,7 @@ design.
 
 | File | Example |
 |---|---|
-| `01-basic-stream-assist.json` | base Stream Assist |
+| `01-basic-stream-assist.json` | base StreamAssist |
 | `04-multi-turn-session.json` | second turn in a session |
 | `09-deep-research-plan.json` | research plan |
 | `10-deep-research-execute.excerpt.json` | research content kinds |

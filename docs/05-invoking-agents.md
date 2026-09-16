@@ -3,7 +3,7 @@
 List agents with `GET {assistant}/agents` on `v1alpha`. The definition tells
 you how the agent was built; the invocation path is a separate question.
 
-| Agent | Through Stream Assist |
+| Agent | Through StreamAssist |
 |---|---|
 | Core Assistant | yes |
 | Deep Research | yes |
@@ -12,7 +12,7 @@ you how the agent was built; the invocation path is a separate question.
 | registered ADK agent | no; use registry A2A |
 | registered A2A agent | no; use registry A2A |
 
-## Stream Assist agent call
+## StreamAssist agent call
 
 Use stable `v1`:
 

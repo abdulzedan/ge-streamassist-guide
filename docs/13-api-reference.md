@@ -7,7 +7,7 @@ Current as of Discovery revision `20260908`. `G`, `B` and `A` mean `v1`,
 
 | Method | Path | Versions |
 |---|---|---|
-| Stream Assist | `POST {assistant}:streamAssist` | G B A |
+| StreamAssist | `POST {assistant}:streamAssist` | G B A |
 | Assist | `POST {assistant}:assist` | G B A |
 | session create/get/list/update/delete | `{engine}/sessions[...]` | G B A |
 | add context file | `POST {session}:addContextFile` | G B A |

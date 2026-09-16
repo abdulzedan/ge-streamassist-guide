@@ -225,7 +225,7 @@ def c_datastore_grounding(ctx: Ctx, res: CheckResult) -> None:
     if ctx.project_number and not cfg.project_number:
         object.__setattr__(cfg, "project_number", ctx.project_number)
     rec = ctx.api.stream_assist(res.name, _sessionless(
-        "Using only the connected documentation, summarize what the architecture documentation covers in two sentences.",
+        "Using only the connected documentation, summarize what it covers in two sentences.",
         toolsSpec={"vertexAiSearchSpec": {"dataStoreSpecs": [{"dataStore": cfg.data_store_path(cfg.data_store_id)}]}}),
         read_timeout=300)
     a_answer(res, rec)

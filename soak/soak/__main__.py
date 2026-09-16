@@ -7,7 +7,7 @@ import sys
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="soak", description="Gemini Enterprise Stream Assist soak test")
+    parser = argparse.ArgumentParser(prog="soak", description="Gemini Enterprise StreamAssist soak test")
     parser.add_argument("--local", metavar="DIR", help="write/read results in a local directory instead of GCS")
     sub = parser.add_subparsers(dest="command", required=True)
 

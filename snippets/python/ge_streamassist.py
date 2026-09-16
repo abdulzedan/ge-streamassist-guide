@@ -1,4 +1,4 @@
-"""Minimal client for the Gemini Enterprise Stream Assist API.
+"""Minimal client for the Gemini Enterprise StreamAssist API.
 
 Only dependencies: `requests` and `google-auth` (see requirements.txt).
 
@@ -91,7 +91,7 @@ class GEClient:
         """Call :streamAssist and yield StreamAssistResponse chunks as dicts.
 
         session: full session resource name, a bare session ID, or "-" to
-        create a new one. agent_id selects a Stream Assist-supported agent
+        create a new one. agent_id selects a StreamAssist-supported agent
         such as Deep Research or an Agent Designer chat agent.
         """
         body: Dict[str, Any] = {}
