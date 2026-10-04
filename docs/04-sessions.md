@@ -11,9 +11,13 @@ every call.
 | no `session` field | a session is still auto-created; its name is returned in `sessionInfo.session` |
 | `".../sessions/-"` | same — explicit "create new" |
 | `".../sessions/{id}"` | continues that session (history available to the model) |
-| `"isSessionLess": true` | exchange is not persisted and `sessionInfo.session` is empty |
+| `"isSessionLess": true` | exchange is not persisted; the final `sessionInfo.session` is empty |
 
 On `v1`, `sessionInfo` is returned on the final response object.
+
+On `v1alpha`, intermediate sessionless chunks can contain a synthetic
+`sessions/session-less-…` name. The final chunk omits the session value. Do not
+save or reuse the synthetic name.
 
 ```bash
 SESSION=$(echo "$RESPONSE" | jq -er '[.[] | .sessionInfo.session // empty] | last')

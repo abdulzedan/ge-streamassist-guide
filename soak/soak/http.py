@@ -402,6 +402,12 @@ class Api:
         answer = chunk.get("answer") or {}
         if answer.get("state"):
             rec.answer_state = answer["state"]
+        if (
+            "sessionInfo" in chunk
+            and not info.get("session")
+            and rec.answer_state in ("SUCCEEDED", "FAILED", "SKIPPED", "CANCELLED")
+        ):
+            rec.session = None
         rec.skipped_reasons.extend(answer.get("assistSkippedReasons", []))
         if answer.get("adkAuthor"):
             rec.reply_agents.append(f"adkAuthor:{answer['adkAuthor']}")

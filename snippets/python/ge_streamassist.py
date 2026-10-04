@@ -324,12 +324,16 @@ class AssistResult:
         self.chunks.append(chunk)
         if "error" in chunk:  # errors can arrive mid-stream with HTTP 200
             raise RuntimeError(f"streamAssist error chunk: {chunk['error']}")
-        info = chunk.get("sessionInfo") or {}
-        if info.get("session"):
-            self.session = info["session"]
         answer = chunk.get("answer") or {}
         if answer.get("state"):
             self.state = answer["state"]
+        info = chunk.get("sessionInfo") or {}
+        if info.get("session"):
+            self.session = info["session"]
+        elif "sessionInfo" in chunk and self.state in {
+            "SUCCEEDED", "FAILED", "SKIPPED", "CANCELLED"
+        }:
+            self.session = None
         self.invocation_tools.extend(chunk.get("invocationTools") or [])
         self.invoked_skills.extend(chunk.get("invokedSkills") or [])
         self.connector_auth_errors.extend(chunk.get("connectorAuthErrors") or [])

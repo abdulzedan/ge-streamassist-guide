@@ -19,10 +19,23 @@ The `v1`, `v1beta` and `v1alpha` JSON Discovery documents were downloaded
 again. All reported revision `20260927`. The Discovery documents omit some
 methods and fields that appear on the REST pages, so this check used both.
 
-The 2026-10-04 pass was a source and contract review. It did not call the live
-app or replace the dated live results below.
+The source review was followed by live checks against the app described below.
 
-## live target
+## 2026-10-04 live check
+
+Checks used the normal active gcloud configuration and user ADC for the
+Altostrat `main-env-demo` project. No alternate gcloud configuration or
+GenXpress credential path was used.
+
+| Area | Result |
+|---|---|
+| smoke suite | all 15 checks passed, including Assist, StreamAssist, session operations, web grounding and file upload/query |
+| sessionless alpha | intermediate chunks included a synthetic session name; the final chunk left the session empty; both Python clients now discard the synthetic name |
+| A2A | the exact Agent Registry card URL, `message:send` and `message:stream` succeeded |
+| response metadata | a successful A2A answer included a connector authorization error, confirming that callers must inspect response metadata even when the answer succeeds |
+| cleanup | the A2A test sessions were deleted; the sessionless call did not leave a persisted session |
+
+## 2026-09-13 live check
 
 Checks used the normal active gcloud configuration and user ADC for the
 Altostrat `main-env-demo` project. No alternate gcloud configuration or

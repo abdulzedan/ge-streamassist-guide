@@ -59,6 +59,18 @@ class StreamParserTests(unittest.TestCase):
         self.assertEqual(len(result.status_updates), 1)
         self.assertEqual(result.final_result_tool_invocation_id, "tool-7")
 
+    def test_sessionless_final_chunk_clears_synthetic_session(self):
+        result = AssistResult()
+        result.add_chunk({
+            "answer": {"state": "IN_PROGRESS"},
+            "sessionInfo": {"session": "projects/p/sessions/session-less-123"},
+        })
+        result.add_chunk({
+            "answer": {"state": "SUCCEEDED"},
+            "sessionInfo": {"queryId": "query-1"},
+        })
+        self.assertIsNone(result.session)
+
     def test_truncated_stream_is_rejected(self):
         response = FakeResponse([b'[{"state":"IN_PROGRESS"}'])
         with self.assertRaises(ValueError):
@@ -153,6 +165,19 @@ class SoakRecordTests(unittest.TestCase):
         self.assertEqual(payload["status_updates"], 1)
         self.assertTrue(payload["final_result_from_tool"])
         self.assertNotIn("secret auth detail", json.dumps(payload))
+
+    def test_soak_record_clears_sessionless_synthetic_session(self):
+        api = object.__new__(Api)
+        record = CallRecord("probe", "streamAssist", "POST", "path", "v1alpha")
+        api._absorb_answer_chunk(record, {
+            "answer": {"state": "IN_PROGRESS"},
+            "sessionInfo": {"session": "projects/p/sessions/session-less-123"},
+        })
+        api._absorb_answer_chunk(record, {
+            "answer": {"state": "SUCCEEDED"},
+            "sessionInfo": {"queryId": "query-1"},
+        })
+        self.assertIsNone(record.session)
 
 
 class ClientRequestTests(unittest.TestCase):
