@@ -10,9 +10,14 @@ python examples/01_basic_streaming.py
 - `GEClient.stream_assist(...)` — generator yielding chunks as they arrive
   (true incremental decoding of the streamed JSON array),
 - `GEClient.ask(...)` — collect a whole call into an `AssistResult`
-  (`.text`, `.thoughts`, `.files`, `.session`, `.state`, `.skipped_reasons`),
-- `upload_file`, `download_file`, `assist`, `a2a_message_stream`,
+  (`.text`, `.thoughts`, `.files`, `.session`, `.state`, `.skipped_reasons`,
+  `.invocation_tools`, `.invoked_skills`, `.connector_auth_errors`,
+  `.status_updates`, `.final_result_tool_invocation_id`),
+- `upload_file`, `download_file`, `assist`, `a2a_message_send`, `a2a_message_stream`,
   `list_agents`, `list_session_files`, `list_sessions`, `delete_session`.
+
+The A2A methods create a UUID for each message unless `message_id` is supplied.
+Pass the exact Agent Registry URL as `endpoint_url` when available.
 
 Examples (all read `../../.env` via `_env.py`):
 

@@ -10,6 +10,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 AGENT_ID="${1:?usage: $0 <agent-id> \"question\"   (find IDs with 06-list-agents.sh)}"
 QUERY="${2:?usage: $0 <agent-id> \"question\"}"
+require_streamassist_agent_id "${AGENT_ID}"
 
 BODY=$(jq -nc --arg query "${QUERY}" --arg session "${ENGINE_PATH}/sessions/-" \
   --arg agent "${AGENT_ID}" \

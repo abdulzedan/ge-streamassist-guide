@@ -4,7 +4,7 @@ import json
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "snippets" / "python"))
@@ -43,6 +43,22 @@ class StreamParserTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             result.add_chunk({"error": {"status": "FAILED_PRECONDITION"}})
 
+    def test_result_collects_current_response_metadata(self):
+        result = AssistResult()
+        result.add_chunk({
+            "invocationTools": ["web_grounding"],
+            "invokedSkills": [{"name": "skills/one", "displayName": "One"}],
+            "connectorAuthErrors": [{"dataConnector": "connectors/one"}],
+            "statusUpdates": [{"status": "WORKING"}],
+            "finalResultToolInvocationId": "tool-7",
+            "answer": {"state": "SUCCEEDED"},
+        })
+        self.assertEqual(result.invocation_tools, ["web_grounding"])
+        self.assertEqual(result.invoked_skills[0]["displayName"], "One")
+        self.assertEqual(len(result.connector_auth_errors), 1)
+        self.assertEqual(len(result.status_updates), 1)
+        self.assertEqual(result.final_result_tool_invocation_id, "tool-7")
+
     def test_truncated_stream_is_rejected(self):
         response = FakeResponse([b'[{"state":"IN_PROGRESS"}'])
         with self.assertRaises(ValueError):
@@ -77,7 +93,8 @@ class SoakRecordTests(unittest.TestCase):
             assistant_id="default_assistant", api_version="v1", bucket=None,
             a2a_agent_id="a2a", data_store_id="ds",
             model_id="model", license_limit=0, license_count=0,
-            license_edition="unconfigured", git_sha="test", region="us-central1",
+            license_edition="unconfigured", billing_model="unknown",
+            git_sha="test", region="us-central1",
         )
         api = object.__new__(Api)
         api.cfg = cfg
@@ -101,6 +118,96 @@ class SoakRecordTests(unittest.TestCase):
         self.assertTrue(record.handoff_required)
         self.assertEqual(record.required_authorizations, 1)
         self.assertNotIn("secret.test", json.dumps(record.to_dict()))
+
+    def test_a2a_send_response_is_absorbed(self):
+        api = object.__new__(Api)
+        record = CallRecord("a2a", "a2a.message:send", "POST", "path", "v1")
+        api._absorb_a2a_item(record, {
+            "message": {
+                "role": "ROLE_AGENT",
+                "contextId": "projects/123/locations/global/sessions/7",
+                "content": [{"text": "done"}],
+            }
+        })
+        self.assertEqual(record.text, "done")
+        self.assertEqual(record.session_id, "7")
+        self.assertIn("ROLE_AGENT", record.a2a_roles)
+
+    def test_current_response_metadata_is_recorded_without_connector_error_text(self):
+        api = object.__new__(Api)
+        record = CallRecord("probe", "streamAssist", "POST", "path", "v1")
+        api._absorb_answer_chunk(record, {
+            "invocationTools": ["web_grounding"],
+            "invokedSkills": [{"name": "skills/one"}],
+            "connectorAuthErrors": [{
+                "dataConnector": "connectors/private",
+                "errorMessage": "secret auth detail",
+            }],
+            "statusUpdates": [{"status": "WORKING"}],
+            "finalResultToolInvocationId": "tool-7",
+        })
+        payload = record.to_dict()
+        self.assertEqual(payload["invocation_tools"], ["web_grounding"])
+        self.assertEqual(payload["invoked_skills"], ["skills/one"])
+        self.assertEqual(payload["connector_auth_errors"], 1)
+        self.assertEqual(payload["status_updates"], 1)
+        self.assertTrue(payload["final_result_from_tool"])
+        self.assertNotIn("secret auth detail", json.dumps(payload))
+
+
+class ClientRequestTests(unittest.TestCase):
+    def client(self):
+        from ge_streamassist import GEClient
+
+        ge = GEClient(project_id="project", app_id="app", project_number="123")
+        ge._headers = Mock(return_value={})
+        return ge
+
+    def test_streamassist_rejects_non_numeric_registered_agent_id(self):
+        with self.assertRaisesRegex(ValueError, "must be numeric"):
+            list(self.client().stream_assist(query="hello", agent_id="named-agent"))
+
+    @patch("ge_streamassist.requests.post")
+    def test_a2a_generates_a_unique_message_id(self, post):
+        post.return_value.raise_for_status.return_value = None
+        post.return_value.json.return_value = {"message": {}}
+        ge = self.client()
+        ge.a2a_message_send("42", "first")
+        ge.a2a_message_send("42", "second")
+        first = post.call_args_list[0].kwargs["json"]["message"]["messageId"]
+        second = post.call_args_list[1].kwargs["json"]["message"]["messageId"]
+        self.assertNotEqual(first, second)
+
+    @patch("ge_streamassist.requests.post")
+    def test_a2a_uses_registry_endpoint_verbatim(self, post):
+        post.return_value.raise_for_status.return_value = None
+        post.return_value.json.return_value = {"message": {}}
+        self.client().a2a_message_send(
+            "42", "hello", endpoint_url="https://example.test/registered/a2a"
+        )
+        self.assertEqual(
+            post.call_args.args[0],
+            "https://example.test/registered/a2a/v1/message:send",
+        )
+
+    @patch("ge_streamassist.requests.post")
+    def test_assist_supports_current_stable_request_fields(self, post):
+        post.return_value.raise_for_status.return_value = None
+        post.return_value.json.return_value = {"answer": {"state": "SUCCEEDED"}}
+        self.client().assist(
+            file_ids=["file-1"],
+            force_assist=True,
+            user_metadata={"preferredLanguageCode": "fr-CA"},
+        )
+        self.assertEqual(post.call_args.kwargs["json"], {
+            "fileIds": ["file-1"],
+            "assistSkippingMode": "REQUEST_ASSIST",
+            "userMetadata": {"preferredLanguageCode": "fr-CA"},
+        })
+
+    def test_assist_requires_query_or_files(self):
+        with self.assertRaisesRegex(ValueError, "query or file_ids"):
+            self.client().assist()
 
 
 if __name__ == "__main__":

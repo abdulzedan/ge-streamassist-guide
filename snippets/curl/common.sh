@@ -72,3 +72,19 @@ de_get_alpha() {
     -H "Authorization: Bearer ${TOKEN}" \
     -H "X-Goog-User-Project: ${PROJECT_ID}"
 }
+
+require_streamassist_agent_id() {
+  local agent_id="$1"
+  if [[ "${agent_id}" != "deep_research" && ! "${agent_id}" =~ ^[0-9]+$ ]]; then
+    echo "ERROR: StreamAssist agent ID must be numeric or deep_research" >&2
+    return 2
+  fi
+}
+
+new_message_id() {
+  if command -v uuidgen >/dev/null 2>&1; then
+    uuidgen | tr '[:upper:]' '[:lower:]'
+  else
+    printf 'msg-%s-%s-%s\n' "$(date +%s)" "$$" "${RANDOM}"
+  fi
+}

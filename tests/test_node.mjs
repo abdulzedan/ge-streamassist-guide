@@ -73,3 +73,19 @@ test("Node client rejects an error object inside HTTP 200", async () => {
     globalThis.fetch = originalFetch;
   }
 });
+
+test("Node client rejects a named registered agent ID", async () => {
+  await assert.rejects(async () => {
+    for await (const _ of client().streamAssist({ query: "hello", agentId: "named-agent" })) {
+      // drain the generator
+    }
+  }, /must be numeric/);
+});
+
+test("Node client rejects a numeric agent ID passed as a number", async () => {
+  await assert.rejects(async () => {
+    for await (const _ of client().streamAssist({ query: "hello", agentId: 42 })) {
+      // drain the generator
+    }
+  }, /must be numeric/);
+});

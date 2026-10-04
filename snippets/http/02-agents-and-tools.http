@@ -93,6 +93,6 @@ X-Goog-User-Project: {{project}}
   "message": {
     "role": "ROLE_USER",
     "content": [ { "text": "What checks do you run?" } ],
-    "messageId": "msg-http-001"
+    "messageId": "REPLACE_WITH_A_NEW_UUID_FOR_EACH_REQUEST"
   }
 }

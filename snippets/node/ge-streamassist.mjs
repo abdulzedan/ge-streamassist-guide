@@ -53,7 +53,12 @@ export class GEClient {
     if (session) {
       body.session = session.includes("/") ? session : `${this.enginePath}/sessions/${session}`;
     }
-    if (agentId) body.agentsSpec = { agentSpecs: [{ agentId }] };
+    if (agentId) {
+      if (agentId !== "deep_research" && (typeof agentId !== "string" || !/^\d+$/.test(agentId))) {
+        throw new Error("StreamAssist agentId must be numeric or 'deep_research'");
+      }
+      body.agentsSpec = { agentSpecs: [{ agentId }] };
+    }
     if (fileIds) body.fileIds = fileIds;
     if (toolsSpec) body.toolsSpec = toolsSpec;
     if (forceAssist) body.assistSkippingMode = "REQUEST_ASSIST";
