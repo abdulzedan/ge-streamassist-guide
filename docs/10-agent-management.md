@@ -45,6 +45,14 @@ Current registration rules:
 - Model Armor configured in the console does NOT protect ADK agents — enforce
   it inside the agent's code.
 
+## Register an A2A agent
+
+A2A agent registration is Preview. Gemini Enterprise currently supports the
+A2A v0.3 streaming mechanism. If the agent uses A2A v1.0 or later, add the SDK
+compatibility layer (`a2a.compat.v0_3` for Python or `a2acompat/a2av0` for Go).
+Register a valid v0.3 agent card in `a2aAgentDefinition.jsonAgentCard`, then
+use the A2A URL returned by Agent Registry for calls. See [chapter 11](11-a2a.md).
+
 ## OAuth for agent tools (authorization resources)
 
 If agent tools act on behalf of the user, create an authorization resource

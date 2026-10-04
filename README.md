@@ -14,10 +14,11 @@ The examples default to stable `v1`. Snippets that need agent discovery,
 > This guide shows how to use StreamAssist and related Gemini Enterprise APIs.
 > StreamAssist is generally available (GA), but exposes a subset of Gemini
 > Enterprise app capabilities. GA does not imply support for every current or
-> future app capability. Some examples use documented `v1alpha` fields or
-> methods when stable `v1` does not expose the feature. Alpha interfaces may
-> change. Existing capabilities will be maintained or replaced with equivalents
-> as the APIs evolve, which may require customers to update their code.
+> future app capability. File-based Q&A and A2A agent registration are Preview.
+> Some examples use documented `v1alpha` fields or methods when stable `v1`
+> does not expose the feature. Preview and alpha interfaces may change.
+> Existing capabilities will be maintained or replaced with equivalents as the
+> APIs evolve, which may require customers to update their code.
 
 ## quick start
 
@@ -61,7 +62,7 @@ have their own permissions.
 
 | Path | Contents |
 |---|---|
-| [`snippets/curl/`](snippets/curl/) | 27 runnable shell examples |
+| [`snippets/curl/`](snippets/curl/) | 28 runnable shell examples |
 | [`snippets/python/`](snippets/python/) | incremental client and 8 examples |
 | [`snippets/node/`](snippets/node/) | zero-dependency streaming client |
 | [`snippets/http/`](snippets/http/) | REST-client requests |
@@ -69,7 +70,8 @@ have their own permissions.
 | [`outputs/`](outputs/README.md) | sanitized response shapes |
 
 ```bash
-make validate       # offline tests used by CI
+make python-deps    # one-time local dependency setup
+make validate       # offline tests used by CI; no API calls
 make smoke          # live, fast checks against .env
 make smoke-full     # adds a research plan and media generation
 ```

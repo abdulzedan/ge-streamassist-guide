@@ -53,9 +53,15 @@ It is **not** Server-Sent Events (`data:` lines) and **not** NDJSON. Options:
     "name": ".../assistAnswers/{id}"      // only on the final chunk
   },
   "sessionInfo": { "session": "…", "queryId": "…" },
-  "assistToken": "…"                      // quote this in support tickets
+  "assistToken": "…",                     // quote this in support tickets
+  "invocationTools": ["…"],
+  "invokedSkills": [{ "name": "…", "displayName": "…" }],
+  "connectorAuthErrors": [{ "dataConnector": "…", "errorMessage": "…" }]
 }
 ```
+
+Alpha responses can also include `statusUpdates[]` and
+`finalResultToolInvocationId`. The older `toolResult[]` field is deprecated.
 
 ## The assembly algorithm
 
@@ -69,6 +75,9 @@ It is **not** Server-Sent Events (`data:` lines) and **not** NDJSON. Options:
    - `executableCode` / `codeExecutionResult` → code-interpreter traffic.
 3. Watch `answer.state`: `IN_PROGRESS` → keep reading; anything else is final.
 4. Read `sessionInfo.session` from the final object on `v1`.
+5. Collect `invocationTools`, `invokedSkills` and `connectorAuthErrors` from
+   every object. Connector errors are partial failures: the rest of the request
+   can still complete.
 
 Handle these cases:
 
@@ -100,7 +109,11 @@ jq '[ .[] | .answer.replies[]? | .groundedContent.content.file | select(. != nul
 # session to continue with
 jq -er '[ .[] | .sessionInfo.session // empty ] | last'
 
-# routing trace: which agent actually ran
+# invoked tools and skills
+jq '[.[] | .invocationTools[]?] | unique'
+jq '[.[] | .invokedSkills[]?] | unique_by(.name)'
+
+# optional planner trace
 jq '.[-1].answer.diagnosticInfo.plannerSteps // "no planner trace"'
 ```
 

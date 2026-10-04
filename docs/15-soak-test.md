@@ -5,16 +5,25 @@ stores per-call timing and state, and renders Markdown, JSON and CSV reports.
 
 It deliberately separates facts from estimates:
 
-- `streamAssist` and `assist` calls are counted as candidate Assistant-query
-  usage for comparison with the configured licence allowance;
+- `streamAssist` and `assist` calls are counted as candidate feature-query
+  usage, not as a billing counter;
 - native A2A calls are reported separately because the quota page does not map
   that endpoint to an Assistant-query unit;
+- allowance math runs only when `SOAK_BILLING_MODEL` is `seat` or `legacy`;
+- pay-as-you-go has no feature quota, while seat plans use pooled daily limits;
 - the Usage & Spending page is the source of truth;
 - `429` and `RESOURCE_EXHAUSTED` are recorded without guessing which quota fired.
 
-The run record stores payload shape, sizes, states, planner markers,
+For the current seat plans, Google lists 160 Assistant queries per Standard
+licence per day and 200 per Plus licence per day, pooled by edition, project
+and location. Most feature pools reset at midnight Pacific. Accounts that
+received Google's August 17, 2026 billing-update email must use the legacy
+quota page instead. Check the live quota page before setting the soak values.
+
+The run record stores payload shape, sizes, states, invoked tool and skill
+names, connector auth error counts, progress-update counts, planner markers,
 `assistToken` and error categories. It does not store prompt text, answer text,
-bearer tokens or authorization URLs.
+connector error text, bearer tokens or authorization URLs.
 
 ## completed Altostrat run
 

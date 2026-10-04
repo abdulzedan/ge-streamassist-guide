@@ -12,8 +12,8 @@ supported through `streamAssist`.
 | Surface | Endpoint | Use it for |
 |---|---|---|
 | StreamAssist | `POST {assistant}:streamAssist` | conversations, supported agents, tools, files and grounding |
-| Assist | `POST {assistant}:assist` | the same request as one non-streaming response |
-| Registry A2A | `POST {a2a-url}/v1/message:stream` | direct calls to an agent that advertises A2A |
+| Assist | `POST {assistant}:assist` | one non-streaming answer; its request fields are a smaller set than StreamAssist |
+| Registry A2A | `POST {a2a-url}/v1/message:send` or `:stream` | calls to an agent that advertises A2A |
 
 Agent list/get is a separate `v1alpha` control-plane surface. Discovering an
 agent does not mean that every invocation surface supports it.
@@ -26,11 +26,11 @@ agent does not mean that every invocation surface supports it.
 | unary assist | Assist `v1` | yes |
 | Agent Designer chat agent | `agentsSpec` on StreamAssist `v1` | yes |
 | Deep Research | `agentsSpec` on StreamAssist `v1` | yes |
-| registered ADK/A2A agent | registry A2A endpoint | yes; may return an auth or confirmation handoff |
+| registered ADK/A2A agent | registry A2A endpoint (Preview registration) | yes; may return an auth or confirmation handoff |
 | web and data-store grounding | `toolsSpec` on StreamAssist `v1` | yes |
 | image and video generation | `toolsSpec` on StreamAssist `v1` | yes |
-| file upload and download | session methods on `v1` | yes |
-| file selection and metadata list | `v1alpha` | yes |
+| file upload and download | session methods on `v1` (Preview workflow) | yes |
+| file selection and metadata list | `v1alpha` (Preview) | yes |
 
 The detailed run record is in [chapter 16](16-verification.md). Captured
 payload shapes are in [`outputs/`](../outputs/).

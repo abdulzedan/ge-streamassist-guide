@@ -1,6 +1,6 @@
 # 16. Verification record
 
-Last checked: 2026-09-13.
+Last checked: 2026-10-04.
 
 ## sources
 
@@ -12,9 +12,15 @@ Last checked: 2026-09-13.
 - [ADK registration](https://docs.cloud.google.com/gemini/enterprise/docs/register-and-manage-an-adk-agent)
 - [Session file metadata](https://docs.cloud.google.com/gemini/enterprise/docs/reference/rest/v1alpha/projects.locations.collections.engines.sessions/listSessionFileMetadata)
 - [Quotas and overages](https://docs.cloud.google.com/gemini/enterprise/docs/quotas-and-overages)
+- [Feature usage](https://docs.cloud.google.com/gemini/enterprise/docs/feature-usage)
+- [Gemini Enterprise SLA](https://cloud.google.com/terms/gemini-enterprise/sla)
 
 The `v1`, `v1beta` and `v1alpha` JSON Discovery documents were downloaded
-again. All reported revision `20260908`.
+again. All reported revision `20260927`. The Discovery documents omit some
+methods and fields that appear on the REST pages, so this check used both.
+
+The 2026-10-04 pass was a source and contract review. It did not call the live
+app or replace the dated live results below.
 
 ## live target
 
@@ -49,3 +55,4 @@ tracks session IDs and deletes them on exit.
 - Grounded content depends on caller ACLs and the app's connected sources.
 - Alpha fields and Discovery/documentation mismatches need rechecking before a release.
 - OAuth-required A2A flows need an end-user completion step; the audit stopped at the handoff.
+- The StreamAssist SLA excludes pre-GA features and requests involving built-in, user-defined or external runtime agents.

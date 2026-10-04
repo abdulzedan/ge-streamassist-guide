@@ -26,9 +26,14 @@ Use stable `v1`:
 }
 ```
 
-`mentionMode` defaults to `DIRECT`: one mentioned agent is the top-level agent
-for the turn. `TOOL` and `TOOL_WORKFLOW_DIRECT` have workflow-specific rules;
-check the current schema before using them.
+Use the numeric ID at the end of the agent resource name. `deep_research` is
+the documented special ID. A malformed ID can fall back without a clear error,
+so validate it before sending the request.
+
+`mentionMode` defaults to `DIRECT`. The REST schema contains `TOOL` and
+`TOOL_WORKFLOW_DIRECT`, but Google's current StreamAssist guide says workflow
+agents are not supported. Treat them as unsupported until the task guide and
+schema agree and a controlled test proves the call route.
 
 Do not use a planner `functionCall` as the only routing test. `diagnosticInfo`
 is not guaranteed in current `v1` responses. Validate a domain-specific answer

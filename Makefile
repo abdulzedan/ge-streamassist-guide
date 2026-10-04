@@ -28,7 +28,8 @@ validate:
 	./scripts/validate.sh
 
 python-deps:
-	pip install -r snippets/python/requirements.txt
+	python3 -m venv .venv
+	.venv/bin/python -m pip install -r snippets/python/requirements.txt
 
 clean:
 	rm -f generated.png video.mp4 image.png

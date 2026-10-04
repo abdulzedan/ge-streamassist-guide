@@ -25,6 +25,9 @@ FID=$(echo "$UP" | jq -r '.fileId')
 ```bash
 ./06-list-agents.sh
 ./23-a2a-get-card.sh <AGENT_ID>
+# one complete response
+./28-a2a-message-send.sh <AGENT_ID> "Audit package #4711."
+# or streamed response fragments
 ./24-a2a-message-stream.sh <AGENT_ID> "Audit package #4711."
 ```
 
@@ -70,4 +73,5 @@ AFID=$(jq -r '[ .[] | .answer.replies[]?.groundedContent.content.file
 - [ ] file IDs persisted at upload time
 - [ ] Caller identity chosen deliberately (ACL-aware grounding)
 - [ ] `assistToken` logged for supportability
+- [ ] Invoked tools, invoked skills and connector auth errors inspected
 - [ ] Technical quota alerts and licence usage reviewed separately

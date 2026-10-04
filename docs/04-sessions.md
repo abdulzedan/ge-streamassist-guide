@@ -11,7 +11,7 @@ every call.
 | no `session` field | a session is still auto-created; its name is returned in `sessionInfo.session` |
 | `".../sessions/-"` | same — explicit "create new" |
 | `".../sessions/{id}"` | continues that session (history available to the model) |
-| `"isSessionLess": true` | exchange is not persisted (response still shows a synthetic `sessions/session-less-…` name) |
+| `"isSessionLess": true` | exchange is not persisted and `sessionInfo.session` is empty |
 
 On `v1`, `sessionInfo` is returned on the final response object.
 
@@ -44,8 +44,9 @@ DELETE {ENGINE}/sessions/{id}
 ```
 
 Supported list filters: `user_pseudo_id`, `state`, `display_name`, `starred`,
-`is_pinned`, `labels`, `create_time`, `update_time`. Order by `update_time`,
-`create_time`, `session_name`, `is_pinned`, `display_name` (append ` desc`).
+`is_pinned`, `labels`, `create_time`, `update_time`, `collaborativeProject`.
+Order by `update_time`, `create_time`, `session_name`, `is_pinned`,
+`display_name` (append ` desc`).
 
 All of these are wrapped in
 [`05-session-crud.sh`](../snippets/curl/05-session-crud.sh).

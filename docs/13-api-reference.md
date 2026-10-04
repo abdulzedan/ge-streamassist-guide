@@ -1,6 +1,6 @@
 # 13. Condensed API reference
 
-Current as of Discovery revision `20260908`. `G`, `B` and `A` mean `v1`,
+Current as of Discovery revision `20260927`. `G`, `B` and `A` mean `v1`,
 `v1beta` and `v1alpha`.
 
 ## methods
@@ -14,7 +14,7 @@ Current as of Discovery revision `20260908`. `G`, `B` and `A` mean `v1`,
 | download file | `GET {session}:downloadFile` | G B A |
 | list session file metadata | `GET {session}:listSessionFileMetadata` | A |
 | agent list/get/create/update/delete/deploy/review | `{assistant}/agents[...]` | A |
-| registry A2A card/message | `{a2a-endpoint}/v1/...` | G |
+| registry A2A card/message send/message stream | `{a2a-endpoint}/v1/...` | G |
 
 ## StreamAssistRequest
 
@@ -30,6 +30,11 @@ Current as of Discovery revision `20260908`. `G`, `B` and `A` mean `v1`,
 | `assistSkippingMode` | A | `REQUEST_ASSIST` |
 | `isSessionLess` | A | do not persist turn |
 | `actionSpec.actionDisabled` | A | action control |
+| `answerGenerationMode`, `agentsConfig`, `cannedQuery` | A | see the full alpha REST schema |
+
+Stable non-streaming `AssistRequest` supports `query`, `session`,
+`assistSkippingMode`, `fileIds` and `userMetadata`. It does not have the full
+StreamAssist request shape.
 
 ## StreamAssistResponse
 
@@ -43,12 +48,19 @@ Current as of Discovery revision `20260908`. `G`, `B` and `A` mean `v1`,
 | `diagnosticInfo` | optional planner detail |
 | `sessionInfo` | session and query identifiers; final object on `v1` |
 | `assistToken` | support correlation token |
+| `invocationTools[]` | names of invoked tools |
+| `invokedSkills[]` | invoked skill resource and display names |
+| `connectorAuthErrors[]` | connector authentication failures; the request may otherwise succeed |
+| `statusUpdates[]` | alpha progress updates |
+| `finalResultToolInvocationId` | alpha ID of the tool result used as the final answer |
 
 ## session file metadata
 
 `fileMetadata[]` may include `fileId`, `name`, `mimeType`, `byteSize`,
 `tokenCount`, `quotaPercentage`, `selected`, `usedInConversation`,
 `originalUri`, `originalSourceType`, `uploadTime`, `metadata` and `session`.
+`tokenCount`, `quotaPercentage` and response-level `totalQuotaPercentage` are
+deprecated and may be absent.
 
 Download the current schemas when exact fields matter:
 
