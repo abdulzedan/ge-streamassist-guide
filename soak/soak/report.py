@@ -113,8 +113,11 @@ def build_model(runs: list[dict], cfg: Config, campaign: dict, start: datetime, 
     assist_calls = [c for c in calls if c.get("assist_query")]
     assist_ok = [c for c in assist_calls if c["ok"]]
     quota_errors = [c for c in calls if (c.get("error") or {}).get("is_quota")]
+    connector_auth_errors = sum(c.get("connector_auth_errors", 0) for c in calls)
     per_pt_day = Counter(parse_iso(c["started_at"]).astimezone(PT).strftime("%Y-%m-%d") for c in assist_calls)
-    pool = cfg.license_count * cfg.license_limit
+    allowance_applies = cfg.billing_model in ("seat", "legacy")
+    per_license_limit = cfg.license_limit if allowance_applies else 0
+    pool = cfg.license_count * per_license_limit
 
     # hourly timeline
     hourly: dict[str, dict] = {}
@@ -237,12 +240,14 @@ def build_model(runs: list[dict], cfg: Config, campaign: dict, start: datetime, 
             "assist_p95_ms": pct([c["latency_ms"] for c in assist_calls if c.get("latency_ms") is not None], 95),
             "assist_max_ms": pct([c["latency_ms"] for c in assist_calls if c.get("latency_ms") is not None], 100),
             "assist_ttfb_p50_ms": pct([c["ttfb_ms"] for c in assist_calls if c.get("ttfb_ms") is not None], 50),
-            "per_license_limit": cfg.license_limit, "license_edition": cfg.license_edition,
+            "billing_model": cfg.billing_model,
+            "per_license_limit": per_license_limit, "license_edition": cfg.license_edition,
             "license_count": cfg.license_count, "pool_limit": pool,
-            "assist_vs_one_license": round(len(assist_calls) / cfg.license_limit, 2) if cfg.license_limit else None,
+            "assist_vs_one_license": round(len(assist_calls) / per_license_limit, 2) if per_license_limit else None,
             "assist_vs_pool": rate(len(assist_calls), pool),
             "assist_queries_per_pt_day": dict(sorted(per_pt_day.items())),
             "quota_errors": len(quota_errors),
+            "connector_auth_errors": connector_auth_errors,
             "first_quota_error": ({"at": quota_errors[0]["started_at"], "verb": quota_errors[0]["verb"],
                                    "error": quota_errors[0]["error"],
                                    "assist_queries_before": sum(1 for c in assist_calls if c["started_at"] < quota_errors[0]["started_at"])}
@@ -289,6 +294,7 @@ def render_md(m: dict) -> str:
             ["Fast slots expected / seen / missed", f"{s['fast_expected']} / {s['fast_seen']} / {s['fast_missed']}"],
             ["API calls (all verbs)", f"{u['calls_total']} ({u['calls_ok']} ok)"],
             ["Candidate feature-query calls (streamAssist + assist)", f"{u['assist_queries']} ({u['assist_queries_ok']} ok, {u['assist_success_rate']})"],
+            ["Configured billing model", u["billing_model"]],
             ["vs one configured allowance", (
                 f"{u['assist_vs_one_license']}x ({u['license_edition']}, {u['per_license_limit']}/day)"
                 if u["per_license_limit"] else "not configured"
@@ -299,6 +305,7 @@ def render_md(m: dict) -> str:
             )],
             ["Quota errors (429 / RESOURCE_EXHAUSTED)", u["quota_errors"] if not u["first_quota_error"] else
              f"{u['quota_errors']}, first at {u['first_quota_error']['at']} after {u['first_quota_error']['assist_queries_before']} candidate calls"],
+            ["Connector authentication errors", u["connector_auth_errors"]],
             ["Probe availability", f"{a['probe_success_rate']} ({a['probe_ok']}/{a['probe_attempts']})"],
             ["Longest probe failure streak", (f"{a['longest_probe_failure_streak']['count']} runs, {a['longest_probe_failure_streak']['from']} to {a['longest_probe_failure_streak']['to']}"
                                               if a["longest_probe_failure_streak"]["count"] else "none")],
@@ -370,7 +377,8 @@ def to_csvs(runs: list[dict]) -> dict[str, str]:
     cw = csv.writer(calls_buf)
     cw.writerow(["started_at", "run_id", "tier", "check", "verb", "api_version", "assist_query", "status", "ok",
                  "latency_ms", "ttfb_ms", "first_chunk_ms", "bytes", "chunks", "answer_state", "error_kind", "error_code",
-                 "error_status", "is_quota", "assist_token", "session", "text_chars", "planner_calls", "grounding_refs"])
+                 "error_status", "is_quota", "assist_token", "session", "text_chars", "invocation_tools", "invoked_skills",
+                 "connector_auth_errors", "status_updates", "planner_calls", "grounding_refs"])
     rw = csv.writer(runs_buf)
     rw.writerow(["run_id", "tier", "profile", "slot", "scheduled_at", "started_at", "finished_at", "late_ms", "duration_ms",
                  "identity", "git_sha", "checks_total", "checks_ok", "checks_failed", "calls_total", "calls_ok",
@@ -391,7 +399,9 @@ def to_csvs(runs: list[dict]) -> dict[str, str]:
             cw.writerow([c["started_at"], r["run_id"], r["tier"], c["check"], c["verb"], c["api_version"], c["assist_query"],
                          c["status"], c["ok"], c["latency_ms"], c["ttfb_ms"], c["first_chunk_ms"], c["bytes"], c["chunks"],
                          c["answer_state"], e.get("kind"), e.get("code"), e.get("status"), e.get("is_quota"),
-                         c["assist_token"], c["session"], c["text_chars"], ";".join(c.get("planner_calls", [])), c["grounding_refs"]])
+                         c["assist_token"], c["session"], c["text_chars"], ";".join(c.get("invocation_tools", [])),
+                         ";".join(c.get("invoked_skills", [])), c.get("connector_auth_errors", 0),
+                         c.get("status_updates", 0), ";".join(c.get("planner_calls", [])), c["grounding_refs"]])
     return {"calls.csv": calls_buf.getvalue(), "runs.csv": runs_buf.getvalue(), "checks.csv": checks_buf.getvalue()}
 
 

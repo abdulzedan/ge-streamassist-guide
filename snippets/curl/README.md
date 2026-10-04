@@ -33,3 +33,4 @@ from anywhere; most take their inputs as arguments.
 | 25 | `25-list-data-stores.sh` | connected data stores |
 | 26 | `26-diagnose-routing.sh` | print optional planner diagnostics |
 | 27 | `27-list-session-file-metadata.sh` | list session context files |
+| 28 | `28-a2a-message-send.sh` | registry A2A non-streaming message |

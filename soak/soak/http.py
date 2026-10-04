@@ -109,6 +109,11 @@ class CallRecord:
     files: list[dict] = field(default_factory=list)
     planner_calls: list[str] = field(default_factory=list)
     tool_results: list[str] = field(default_factory=list)
+    invocation_tools: list[str] = field(default_factory=list)
+    invoked_skills: list[str] = field(default_factory=list)
+    connector_auth_errors: int = 0
+    status_updates: int = 0
+    final_result_from_tool: bool = False
     reply_agents: list[str] = field(default_factory=list)
     grounding_refs: int = 0
     content_kinds: list[str] = field(default_factory=list)
@@ -136,7 +141,12 @@ class CallRecord:
             "skipped_reasons": self.skipped_reasons, "assist_token": self.assist_token,
             "session": self.session, "text_chars": len(self.text),
             "thought_chars": self.thought_chars, "files": self.files, "planner_calls": self.planner_calls,
-            "tool_results": self.tool_results, "reply_agents": sorted(set(self.reply_agents)), "grounding_refs": self.grounding_refs,
+            "tool_results": self.tool_results, "invocation_tools": sorted(set(self.invocation_tools)),
+            "invoked_skills": sorted(set(self.invoked_skills)),
+            "connector_auth_errors": self.connector_auth_errors,
+            "status_updates": self.status_updates,
+            "final_result_from_tool": self.final_result_from_tool,
+            "reply_agents": sorted(set(self.reply_agents)), "grounding_refs": self.grounding_refs,
             "content_kinds": sorted(set(self.content_kinds)), "a2a_roles": sorted(set(self.a2a_roles)),
             "handoff_required": self.handoff_required,
             "required_authorizations": self.required_authorizations,
@@ -314,8 +324,11 @@ class Api:
                     rec.error = err
                 else:
                     rec.ok = True
-                    if verb in ("assist",):
+                    if verb == "assist":
                         self._absorb_answer_chunk(rec, rec.json)
+                        rec.ok = rec.error is None
+                    elif verb == "a2a.message:send":
+                        self._absorb_a2a_item(rec, rec.json)
                         rec.ok = rec.error is None
                 rec.response_excerpt = _excerpt(rec.json)
             rec.latency_ms = _ms(t0)
@@ -375,9 +388,26 @@ class Api:
             rec.session = info["session"]
         if chunk.get("assistToken"):
             rec.assist_token = chunk["assistToken"]
+        rec.invocation_tools.extend(str(v) for v in chunk.get("invocationTools", []) or [])
+        for skill in chunk.get("invokedSkills", []) or []:
+            if isinstance(skill, dict):
+                name = skill.get("name") or skill.get("displayName")
+                if name:
+                    rec.invoked_skills.append(str(name))
+        rec.connector_auth_errors += len(chunk.get("connectorAuthErrors", []) or [])
+        rec.status_updates += len(chunk.get("statusUpdates", []) or [])
+        rec.final_result_from_tool = rec.final_result_from_tool or bool(
+            chunk.get("finalResultToolInvocationId")
+        )
         answer = chunk.get("answer") or {}
         if answer.get("state"):
             rec.answer_state = answer["state"]
+        if (
+            "sessionInfo" in chunk
+            and not info.get("session")
+            and rec.answer_state in ("SUCCEEDED", "FAILED", "SKIPPED", "CANCELLED")
+        ):
+            rec.session = None
         rec.skipped_reasons.extend(answer.get("assistSkippedReasons", []))
         if answer.get("adkAuthor"):
             rec.reply_agents.append(f"adkAuthor:{answer['adkAuthor']}")
@@ -462,6 +492,13 @@ class Api:
         return self.request(check, "a2a.message:stream", "POST",
                             f"{self.cfg.a2a_assistant_path}/agents/{agent_id}/a2a/v1/message:stream",
                             version="v1", json_body=body, stream=True, timeout=(10, read_timeout))
+
+    def a2a_message_send(self, check: str, agent_id: str, text: str, read_timeout: float = 600) -> CallRecord:
+        body = {"message": {"role": "ROLE_USER", "content": [{"text": text}],
+                            "messageId": f"soak-{uuid.uuid4().hex}"}}
+        return self.request(check, "a2a.message:send", "POST",
+                            f"{self.cfg.a2a_assistant_path}/agents/{agent_id}/a2a/v1/message:send",
+                            version="v1", json_body=body, timeout=(10, read_timeout))
 
     def a2a_card(self, check: str, agent_id: str) -> CallRecord:
         return self.request(check, "a2a.card", "GET",

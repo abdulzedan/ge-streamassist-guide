@@ -14,6 +14,7 @@ from __future__ import annotations
 import base64
 import json
 import mimetypes
+import uuid
 from dataclasses import dataclass, field
 from typing import Any, Dict, Generator, List, Optional
 
@@ -102,6 +103,7 @@ class GEClient:
                 session = f"{self.engine_path}/sessions/{session}"
             body["session"] = session
         if agent_id:
+            _validate_streamassist_agent_id(agent_id)
             body["agentsSpec"] = {"agentSpecs": [{"agentId": agent_id}]}
         if file_ids:
             body["fileIds"] = file_ids
@@ -177,11 +179,28 @@ class GEClient:
             fh.write(r.content)
         return out_path
 
-    def assist(self, query: str, session: Optional[str] = None) -> Dict[str, Any]:
+    def assist(
+        self,
+        query: Optional[str] = None,
+        session: Optional[str] = None,
+        file_ids: Optional[List[str]] = None,
+        force_assist: bool = False,
+        user_metadata: Optional[Dict[str, str]] = None,
+    ) -> Dict[str, Any]:
         """Non-streaming :assist — one JSON object with the whole answer."""
-        body: Dict[str, Any] = {"query": {"text": query}}
+        if query is None and not file_ids:
+            raise ValueError("assist requires query or file_ids")
+        body: Dict[str, Any] = {}
+        if query is not None:
+            body["query"] = {"text": query}
         if session:
             body["session"] = session
+        if file_ids:
+            body["fileIds"] = file_ids
+        if force_assist:
+            body["assistSkippingMode"] = "REQUEST_ASSIST"
+        if user_metadata:
+            body["userMetadata"] = user_metadata
         r = requests.post(
             self._url(f"{self.assistant_path}:assist"),
             headers=self._headers(),
@@ -193,27 +212,17 @@ class GEClient:
 
     def a2a_message_stream(
         self, agent_id: str, text: str, context_id: Optional[str] = None,
-        message_id: str = "msg-001", timeout: int = 600,
+        message_id: Optional[str] = None, timeout: int = 600,
+        endpoint_url: Optional[str] = None,
     ) -> Generator[Dict[str, Any], None, None]:
         """Native A2A surface: message the agent DIRECTLY (no orchestrator).
 
         Yields A2A stream items; the Gemini Enterprise answer structure is
         embedded under item["message"]["metadata"]. Note this surface is v1.
         """
-        message: Dict[str, Any] = {
-            "role": "ROLE_USER",
-            "content": [{"text": text}],
-            "messageId": message_id,
-        }
-        if context_id:
-            message["contextId"] = context_id
-        if not self.project_number:
-            raise ValueError("project_number is required for the native A2A endpoint")
-        assistant_path = self.assistant_path.replace(
-            f"projects/{self.project_id}/", f"projects/{self.project_number}/", 1)
+        message = _a2a_message(text, context_id, message_id)
         resp = requests.post(
-            f"https://{self.host}/v1/{assistant_path}"
-            f"/agents/{agent_id}/a2a/v1/message:stream",
+            self._a2a_url(agent_id, "message:stream", endpoint_url),
             headers=self._headers(),
             json={"message": message},
             stream=True,
@@ -221,6 +230,37 @@ class GEClient:
         )
         resp.raise_for_status()
         yield from _iter_json_array(resp)
+
+    def a2a_message_send(
+        self, agent_id: str, text: str, context_id: Optional[str] = None,
+        message_id: Optional[str] = None, timeout: int = 600,
+        endpoint_url: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Send one A2A message and return the complete response object."""
+        resp = requests.post(
+            self._a2a_url(agent_id, "message:send", endpoint_url),
+            headers=self._headers(),
+            json={"message": _a2a_message(text, context_id, message_id)},
+            timeout=timeout,
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def _a2a_url(
+        self, agent_id: str, method: str, endpoint_url: Optional[str] = None,
+    ) -> str:
+        if endpoint_url:
+            return f"{endpoint_url.rstrip('/')}/v1/{method}"
+        if not self.project_number:
+            raise ValueError(
+                "project_number or the endpoint_url returned by Agent Registry is required"
+            )
+        assistant_path = self.assistant_path.replace(
+            f"projects/{self.project_id}/", f"projects/{self.project_number}/", 1)
+        return (
+            f"https://{self.host}/v1/{assistant_path}"
+            f"/agents/{agent_id}/a2a/v1/{method}"
+        )
 
     def list_agents(self) -> List[Dict[str, Any]]:
         r = requests.get(
@@ -273,18 +313,33 @@ class AssistResult:
         self.session: Optional[str] = None
         self.state: Optional[str] = None
         self.skipped_reasons: List[str] = []
+        self.invocation_tools: List[str] = []
+        self.invoked_skills: List[Dict[str, Any]] = []
+        self.connector_auth_errors: List[Dict[str, Any]] = []
+        self.status_updates: List[Dict[str, Any]] = []
+        self.final_result_tool_invocation_id: Optional[str] = None
         self.chunks: List[Dict[str, Any]] = []
 
     def add_chunk(self, chunk: Dict[str, Any]) -> None:
         self.chunks.append(chunk)
         if "error" in chunk:  # errors can arrive mid-stream with HTTP 200
             raise RuntimeError(f"streamAssist error chunk: {chunk['error']}")
-        info = chunk.get("sessionInfo") or {}
-        if info.get("session"):
-            self.session = info["session"]
         answer = chunk.get("answer") or {}
         if answer.get("state"):
             self.state = answer["state"]
+        info = chunk.get("sessionInfo") or {}
+        if info.get("session"):
+            self.session = info["session"]
+        elif "sessionInfo" in chunk and self.state in {
+            "SUCCEEDED", "FAILED", "SKIPPED", "CANCELLED"
+        }:
+            self.session = None
+        self.invocation_tools.extend(chunk.get("invocationTools") or [])
+        self.invoked_skills.extend(chunk.get("invokedSkills") or [])
+        self.connector_auth_errors.extend(chunk.get("connectorAuthErrors") or [])
+        self.status_updates.extend(chunk.get("statusUpdates") or [])
+        if chunk.get("finalResultToolInvocationId"):
+            self.final_result_tool_invocation_id = chunk["finalResultToolInvocationId"]
         self.skipped_reasons.extend(answer.get("assistSkippedReasons", []))
         for reply in answer.get("replies", []):
             content = (reply.get("groundedContent") or {}).get("content") or {}
@@ -323,3 +378,21 @@ def _iter_json_array(resp: requests.Response) -> Generator[Dict[str, Any], None,
             yield obj
             buf = stripped[end:]
     raise ValueError("stream ended before the closing JSON-array bracket")
+
+
+def _validate_streamassist_agent_id(agent_id: str) -> None:
+    if agent_id != "deep_research" and not (agent_id.isascii() and agent_id.isdigit()):
+        raise ValueError("StreamAssist agent_id must be numeric or 'deep_research'")
+
+
+def _a2a_message(
+    text: str, context_id: Optional[str], message_id: Optional[str],
+) -> Dict[str, Any]:
+    message: Dict[str, Any] = {
+        "role": "ROLE_USER",
+        "content": [{"text": text}],
+        "messageId": message_id or str(uuid.uuid4()),
+    }
+    if context_id:
+        message["contextId"] = context_id
+    return message

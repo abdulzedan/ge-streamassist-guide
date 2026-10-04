@@ -45,12 +45,17 @@ Alpha-only fields used by this guide:
 }
 ```
 
+The current alpha REST page also documents `answerGenerationMode`,
+`agentsConfig` and `cannedQuery`. The older top-level grounding, language and
+generation fields are deprecated; use `toolsSpec`, `userMetadata` and
+`generationSpec` instead.
+
 `query.parts[]` can carry text, document, Drive and person references. Use the
 full REST schema when working with those input types.
 
 ## versions
 
-Checked against Discovery revision `20260908` and the current REST pages:
+Checked against Discovery revision `20260927` and the current REST pages:
 
 | Field or method | v1 | v1beta | v1alpha |
 |---|---:|---:|---:|
@@ -64,5 +69,6 @@ Checked against Discovery revision `20260908` and the current REST pages:
 | `listSessionFileMetadata` | no | no | yes |
 | agent list/get/register/update/delete | no | no | yes |
 
-The REST pages document some alpha request fields that the JSON Discovery
-document still omits. The snippets use raw REST for those fields.
+The JSON Discovery documents omit some methods and alpha fields that appear on
+the REST pages. Check both sources when exact fields matter. The snippets use
+raw REST for fields that Discovery omits.

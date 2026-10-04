@@ -3,6 +3,10 @@
 Context files belong to sessions. They cover user uploads and generated image,
 video and audio files.
 
+Google marks the upload-and-query workflow as Preview. The upload and download
+routes use stable `v1`, but file selection and metadata listing still use
+`v1alpha`.
+
 ## upload
 
 `addContextFile` is available on `v1`, `v1beta` and `v1alpha`.
@@ -43,6 +47,9 @@ The session must match the upload session. An empty query is accepted when
 is `fileMetadata[]`. Useful fields include `fileId`, `name`, `mimeType`,
 `byteSize`, `tokenCount`, `selected`, `usedInConversation`, `uploadTime` and
 `originalSourceType`.
+
+Do not depend on `tokenCount`, `quotaPercentage` or the response-level
+`totalQuotaPercentage`. Google has deprecated them and may omit them.
 
 ## download
 

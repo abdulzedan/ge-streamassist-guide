@@ -37,6 +37,7 @@ class Config:
     license_limit: int      # configured feature allowance; zero means unknown
     license_count: int      # licenses in the pool for this project+location
     license_edition: str
+    billing_model: str      # unknown | payg | seat | legacy
     # --- provenance ---
     git_sha: str
     region: str
@@ -57,6 +58,7 @@ class Config:
             license_limit=int(_env("SOAK_LICENSE_LIMIT", "0")),
             license_count=int(_env("SOAK_LICENSE_COUNT", "0")),
             license_edition=_env("SOAK_LICENSE_EDITION", "unconfigured"),
+            billing_model=_env("SOAK_BILLING_MODEL", "unknown"),
             git_sha=_env("GIT_SHA", "dev"),
             region=_env("SOAK_REGION", "us-central1"),
         )
@@ -115,6 +117,7 @@ class Config:
             "license_limit": self.license_limit,
             "license_count": self.license_count,
             "license_edition": self.license_edition,
+            "billing_model": self.billing_model,
             "git_sha": self.git_sha,
             "region": self.region,
         }

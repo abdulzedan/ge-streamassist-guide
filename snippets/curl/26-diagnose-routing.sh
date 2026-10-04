@@ -11,6 +11,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 AGENT_ID="${1:?usage: $0 <agent-id> \"question\"}"
 QUERY="${2:?usage: $0 <agent-id> \"question\"}"
+require_streamassist_agent_id "${AGENT_ID}"
 
 BODY=$(jq -nc --arg query "${QUERY}" --arg session "${ENGINE_PATH}/sessions/-" \
   --arg agent "${AGENT_ID}" \
@@ -19,6 +20,13 @@ RESP=$(de_post "${ASSISTANT_PATH}:streamAssist" "${BODY}")
 
 echo "== final state =="
 echo "${RESP}" | jq -r '.[-1].answer.state // "unknown"'
+echo
+echo "== invoked tools and skills =="
+echo "${RESP}" | jq '{
+  invocationTools: ([.[] | .invocationTools[]?] | unique),
+  invokedSkills: ([.[] | .invokedSkills[]?] | unique_by(.name)),
+  connectorAuthErrors: ([.[] | .connectorAuthErrors[]?])
+}'
 echo
 echo "== planner trace =="
 echo "${RESP}" | jq '[ .[] | .answer.diagnosticInfo.plannerSteps // empty ] | flatten

@@ -6,6 +6,11 @@ cd "${REPO_ROOT}"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 [[ -x .venv/bin/python ]] && PYTHON_BIN=.venv/bin/python
 
+if ! "${PYTHON_BIN}" -c 'import google.auth, requests' >/dev/null 2>&1; then
+  echo "validate: missing Python packages; run 'make python-deps' once" >&2
+  exit 1
+fi
+
 while IFS= read -r file; do bash -n "${file}"; done < <(find . -name '*.sh' -type f | sort)
 PYTHONPYCACHEPREFIX="$(mktemp -d)/pycache" "${PYTHON_BIN}" -m compileall -q scripts snippets/python soak/soak tests
 node --check snippets/node/ge-streamassist.mjs

@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------
 # 18 — Non-streaming :assist.
-# Same request shape as streamAssist, but the response is a single
-# JSON object containing the complete answer — easier to consume
-# from tools that can't handle streams.
+# Returns one JSON object containing the complete answer. Its request
+# supports query, session, assistSkippingMode, fileIds and userMetadata.
 #
 # Usage: ./18-non-streaming-assist.sh "your question"
 # ------------------------------------------------------------------

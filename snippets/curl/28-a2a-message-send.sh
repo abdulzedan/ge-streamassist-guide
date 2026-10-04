@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
-# ------------------------------------------------------------------
-# 24 — Native A2A: send a message DIRECTLY to one agent.
-# Bypasses the streamAssist orchestrator entirely: no routing
-# heuristics, no chit-chat classifier — the agent always receives
-# the message. Response streams A2A messages whose metadata embeds
-# the familiar answer.replies structure; message.contextId is a
-# session name you can pass back for multi-turn.
-#
-# Usage: ./24-a2a-message-stream.sh <agent-id> "your message" [registry-a2a-url]
-# ------------------------------------------------------------------
+# 28 — Native A2A: send one message and wait for the complete response.
+# Usage: ./28-a2a-message-send.sh <agent-id> "your message" [registry-a2a-url]
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
 AGENT_ID="${1:?usage: $0 <agent-id> \"message\" [registry-a2a-url]}"
@@ -20,11 +12,12 @@ else
   A2A_BASE="https://${DE_HOST}/v1/projects/${PROJECT_NUMBER}/locations/${LOCATION}/collections/default_collection/engines/${APP_ID}/assistants/${ASSISTANT_ID}/agents/${AGENT_ID}/a2a"
 fi
 A2A_BASE="${A2A_BASE%/}"
-BODY=$(jq -nc --arg text "${MESSAGE}" --arg id "$(new_message_id)" \
+MESSAGE_ID="$(new_message_id)"
+BODY=$(jq -nc --arg text "${MESSAGE}" --arg id "${MESSAGE_ID}" \
   '{message: {role: "ROLE_USER", content: [{text: $text}], messageId: $id}}')
 
 curl -sS --fail-with-body --max-time 600 -X POST \
-  "${A2A_BASE}/v1/message:stream" \
+  "${A2A_BASE}/v1/message:send" \
   -H "Authorization: Bearer ${TOKEN}" \
   -H "Content-Type: application/json" \
   -H "X-Goog-User-Project: ${PROJECT_ID}" \

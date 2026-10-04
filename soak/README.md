@@ -48,8 +48,10 @@ account.
 | Deep Research | 12 h | plan, execute and report marker |
 
 The standard schedule makes about 637 `streamAssist`/`assist` calls per day.
-This is an estimate from scheduled calls, not a billing counter. Configure
-`SOAK_LICENSE_COUNT` before comparing with a pool; the default is zero.
+This is an estimate from scheduled calls, not a billing counter. Set
+`SOAK_BILLING_MODEL=seat` or `legacy` before configuring
+`SOAK_LICENSE_COUNT` and `SOAK_LICENSE_LIMIT`. Leave the model as `payg` or
+`unknown` when seat-based allowance math does not apply.
 
 The `full` profile runs every fast check every five minutes and every heavy
 check every four hours. It can create more than 3,000 candidate calls per day.
@@ -57,9 +59,10 @@ check every four hours. It can create more than 3,000 candidate calls per day.
 ## evidence and privacy
 
 Each run records method, API version, timing, byte/chunk counts, answer state,
-skip reasons, support token, session, file metadata, content kinds, routing
-markers, handoff flags and sanitized errors. Request and response values are
-reduced to structure and character counts before storage.
+skip reasons, support token, session, file metadata, content kinds, invoked
+tools and skills, connector auth error counts, routing markers, handoff flags
+and sanitized errors. Request and response values are reduced to structure and
+character counts before storage.
 
 Every created session has a cleanup observation. A failed critical assertion
 now makes the Cloud Run Job fail.
