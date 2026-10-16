@@ -55,11 +55,11 @@ full REST schema when working with those input types.
 
 ## model selection
 
-To use StreamAssist without choosing a model, omit `generationSpec.modelId`
-(or the entire `generationSpec` object) from the request body; Google documents
-this as using the [default assistant model](https://docs.cloud.google.com/gemini/enterprise/docs/reference/rest/v1/projects.locations.collections.engines.assistants/streamAssist#GenerationSpec).
-Live `v1` checks with Altostrat ADC on 2026-10-16 succeeded with the field
-omitted and with `"modelId": ""`, but did not identify the selected model.
+To let StreamAssist automatically select the model, omit
+[`generationSpec.modelId`](https://docs.cloud.google.com/gemini/enterprise/docs/reference/rest/v1/projects.locations.collections.engines.assistants/streamAssist#GenerationSpec)
+or the entire `generationSpec` object from the request body.
+To choose a specific model for a request, set `generationSpec.modelId` to a
+supported model ID.
 
 ## versions
 
