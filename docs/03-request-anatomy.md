@@ -53,6 +53,14 @@ generation fields are deprecated; use `toolsSpec`, `userMetadata` and
 `query.parts[]` can carry text, document, Drive and person references. Use the
 full REST schema when working with those input types.
 
+## model selection
+
+To use StreamAssist without choosing a model, omit `generationSpec.modelId`
+(or the entire `generationSpec` object) from the request body; Google documents
+this as using the [default assistant model](https://docs.cloud.google.com/gemini/enterprise/docs/reference/rest/v1/projects.locations.collections.engines.assistants/streamAssist#GenerationSpec).
+Live `v1` checks with Altostrat ADC on 2026-10-16 succeeded with the field
+omitted and with `"modelId": ""`, but did not identify the selected model.
+
 ## versions
 
 Checked against Discovery revision `20260927` and the current REST pages:
